@@ -9,12 +9,28 @@ jobs:
   release:
     name: "Release"
     runs-on: "ubuntu-latest"
-
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-      # ...
-      - name: "Build"
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v2
+        with:
+          path: src/main/livelogs/node_modules
+          key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/*.package.json*') }}
+          restore-keys: |
+            ${{ runner.os }}-nodemodules-
+      - name: Install Packages
+        run: yarn install
+        working-directory: src/main/livelogs
+      - name: Build Project
         run: yarn build
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
