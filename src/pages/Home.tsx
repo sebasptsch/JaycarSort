@@ -9,14 +9,16 @@ export default function Home() {
   const [searchString, setSearchString] = useState("");
   const [results, setResults] = useState<Array<any>>([]);
   const [fuse, setFuse] = useState<Fuse<any>>();
-  const options = {
-    useExtendedSearch: true,
-    keys: ["item", "description", "barcode"],
-  };
 
   useEffect(() => {
     getAll().then((res) => {
-      setFuse(new Fuse(res, options));
+      setFuse(
+        new Fuse(res, {
+          useExtendedSearch: true,
+          keys: ["item", "description", "barcode"],
+          threshold: 0,
+        })
+      );
     }); // eslint-disable-next-line
   }, []);
 
