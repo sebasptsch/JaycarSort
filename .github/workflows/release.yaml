@@ -36,3 +36,11 @@ jobs:
           filename: "release.zip"
           directory: public/
           type: zip
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Release Build"
+          files: |
+            release.zip
