@@ -4,9 +4,19 @@ export default function Nav() {
       <h3 className="is-3 title mb-0">Jaycar Stock Locator</h3>
       <span style={{ flex: 1, justifySelf: "stretch", alignSelf: "stretch" }} />
       {/* <div>Date</div> */}
-      <a className="button" href="/new">
-        New Data
-      </a>
+      <div className="buttons">
+        <button
+          className="button is-info"
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          Reload
+        </button>
+        <a className="button" href="/new">
+          New Data
+        </a>
+      </div>
     </div>
   );
 }

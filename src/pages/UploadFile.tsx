@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useIndexedDB } from "react-indexed-db";
 import XLSX from "xlsx";
-import { dbitem } from "../interfaces";
+import { dbitem } from "../lib/interfaces";
 
 export default function UploadFile() {
   const db = useIndexedDB("components");

@@ -16,19 +16,15 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
       <div className="columns">
         <div className="column has-text-centered">
           <h4 className="is-subtitle is-size-4">
-            <b>Location:</b> {item.location} {item.unit}
+            {item.location} {item.unit}
           </h4>
         </div>
 
         <div className="column has-text-centered">
-          <h4 className="is-subtitle is-size-4">
-            <b>Shelf:</b> {item.shelf}
-          </h4>
+          <h4 className="is-subtitle is-size-4">Shelf {item.shelf}</h4>
         </div>
         <div className="column has-text-centered">
-          <h4 className="is-subtitle is-size-4">
-            <b>Tray:</b> {item.tray}
-          </h4>
+          <h4 className="is-subtitle is-size-4">Tray {item.tray}</h4>
         </div>
       </div>
     </div>
