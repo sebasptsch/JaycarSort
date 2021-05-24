@@ -5,7 +5,7 @@ import { dbitem } from "../lib/interfaces";
 
 export default function UploadFile() {
   const db = useIndexedDB("components");
-  const { register, handleSubmit, watch, formState } = useForm();
+  const { register, handleSubmit, watch } = useForm();
   const onSubmit = async (data: any) => await handleFileSubmit(data.file[0]);
 
   const newDBData = async (data: Array<dbitem>) => {

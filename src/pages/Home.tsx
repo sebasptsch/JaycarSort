@@ -3,10 +3,8 @@ import { debounce } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useIndexedDB } from "react-indexed-db";
 import StockItem from "../components/StockItem";
-import { dbitem } from "../lib/interfaces";
 
 export default function Home() {
-  const [components, setComponents] = useState<undefined | Array<dbitem>>([]);
   const { getAll } = useIndexedDB("components");
   const [searchString, setSearchString] = useState("");
   const [results, setResults] = useState<Array<any>>([]);
@@ -19,13 +17,13 @@ export default function Home() {
   useEffect(() => {
     getAll().then((res) => {
       setFuse(new Fuse(res, options));
-    });
+    }); // eslint-disable-next-line
   }, []);
 
   useMemo(() => {
     if (fuse) {
       setResults(fuse.search(searchString));
-    }
+    } // eslint-disable-next-line
   }, [searchString]);
 
   return (
@@ -38,7 +36,7 @@ export default function Home() {
       />
       <div className="m-4">
         {results?.map((item) => (
-          <StockItem resultitem={item} />
+          <StockItem resultitem={item} key={item.refIndex} />
         ))}
         {results.length === 0 ? (
           <h4 className="is-text-4 has-text-centered m-4">
