@@ -45,6 +45,10 @@ export default function NewFileModal() {
     e.preventDefault();
     // Handle Filter Logic
     if (!excelDoc) return;
+    if (progress) {
+      alert("Wait until the current operation is finished");
+      return;
+    }
 
     var workbook = excelDoc;
     var sheet = workbook.Sheets[workbook.SheetNames[0]];
