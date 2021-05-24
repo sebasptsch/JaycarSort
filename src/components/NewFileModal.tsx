@@ -71,7 +71,7 @@ export default function NewFileModal() {
 
   return (
     <>
-      <button className="button" onClick={() => setModalActive(true)}>
+      <button className="button is-link" onClick={() => setModalActive(true)}>
         New Data
       </button>
       <div className={`modal ${modalActive ? "is-active" : ""}`}>

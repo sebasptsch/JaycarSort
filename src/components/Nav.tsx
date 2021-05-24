@@ -7,14 +7,6 @@ export default function Nav() {
       {/* <div>Date</div> */}
       <div className="buttons">
         <NewFileModal />
-        <button
-          className="button is-info"
-          onClick={() => {
-            window.location.reload();
-          }}
-        >
-          Reload
-        </button>
       </div>
     </div>
   );
