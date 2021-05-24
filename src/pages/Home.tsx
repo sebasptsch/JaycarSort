@@ -10,7 +10,7 @@ export default function Home() {
   const { getAll } = useIndexedDB("components");
   const [searchString, setSearchString] = useState("");
   const [results, setResults] = useState<Array<any>>([]);
-  const [fuse, setFurse] = useState<Fuse<any>>();
+  const [fuse, setFuse] = useState<Fuse<any>>();
   const options = {
     useExtendedSearch: true,
     keys: ["item", "description", "barcode"],
@@ -18,7 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     getAll().then((res) => {
-      setFurse(new Fuse(res, options));
+      setFuse(new Fuse(res, options));
     });
   }, []);
 
