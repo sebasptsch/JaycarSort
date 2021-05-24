@@ -43,3 +43,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: "latest"
           commit: master
+          omitNameDuringUpdate: true
+          omitBodyDuringUpdate: true
