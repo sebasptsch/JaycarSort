@@ -22,13 +22,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - uses: actions/cache@v2
         with:
-          path: src/main/livelogs/node_modules
+          path: node_modules
           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/*.package.json*') }}
           restore-keys: |
             ${{ runner.os }}-nodemodules-
       - name: Install Packages
         run: yarn install
-        working-directory: src/main/livelogs
       - name: Build Project
         run: yarn build
       - uses: "marvinpinto/action-automatic-releases@latest"
