@@ -5,17 +5,17 @@ import React from "react";
 import { initDB } from "react-indexed-db";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Nav from "./components/Nav";
-import { DBConfig } from "./DBConfig";
-import Home from "./Home";
-import UploadFile from "./UploadFile";
+import { DBConfig } from "./lib/DBConfig";
+import Home from "./pages/Home";
+import UploadFile from "./pages/UploadFile";
 
 initDB(DBConfig);
 
 function App() {
   return (
     <>
-      <Nav />
       <div className="container">
+        <Nav />
         <Router>
           <Route path="/new" component={UploadFile} />
           <Route path="/" exact component={Home} />
