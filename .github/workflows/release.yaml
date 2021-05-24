@@ -41,3 +41,5 @@ jobs:
         with:
           artifacts: "release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "latest"
+          commit: master
