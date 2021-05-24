@@ -116,11 +116,11 @@ export default function NewFileModal() {
                 </p>
                 <br />
                 {progress ? (
-                  <progress
-                    className="progress is-link"
-                    value={`${progress * 100}`}
-                  >{`${progress * 100}`}</progress>
+                  <progress className="progress is-link" value={progress}>
+                    {progress}
+                  </progress>
                 ) : null}
+                {progress ? `${Math.round(progress * 100)}%` : null}
               </div>
             </section>
 
