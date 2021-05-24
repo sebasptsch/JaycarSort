@@ -2,7 +2,7 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
   const { item } = resultitem;
   return (
     <div className="notification">
-      <div className="columns is-multiline">
+      <div className="columns is-multiline is-gapless">
         <div className="column is-half">
           <b>Item:</b> {item.item} <br />
         </div>
