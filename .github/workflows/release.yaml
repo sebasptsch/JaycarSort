@@ -34,10 +34,8 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: "release.zip"
-          directory: public/**
+          directory: build
           type: zip
-      - run: ls -la
-        name: where?
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -45,4 +43,4 @@ jobs:
           prerelease: false
           title: "Release Build"
           files: |
-            public/release.zip
+            build/release.zip
