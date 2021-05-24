@@ -1,3 +1,4 @@
+import NewFileModal from "./NewFileModal";
 export default function Nav() {
   return (
     <div className="is-flex is-flex-align-center m-4">
@@ -5,6 +6,7 @@ export default function Nav() {
       <span style={{ flex: 1, justifySelf: "stretch", alignSelf: "stretch" }} />
       {/* <div>Date</div> */}
       <div className="buttons">
+        <NewFileModal />
         <button
           className="button is-info"
           onClick={() => {
@@ -13,9 +15,6 @@ export default function Nav() {
         >
           Reload
         </button>
-        <a className="button" href="/new">
-          New Data
-        </a>
       </div>
     </div>
   );
