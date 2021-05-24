@@ -5,9 +5,9 @@ import React from "react";
 import { initDB } from "react-indexed-db";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Nav from "./components/Nav";
+import NewFileModal from "./components/NewFileModal";
 import { DBConfig } from "./lib/DBConfig";
 import Home from "./pages/Home";
-import UploadFile from "./pages/UploadFile";
 
 initDB(DBConfig);
 
@@ -17,7 +17,7 @@ function App() {
       <div className="container">
         <Nav />
         <Router>
-          <Route path="/new" component={UploadFile} />
+          <Route path="/new" component={NewFileModal} />
           <Route path="/" exact component={Home} />
         </Router>
       </div>
