@@ -30,11 +30,14 @@ jobs:
         run: yarn install
       - name: Build Project
         run: yarn build
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: "Release Build"
-          files: |
-            build/*
+          filename: "release.zip"
+          directory: public/
+          type: zip
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "release.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
