@@ -34,7 +34,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: "release.zip"
-          directory: public/
+          directory: public/**
           type: zip
       - run: ls -la
         name: where?
