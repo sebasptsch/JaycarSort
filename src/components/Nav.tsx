@@ -1,10 +1,10 @@
-import jclogo from "../jclogo.svg";
+// import jclogo from "../jclogo.svg";
 import NewFileModal from "./NewFileModal";
 export default function Nav() {
   return (
     <div className="is-flex is-flex-align-center m-4">
       <img
-        src={jclogo}
+        src="/dist/jclogo.svg"
         alt="Jaycar Logo"
         className="box p-0 m-0 mr-2"
         style={{ maxHeight: "80px" }}
