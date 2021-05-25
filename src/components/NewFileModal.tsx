@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FormEvent, useState } from 'react';
 import ReactIndexedDB from 'react-indexed-db';
 import XLSX from 'xlsx';
@@ -97,6 +98,7 @@ export default function NewFileModal() {
                   <span className="file-cta">
                     <span className="file-icon">
                       <i className="fas fa-upload"></i>
+                      <FontAwesomeIcon icon={['fas', 'upload']} />
                     </span>
                     <span className="file-label">Choose a file…</span>
                   </span>
@@ -104,27 +106,29 @@ export default function NewFileModal() {
                 </label>
               </div>
               <br />
-              <div>
-                <h4 className="is-subtitle is-size-4">Details</h4>
-                <p>
-                  <b>Last Author:</b>{' '}
-                  {excelDoc ? excelDoc.Props?.LastAuthor : 'unknown'}
+              {excelDoc ? (
+                <div>
+                  <h4 className="is-subtitle is-size-4">Details</h4>
+                  <p>
+                    <b>Last Author:</b>{' '}
+                    {excelDoc ? excelDoc.Props?.LastAuthor : 'unknown'}
+                    <br />
+                    <b>Last Modified:</b>{' '}
+                    {excelDoc?.Props?.ModifiedDate
+                      ? new Date(
+                          excelDoc.Props?.ModifiedDate,
+                        ).toLocaleDateString()
+                      : 'unknown'}
+                  </p>
                   <br />
-                  <b>Last Modified:</b>{' '}
-                  {excelDoc?.Props?.ModifiedDate
-                    ? new Date(
-                        excelDoc.Props?.ModifiedDate,
-                      ).toLocaleDateString()
-                    : 'unknown'}
-                </p>
-                <br />
-                {progress ? (
-                  <progress className="progress is-link" value={progress}>
-                    {progress}
-                  </progress>
-                ) : null}
-                {progress ? `${Math.round(progress * 100)}%` : null}
-              </div>
+                  {progress ? (
+                    <progress className="progress is-link" value={progress}>
+                      {progress}
+                    </progress>
+                  ) : null}
+                  {progress ? `${Math.round(progress * 100)}%` : null}
+                </div>
+              ) : null}
             </section>
 
             <footer className="modal-card-foot">
