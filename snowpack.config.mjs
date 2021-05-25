@@ -7,7 +7,6 @@ export default {
   plugins: [
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
-    '@snowpack/plugin-webpack',
     '@snowpack/plugin-sass',
     [
       '@snowpack/plugin-typescript',
@@ -23,7 +22,7 @@ export default {
   ],
   optimize: {
     /* Example: Bundle your final build: */
-    // "bundle": true,
+    bundle: true,
   },
   packageOptions: {
     namedExports: ['react-indexed-db'],
