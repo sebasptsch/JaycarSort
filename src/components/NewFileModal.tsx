@@ -78,7 +78,10 @@ export default function NewFileModal() {
       <button className="button is-link" onClick={() => setModalActive(true)}>
         New Data
       </button>
-      <div className={`modal ${modalActive ? 'is-active' : ''}`}>
+      <div
+        className={`modal ${modalActive ? 'is-active' : ''}`}
+        style={{ color: 'initial' }}
+      >
         <div className="modal-background"></div>
         <div className="modal-card">
           <form onSubmit={handleSubmit}>
