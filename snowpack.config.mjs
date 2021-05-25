@@ -9,7 +9,6 @@ export default {
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-webpack',
     '@snowpack/plugin-sass',
-    'snowpack-plugin-svgr',
     [
       '@snowpack/plugin-typescript',
       {
@@ -27,7 +26,7 @@ export default {
     // "bundle": true,
   },
   packageOptions: {
-    /* ... */
+    namedExports: ['react-indexed-db'],
   },
   devOptions: {
     /* ... */

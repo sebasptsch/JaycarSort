@@ -1,14 +1,14 @@
-import { FormEvent, useState } from "react";
-import { useIndexedDB } from "react-indexed-db";
-import XLSX from "xlsx";
-import { dbitem } from "../lib/interfaces";
+import React, { FormEvent, useState } from 'react';
+import ReactIndexedDB from 'react-indexed-db';
+import XLSX from 'xlsx';
+import { dbitem } from '../lib/interfaces';
 
 export default function NewFileModal() {
-  const db = useIndexedDB("components");
+  const db = ReactIndexedDB.useIndexedDB('components');
 
   const [modalActive, setModalActive] = useState(false);
   const [excelDoc, setExcelDoc] = useState<XLSX.WorkBook>();
-  const [filename, setFilename] = useState("");
+  const [filename, setFilename] = useState('');
   const [progress, setProgress] = useState<any>();
 
   const newDBData = (data: Array<dbitem>) => {
@@ -21,8 +21,8 @@ export default function NewFileModal() {
             .then((res) => {
               setProgress(index / (data.length + 1));
             })
-            .catch((err) => console.log(err, component.item))
-      )
+            .catch((err) => console.log(err, component.item)),
+      ),
     );
   };
 
@@ -32,10 +32,10 @@ export default function NewFileModal() {
     var reader = new FileReader();
     reader.readAsArrayBuffer(e.target.files[0]);
     return (reader.onload = () => {
-      if (typeof reader.result === "string") return;
+      if (typeof reader.result === 'string') return;
       if (!reader.result) return;
       var data = new Uint8Array(reader.result);
-      var workbook = XLSX.read(data, { type: "array" });
+      var workbook = XLSX.read(data, { type: 'array' });
       setExcelDoc(workbook);
       console.log(workbook);
     });
@@ -46,7 +46,7 @@ export default function NewFileModal() {
     // Handle Filter Logic
     if (!excelDoc) return;
     if (progress) {
-      alert("Wait until the current operation is finished");
+      alert('Wait until the current operation is finished');
       return;
     }
 
@@ -66,7 +66,7 @@ export default function NewFileModal() {
           tray: Tray,
           item: Item,
         };
-      })
+      }),
     ).then((res) => {
       window.location.reload();
       return;
@@ -78,7 +78,7 @@ export default function NewFileModal() {
       <button className="button is-link" onClick={() => setModalActive(true)}>
         New Data
       </button>
-      <div className={`modal ${modalActive ? "is-active" : ""}`}>
+      <div className={`modal ${modalActive ? 'is-active' : ''}`}>
         <div className="modal-background"></div>
         <div className="modal-card">
           <form onSubmit={handleSubmit}>
@@ -108,15 +108,15 @@ export default function NewFileModal() {
               <div>
                 <h4 className="is-subtitle is-size-4">Details</h4>
                 <p>
-                  <b>Last Author:</b>{" "}
-                  {excelDoc ? excelDoc.Props?.LastAuthor : "unknown"}
+                  <b>Last Author:</b>{' '}
+                  {excelDoc ? excelDoc.Props?.LastAuthor : 'unknown'}
                   <br />
-                  <b>Last Modified:</b>{" "}
+                  <b>Last Modified:</b>{' '}
                   {excelDoc?.Props?.ModifiedDate
                     ? new Date(
-                        excelDoc.Props?.ModifiedDate
+                        excelDoc.Props?.ModifiedDate,
                       ).toLocaleDateString()
-                    : "unknown"}
+                    : 'unknown'}
                 </p>
                 <br />
                 {progress ? (

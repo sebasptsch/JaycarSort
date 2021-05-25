@@ -1,3 +1,4 @@
+import React from 'react';
 export default function StockItem({ resultitem }: { resultitem: any }) {
   const { item } = resultitem;
   return (
@@ -22,12 +23,12 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
 
         <div className="column has-text-centered">
           <h4 className="is-subtitle is-size-4">
-            {item.location === "Capstan" ? "Column" : "Shelf"} {item.shelf}
+            {item.location === 'Capstan' ? 'Column' : 'Shelf'} {item.shelf}
           </h4>
         </div>
         <div className="column has-text-centered">
           <h4 className="is-subtitle is-size-4">
-            {item.location === "Capstan" ? "Row" : "Tray"} {item.tray}
+            {item.location === 'Capstan' ? 'Row' : 'Tray'} {item.tray}
           </h4>
         </div>
       </div>
