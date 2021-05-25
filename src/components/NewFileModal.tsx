@@ -37,7 +37,6 @@ export default function NewFileModal() {
       var data = new Uint8Array(reader.result);
       var workbook = XLSX.read(data, { type: 'array' });
       setExcelDoc(workbook);
-      console.log(workbook);
     });
   };
 

@@ -10,7 +10,6 @@ import './styles.scss';
 ReactIndexedDB.initDB(DBConfig);
 
 function App() {
-  console.log('helo');
   return (
     <div className="container">
       <Nav />
