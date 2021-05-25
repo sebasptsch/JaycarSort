@@ -1,12 +1,12 @@
-import Fuse from "fuse.js";
-import { debounce } from "lodash";
-import { useEffect, useMemo, useState } from "react";
-import { useIndexedDB } from "react-indexed-db";
-import StockItem from "../components/StockItem";
+import Fuse from 'fuse.js';
+import { debounce } from 'lodash';
+import React, { useEffect, useMemo, useState } from 'react';
+import ReactIndexedDB from 'react-indexed-db';
+import StockItem from '../components/StockItem';
 
 export default function Home() {
-  const { getAll } = useIndexedDB("components");
-  const [searchString, setSearchString] = useState("");
+  const { getAll } = ReactIndexedDB.useIndexedDB('components');
+  const [searchString, setSearchString] = useState('');
   const [results, setResults] = useState<Array<any>>([]);
   const [fuse, setFuse] = useState<Fuse<any>>();
 
@@ -15,9 +15,9 @@ export default function Home() {
       setFuse(
         new Fuse(res, {
           useExtendedSearch: true,
-          keys: ["item", "description", "barcode"],
+          keys: ['item', 'description', 'barcode'],
           threshold: 0,
-        })
+        }),
       );
     }); // eslint-disable-next-line
   }, []);
