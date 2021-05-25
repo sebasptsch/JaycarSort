@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'preact/compat';
 // import jclogo from './jclogo.svg';
 import NewFileModal from './NewFileModal';
 export default function Nav() {

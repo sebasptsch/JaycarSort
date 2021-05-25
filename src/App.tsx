@@ -1,6 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import Nav from './components/Nav';
 import { DBConfig } from './lib/DBConfig';

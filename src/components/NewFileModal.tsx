@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import XLSX from 'xlsx';
 import { dbitem } from '../lib/interfaces';
@@ -8,7 +8,7 @@ export default function NewFileModal() {
   const db = ReactIndexedDB.useIndexedDB('components');
 
   const [modalActive, setModalActive] = React.useState(false);
-  const [excelDoc, setExcelDoc] = React.useState<XLSX.WorkBook>();
+  const [excelDoc, setExcelDoc] = React.useState<XLSX.WorkBook | false>(false);
   const [filename, setFilename] = React.useState('');
   const [progress, setProgress] = React.useState<any>(0);
 
@@ -41,7 +41,7 @@ export default function NewFileModal() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     // Handle Filter Logic
     if (!excelDoc) return;

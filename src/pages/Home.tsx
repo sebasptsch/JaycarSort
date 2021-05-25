@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
-import React from 'react';
+import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
 

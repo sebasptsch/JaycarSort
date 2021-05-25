@@ -1,12 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'preact/compat';
+import ReactDOM from 'preact/compat';
 import App from './App';
+
+var root = document.querySelector('#root')
+
+if (root == null) {
+  // Handle fatal errors in your app.
+  throw new Error("Could not find root element");
+}
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root'),
+  root
 );
 
 // Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
