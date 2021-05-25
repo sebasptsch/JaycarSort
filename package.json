@@ -24,7 +24,7 @@
     "react-indexed-db": "^1.0.12",
     "react-router-dom": "^5.2.0",
     "sass": "1.32.0",
-    "serve": "^11.3.2",
+   
     "snowpack": "^3.0.1",
     "typescript": "^4.1.2",
     "xlsx": "^0.17.0"
@@ -34,7 +34,7 @@
     "build": "snowpack build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "test": "npx jest"
+    "serve": "serve build/"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
@@ -43,6 +43,7 @@
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
-    "@types/snowpack-env": "^2.3.2"
+    "@types/snowpack-env": "^2.3.2",
+    "serve": "^11.3.2"
   }
 }
