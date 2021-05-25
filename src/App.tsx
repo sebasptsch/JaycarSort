@@ -1,5 +1,3 @@
-import '@fortawesome/fontawesome-free';
-import '@fortawesome/fontawesome-free/js/all';
 import React from 'react';
 import ReactIndexedDB from 'react-indexed-db';
 import Nav from './components/Nav';
