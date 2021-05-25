@@ -25,7 +25,7 @@ export default {
     bundle: true,
   },
   packageOptions: {
-    namedExports: ['react-indexed-db'],
+    /* ... */
   },
   devOptions: {
     /* ... */
@@ -34,7 +34,6 @@ export default {
     /* ... */
   },
   alias: {
-    react: 'preact/compat',
-    'react-dom': 'preact/compat',
+    /* .. */
   },
 };

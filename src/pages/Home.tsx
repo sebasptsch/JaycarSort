@@ -1,16 +1,16 @@
 import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
-  const [searchString, setSearchString] = useState('');
-  const [results, setResults] = useState<Array<any>>([]);
-  const [fuse, setFuse] = useState<Fuse<any>>();
+  const [searchString, setSearchString] = React.useState('');
+  const [results, setResults] = React.useState<Array<any>>([]);
+  const [fuse, setFuse] = React.useState<Fuse<any>>(new Fuse([]));
 
-  useEffect(() => {
+  React.useEffect(() => {
     getAll().then((res) => {
       setFuse(
         new Fuse(res, {
@@ -22,7 +22,7 @@ export default function Home() {
     }); // eslint-disable-next-line
   }, []);
 
-  useMemo(() => {
+  React.useMemo(() => {
     if (fuse) {
       setResults(fuse.search(searchString));
     } // eslint-disable-next-line
