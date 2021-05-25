@@ -2,20 +2,46 @@ import React from 'react';
 // import jclogo from './jclogo.svg';
 import NewFileModal from './NewFileModal';
 export default function Nav() {
+  const [navbarActive, setNavbarActive] = React.useState(false);
   return (
-    <div className="is-flex is-flex-align-center m-4">
-      <img
-        src="/dist/jclogo.svg"
-        alt="Jaycar Logo"
-        className="box p-0 m-0 mr-2"
-        style={{ maxHeight: '80px' }}
-      />
-      <h3 className="is-3 title mb-0">Stock Locator</h3>
-      <span style={{ flex: 1, justifySelf: 'stretch', alignSelf: 'stretch' }} />
-      {/* <div>Date</div> */}
-      <div className="buttons">
-        <NewFileModal />
+    <nav
+      className="navbar is-primary"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div className="container">
+        <div className="navbar-brand">
+          <a className="navbar-item" href="/">
+            <img src="/dist/jclarge.png" height="28" />
+          </a>
+          <h4 className="navbar-item is-size-4">Stock Locator</h4>
+
+          <a
+            role="button"
+            className={`navbar-burger ${navbarActive ? 'is-active' : ''}`}
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+            onClick={() => {
+              setNavbarActive((prev) => !prev);
+            }}
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div className={`navbar-menu ${navbarActive ? 'is-active' : ''}`}>
+          <div className="navbar-end">
+            <div className="navbar-item">
+              <div className="buttons">
+                <NewFileModal />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }

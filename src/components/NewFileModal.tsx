@@ -84,7 +84,11 @@ export default function NewFileModal() {
           <form onSubmit={handleSubmit}>
             <header className="modal-card-head">
               <p className="modal-card-title">Upload New Data</p>
-              <button className="delete" aria-label="close"></button>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={() => setModalActive(false)}
+              ></button>
             </header>
             <section className="modal-card-body">
               <div className="file has-name">

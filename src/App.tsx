@@ -13,10 +13,12 @@ ReactIndexedDB.initDB(DBConfig);
 
 function App() {
   return (
-    <div className="container">
+    <>
       <Nav />
-      <Home />
-    </div>
+      <div className="container">
+        <Home />
+      </div>
+    </>
   );
 }
 
