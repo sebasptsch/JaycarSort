@@ -4,7 +4,7 @@ import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
 import {motion} from 'framer-motion'
-import { container, child } from 'src/lib/animations';
+import { container, child } from '../lib/animations';
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
