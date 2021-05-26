@@ -1,8 +1,10 @@
 import React from 'preact/compat';
-export default function StockItem({ resultitem }: { resultitem: any }) {
+import {motion, MotionProps} from 'framer-motion'
+
+export default function StockItem({ resultitem, variants }: { resultitem: any, variants: any }) {
   const { item } = resultitem;
   return (
-    <div className="notification is-primary">
+    <motion.div className="notification is-primary" variants={variants}>
       <div className="columns is-multiline is-gapless">
         <div className="column is-half">
           <b>Item:</b> {item.item} <br />
@@ -32,6 +34,6 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
           </h4>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

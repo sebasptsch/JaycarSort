@@ -3,6 +3,8 @@ import { debounce } from 'lodash';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
+import {motion} from 'framer-motion'
+import { container, child } from 'src/lib/animations';
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
@@ -36,18 +38,16 @@ export default function Home() {
         placeholder="Enter Barcode, Catalog Number or Description Keywords"
         onChange={debounce((e) => setSearchString(e.target.value), 500)}
       />
-      <div className="m-4">
+      <motion.div className="m-4" variants={container}>
         {results?.map((item) => (
-          <StockItem resultitem={item} key={item.refIndex} />
+          <StockItem resultitem={item} key={item.refIndex} variants={child}/>
         ))}
         {results.length === 0 ? (
           <h4 className="is-text-4 has-text-centered m-4">
             <b>No Results</b>
           </h4>
         ) : null}
-      </div>
-
-      {/* <pre>{JSON.stringify(results, undefined, 2)}</pre> */}
+      </motion.div>
     </div>
   );
 }
