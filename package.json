@@ -8,7 +8,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@snowpack/app-scripts-react": "^2.0.0",
-    "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-react-refresh": "^2.4.0",
     "@snowpack/plugin-sass": "^1.4.0",
