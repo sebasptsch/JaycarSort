@@ -8,6 +8,6 @@ It uses a [`xlsx`](https://www.npmjs.com/package/xlsx) to convert excel document
 
 ## Example Document
 
-| Location |	Unit | Shelf	| Tray |	Barcode	Item	| Description	| Notes |
-| -- | -- | -- | -- | -- | -- | -- |
-| Turbine | 1 | 1 | 1 | 000000000000 | PLG ITM | |
+| Location |	Unit | Shelf	| Tray |	Barcode	| Item	| Description	| Notes |
+| -- | -- | -- | -- | -- | -- | -- | -- |
+| Turbine | 1 | 1 | 1 | 0000000000000 | AA0000 |PLG ITM | |
