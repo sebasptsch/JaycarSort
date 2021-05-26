@@ -3,7 +3,6 @@ import { debounce } from 'lodash';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
-import {motion} from 'framer-motion'
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');

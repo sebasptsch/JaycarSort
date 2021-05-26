@@ -2,7 +2,7 @@
 export default {
   mount: {
     public: { url: '/', static: true },
-    src: { url: '/dist' },
+    src: { url: '/dist', static: false, resolve: true },
   },
   plugins: [
     '@snowpack/plugin-react-refresh',
@@ -23,6 +23,8 @@ export default {
   optimize: {
     /* Example: Bundle your final build: */
     bundle: true,
+    minify: true,
+    // target: 'es2018',
   },
   packageOptions: {
     /* ... */
@@ -31,10 +33,12 @@ export default {
     /* ... */
   },
   buildOptions: {
-    baseUrl: "./"
+    baseUrl: "./",
+    sourcemap: true
   },
   alias: {
     react: 'preact/compat',
     'react-dom': 'preact/compat',
+    "./dist/cpexccel.js": "",
   },
 };

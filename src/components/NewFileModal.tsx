@@ -1,14 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
-import XLSX from 'xlsx';
-import { dbitem } from '../lib/interfaces';
+import { WorkBook, read, utils} from 'xlsx';
+import type { dbitem } from '../lib/interfaces';
+import { faUpload } from '@fortawesome/free-solid-svg-icons'
+
 
 export default function NewFileModal() {
   const db = ReactIndexedDB.useIndexedDB('components');
 
   const [modalActive, setModalActive] = React.useState(false);
-  const [excelDoc, setExcelDoc] = React.useState<XLSX.WorkBook | false>(false);
+  const [excelDoc, setExcelDoc] = React.useState<WorkBook | false>(false);
   const [filename, setFilename] = React.useState('');
   const [progress, setProgress] = React.useState<any>(0);
 
@@ -36,7 +38,7 @@ export default function NewFileModal() {
       if (typeof reader.result === 'string') return;
       if (!reader.result) return;
       var data = new Uint8Array(reader.result);
-      var workbook = XLSX.read(data, { type: 'array' });
+      var workbook = read(data, { type: 'array' });
       setExcelDoc(workbook);
     });
   };
@@ -52,7 +54,7 @@ export default function NewFileModal() {
 
     var workbook = excelDoc;
     var sheet = workbook.Sheets[workbook.SheetNames[0]];
-    var jsonsheet = XLSX.utils.sheet_to_json(sheet);
+    var jsonsheet = utils.sheet_to_json(sheet);
     newDBData(
       jsonsheet.map((component) => {
         const { Location, Unit, Shelf, Tray, Barcode, Description, Item }: any =
@@ -105,7 +107,7 @@ export default function NewFileModal() {
                   <span className="file-cta">
                     <span className="file-icon">
                       <i className="fas fa-upload"></i>
-                      <FontAwesomeIcon icon={['fas', 'upload']} />
+                      <FontAwesomeIcon icon={faUpload} />
                     </span>
                     <span className="file-label">Choose a file…</span>
                   </span>

@@ -1,5 +1,4 @@
-import React from 'preact/compat';
-import {motion, MotionProps} from 'framer-motion'
+import React from 'preact/compat'
 
 export default function StockItem({ resultitem }: { resultitem: any }) {
   const { item } = resultitem;

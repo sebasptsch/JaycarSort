@@ -1,0 +1,95 @@
+{
+  "results": [
+    {
+      "bundleName": "./build/dist/index.js",
+      "totalBytes": 2576238,
+      "mappedBytes": 2364517,
+      "unmappedBytes": 161917,
+      "eolBytes": 49771,
+      "sourceMapCommentBytes": 33,
+      "files": {
+        "../../build/_snowpack/env.js": {
+          "size": 177
+        },
+        "../../node_modules/preact/dist/preact.module.js": {
+          "size": 13867
+        },
+        "../../node_modules/preact/hooks/dist/hooks.module.js": {
+          "size": 3340
+        },
+        "../../node_modules/preact/compat/dist/compat.module.js": {
+          "size": 9977
+        },
+        "../../node_modules/@fortawesome/fontawesome-svg-core/index.es.js": {
+          "size": 35320
+        },
+        "../../node_modules/@fortawesome/free-solid-svg-icons/index.es.js": {
+          "size": 670742
+        },
+        "../../build/_snowpack/pkg/common/_commonjsHelpers-b3efd043.js": {
+          "size": 919
+        },
+        "../../node_modules/react-indexed-db/lib/main.js": {
+          "size": 12054
+        },
+        "../../node_modules/prop-types/lib/ReactPropTypesSecret.js": {
+          "size": 124
+        },
+        "../../node_modules/prop-types/factoryWithThrowingShims.js": {
+          "size": 1037
+        },
+        "../../node_modules/prop-types/index.js": {
+          "size": 51
+        },
+        "../../node_modules/@fortawesome/react-fontawesome/index.es.js": {
+          "size": 8938
+        },
+        "../../node_modules/xlsx/dist/cpexcel.js": {
+          "size": 488938
+        },
+        "../../node_modules/xlsx/jszip.js": {
+          "size": 167015
+        },
+        "../../node_modules/xlsx/xlsx.js": {
+          "size": 720453
+        },
+        "../../build/dist/components/root/Gits/jaycarsort/src/components/NewFileModal.tsx": {
+          "size": 5905
+        },
+        "../../build/dist/components/root/Gits/jaycarsort/src/components/Nav.tsx": {
+          "size": 2027
+        },
+        "../../build/dist/lib/root/Gits/jaycarsort/src/lib/DBConfig.tsx": {
+          "size": 639
+        },
+        "../../node_modules/fuse.js/dist/fuse.esm.js": {
+          "size": 28253
+        },
+        "../../node_modules/lodash/lodash.js": {
+          "size": 190142
+        },
+        "../../build/dist/components/root/Gits/jaycarsort/src/components/StockItem.tsx": {
+          "size": 2062
+        },
+        "../../build/dist/pages/root/Gits/jaycarsort/src/pages/Home.tsx": {
+          "size": 1582
+        },
+        "../../build/dist/root/Gits/jaycarsort/src/App.tsx": {
+          "size": 526
+        },
+        "../../build/dist/root/Gits/jaycarsort/src/index.tsx": {
+          "size": 429
+        },
+        "[sourceMappingURL]": {
+          "size": 33
+        },
+        "[unmapped]": {
+          "size": 161917
+        },
+        "[EOLs]": {
+          "size": 49771
+        }
+      }
+    }
+  ]
+}
