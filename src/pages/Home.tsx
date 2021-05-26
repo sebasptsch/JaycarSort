@@ -4,7 +4,6 @@ import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
 import StockItem from '../components/StockItem';
 import {motion} from 'framer-motion'
-import { container, child } from '../lib/animations';
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
@@ -38,16 +37,16 @@ export default function Home() {
         placeholder="Enter Barcode, Catalog Number or Description Keywords"
         onChange={debounce((e) => setSearchString(e.target.value), 500)}
       />
-      <motion.div className="m-4" variants={container}>
+      <div className="m-4" >
         {results?.map((item) => (
-          <StockItem resultitem={item} key={item.refIndex} variants={child}/>
+          <StockItem resultitem={item} key={item.refIndex} />
         ))}
         {results.length === 0 ? (
           <h4 className="is-text-4 has-text-centered m-4">
             <b>No Results</b>
           </h4>
         ) : null}
-      </motion.div>
+      </div>
     </div>
   );
 }
