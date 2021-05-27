@@ -1,5 +1,5 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
-export default {
+module.exports = {
   mount: {
     public: { url: '/', static: true },
     src: { url: '/dist', static: false, resolve: true },
@@ -8,12 +8,15 @@ export default {
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
-
     [
       '@snowpack/plugin-webpack',
       {
+        extendConfig: (config) => {
+          config.resolve.alias = { "./dist/cpexcel.js": "" };
+          return config;
+        },
         manifest: true,
-        sourceMap: true,
+        sourceMap: true
       },
     ],
 
@@ -36,7 +39,6 @@ export default {
     target: 'es2018',
   },
   packageOptions: {
-    /* ... */
   },
   devOptions: {
     /* ... */

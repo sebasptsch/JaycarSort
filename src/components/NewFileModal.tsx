@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
-import { WorkBook, read, utils} from 'xlsx';
+import { read, utils, WorkBook} from 'xlsx'
 import type { dbitem } from '../lib/interfaces';
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
 

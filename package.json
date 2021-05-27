@@ -8,8 +8,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@snowpack/app-scripts-react": "^2.0.0",
-    "@snowpack/plugin-dotenv": "^2.0.5",
-    "@snowpack/plugin-optimize": "^0.2.13",
     "@snowpack/plugin-react-refresh": "^2.4.0",
     "@snowpack/plugin-sass": "^1.4.0",
     "@snowpack/plugin-typescript": "^1.2.1",
@@ -18,8 +16,6 @@
     "fuse.js": "^6.4.6",
     "lodash": "^4.17.21",
     "preact": "^10.5.13",
-    "prettier": "^2.2.1",
-    "react-dom": "^17.0.2",
     "react-hook-form": "^7.6.5",
     "react-indexed-db": "^1.0.12",
     "sass": "1.32.0",
@@ -35,7 +31,8 @@
     "build": "snowpack build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "serve": "serve build/"
+    "serve": "serve build/",
+    "clean": "rm -rf node_modules/snowpack/.snowpack"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
@@ -44,6 +41,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "@types/snowpack-env": "^2.3.2",
-    "serve": "^11.3.2"
+    "serve": "^11.3.2",
+    "prettier": "^2.2.1"
   }
 }

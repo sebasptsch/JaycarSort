@@ -1,6 +1,6 @@
 {
   "include": ["src", "types"],
-
+  "paths": {"*": [".snowpack/types/*"]},
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
@@ -19,7 +19,6 @@
     /* Additional Options */
     "strict": true,
     "skipLibCheck": true,
-    "types": ["snowpack-env"],
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
