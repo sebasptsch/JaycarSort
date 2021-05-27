@@ -8,7 +8,15 @@ export default {
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
-    '@snowpack/plugin-optimize',
+
+    [
+      '@snowpack/plugin-webpack',
+      {
+        manifest: true,
+        sourceMap: true,
+      },
+    ],
+
     [
       '@snowpack/plugin-typescript',
       {
@@ -25,7 +33,7 @@ export default {
     /* Example: Bundle your final build: */
     bundle: true,
     minify: true,
-    // target: 'es2018',
+    target: 'es2018',
   },
   packageOptions: {
     /* ... */
@@ -34,12 +42,12 @@ export default {
     /* ... */
   },
   buildOptions: {
-    baseUrl: "./",
-    sourcemap: true
+    baseUrl: './',
+    sourcemap: true,
   },
   alias: {
     react: 'preact/compat',
     'react-dom': 'preact/compat',
-    "./dist/cpexccel.js": "",
+    './dist/cpexccel.js': '',
   },
 };
