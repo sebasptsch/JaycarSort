@@ -5,18 +5,18 @@ module.exports = {
     src: { url: '/dist', static: false, resolve: true },
   },
   plugins: [
-    '@snowpack/plugin-react-refresh',
+    '@prefresh/snowpack',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
     [
       '@snowpack/plugin-webpack',
       {
         extendConfig: (config) => {
-          config.resolve.alias = { "./dist/cpexcel.js": "" };
+          config.resolve.alias = { './dist/cpexcel.js': '' };
           return config;
         },
         manifest: true,
-        sourceMap: true
+        sourceMap: true,
       },
     ],
 
@@ -38,8 +38,7 @@ module.exports = {
     minify: true,
     target: 'es2018',
   },
-  packageOptions: {
-  },
+  packageOptions: {},
   devOptions: {
     /* ... */
   },
