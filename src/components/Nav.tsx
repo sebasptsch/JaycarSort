@@ -1,3 +1,5 @@
+import { faExpand } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
 // import jclogo from './jclogo.svg';
 import NewFileModal from './NewFileModal';
@@ -12,7 +14,12 @@ export default function Nav() {
       <div className="container">
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
-            <img src="./dist/jclarge.png" height="28" width="86" alt="Jaycar Logo"/>
+            <img
+              src="./dist/jclarge.png"
+              height="28"
+              width="86"
+              alt="Jaycar Logo"
+            />
           </a>
           <h4 className="navbar-item is-size-4">Stock Locator</h4>
 
@@ -37,6 +44,14 @@ export default function Nav() {
             <div className="navbar-item">
               <div className="buttons">
                 <NewFileModal />
+                <button
+                  className="button"
+                  onClick={() => {
+                    document.documentElement.requestFullscreen();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faExpand} />
+                </button>
               </div>
             </div>
           </div>
