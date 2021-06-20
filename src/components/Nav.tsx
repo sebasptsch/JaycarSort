@@ -47,7 +47,11 @@ export default function Nav() {
                 <button
                   className="button"
                   onClick={() => {
-                    document.documentElement.requestFullscreen();
+                    if (!document.fullscreenElement) {
+                      document.documentElement.requestFullscreen();
+                    } else {
+                      document.exitFullscreen();
+                    }
                   }}
                 >
                   <FontAwesomeIcon icon={faExpand} />
