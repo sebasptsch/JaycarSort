@@ -9,6 +9,8 @@ export default function Footer() {
           <a href="https://sebasptsch.dev">Sebastian Pietschner</a>. The source
           code is licensed under{' '}
           <a href="https://choosealicense.com/licenses/mit/">MIT</a>.
+          Documentation and new releases can be found on{' '}
+          <a href="https://github.com/sebasptsch/jaycarsort">Github</a>.
         </p>
       </div>
     </footer>
