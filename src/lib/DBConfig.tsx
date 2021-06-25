@@ -1,3 +1,6 @@
+/**
+ * DB Configuration for the browser's IndexedDB.
+ */
 export const DBConfig = {
   name: 'JaycarDB',
   version: 1,

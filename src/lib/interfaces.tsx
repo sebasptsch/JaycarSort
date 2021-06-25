@@ -1,3 +1,6 @@
+/**
+ * Defines expected types for an item inside the IndexedDB.
+ */
 export interface dbitem {
   barcode: number;
   description: string;

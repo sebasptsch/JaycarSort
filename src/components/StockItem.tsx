@@ -1,5 +1,9 @@
 import React from 'preact/compat';
 
+/**
+ * A repeatable component used for displaying item details in an understandable format.
+ * @returns JSX component filled with data from input.
+ */
 export default function StockItem({ resultitem }: { resultitem: any }) {
   const { item } = resultitem;
   return (

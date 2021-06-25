@@ -2,26 +2,31 @@ import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
+import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import StockItem from '../components/StockItem';
 
 export default function Home() {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
-  const [searchString, setSearchString] = React.useState('');
-  const [results, setResults] = React.useState<Array<any>>([]);
-  const [fuse, setFuse] = React.useState<Fuse<any>>(new Fuse([]));
+  const [searchString, setSearchString] = React.useState(''); // The contents of the search box stored in state.
+  const [results, setResults] = React.useState<Array<any>>([]); // An array of returned search results.
+  const [fuse, setFuse] = React.useState<Fuse<any>>(new Fuse([])); // The instance of search stored within state.
 
   React.useEffect(() => {
+    // Retreive the contents of the entire database.
     getAll().then((res) => {
       setFuse(
         new Fuse(res, {
-          useExtendedSearch: true,
-          keys: ['item', 'description', 'barcode'],
-          threshold: 0,
+          useExtendedSearch: true, // Allows for different annotation within the search query for more logical searches.
+          keys: ['item', 'description', 'barcode'], // Fields to compare and filter.
+          threshold: 0, // Certainty threshold.
         }),
       );
     }); // eslint-disable-next-line
   }, []);
 
+  /**
+   * Whenever the search string changes recalculate the search results.
+   */
   React.useMemo(() => {
     if (fuse) {
       setResults(fuse.search(searchString));
@@ -36,11 +41,13 @@ export default function Home() {
         placeholder="Enter Barcode, Catalog Number or Description Keywords"
         onChange={debounce((e) => setSearchString(e.target.value), 500)}
       />
-      <div className="m-4" >
+      <div className="m-4">
         {results?.map((item) => (
           <StockItem resultitem={item} key={item.refIndex} />
         ))}
-        {results.length === 0 ? (
+        {results.length === 0 && searchString.length === 0 ? (
+          <ExtendedSearchHints />
+        ) : results.length === 0 ? (
           <h4 className="is-text-4 has-text-centered m-4">
             <b>No Results</b>
           </h4>

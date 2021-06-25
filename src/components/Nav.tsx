@@ -1,10 +1,13 @@
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
-// import jclogo from './jclogo.svg';
 import NewFileModal from './NewFileModal';
 export default function Nav() {
+  /**
+   * Used to change and toggle the visibility of the navigation buttons on a mobile device.
+   */
   const [navbarActive, setNavbarActive] = React.useState(false);
+
   return (
     <nav
       className="navbar is-primary"
@@ -47,11 +50,10 @@ export default function Nav() {
                 <button
                   className="button"
                   onClick={() => {
-                    if (!document.fullscreenElement) {
-                      document.documentElement.requestFullscreen();
-                    } else {
-                      document.exitFullscreen();
-                    }
+                    // Check to see if the site is in full-screen mode and toggle
+                    !document.fullscreenElement
+                      ? document.documentElement.requestFullscreen()
+                      : document.exitFullscreen();
                   }}
                 >
                   <FontAwesomeIcon icon={faExpand} />

@@ -1,21 +1,28 @@
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
-import { read, utils, WorkBook} from 'xlsx'
+import { read, utils, WorkBook } from 'xlsx';
 import type { dbitem } from '../lib/interfaces';
-import { faUpload } from '@fortawesome/free-solid-svg-icons'
-
 
 export default function NewFileModal() {
+  /**
+   * Database of all the imported components stored in the clientside.
+   */
   const db = ReactIndexedDB.useIndexedDB('components');
 
-  const [modalActive, setModalActive] = React.useState(false);
-  const [excelDoc, setExcelDoc] = React.useState<WorkBook | false>(false);
-  const [filename, setFilename] = React.useState('');
-  const [progress, setProgress] = React.useState<any>(0);
+  const [modalActive, setModalActive] = React.useState(false); // Define the state of the modal so that it can be activated and dismissed by the user.
+  const [excelDoc, setExcelDoc] = React.useState<WorkBook | false>(false); // Store the loaded excel document so that's properties can be used for UI purposes.
+  const [filename, setFilename] = React.useState(''); // For the upload button to show a file name.
+  const [progress, setProgress] = React.useState<any>(0); // For the progress bar state to update the UI.
 
+  /**
+   * A function that adds a list of components into the components database stored in the browser.
+   * @param data an array of component items read from the excel file.
+   * @returns a promise that is resolved once all items have been added to the db.
+   */
   const newDBData = (data: Array<dbitem>) => {
-    db.clear();
+    db.clear(); // Clear all exsisting entries in the database to avoid duplicates.
     return Promise.all(
       data.map(
         async (component, index) =>
@@ -29,6 +36,11 @@ export default function NewFileModal() {
     );
   };
 
+  /**
+   * A function that is called whenever a new excel file is added to the form that handles reading it and storing it's contents in state.
+   * @param e File upload button change event (for when a new file is uploaded)
+   * @returns Nothing
+   */
   const handleChange = (e: any) => {
     if (!e?.target?.files) return;
     setFilename(e.target.files[0].name);
@@ -40,13 +52,23 @@ export default function NewFileModal() {
       var data = new Uint8Array(reader.result);
       var workbook = read(data, { type: 'array' });
       setExcelDoc(workbook);
+      return;
     });
   };
 
+  /**
+   * Handles the user submitting the form and moves data from react's state variables to the database.
+   * @param e Submit Event (not used except to prevent page reload on submit).
+   * @returns a promise that is resolved once all excel document data has been moved from state to the database.
+   */
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // Handle Filter Logic
-    if (!excelDoc) return;
+
+    if (!excelDoc) return; // Don't do anything if there's no uploaded file.
+
+    /**
+     * If the progress isn't undefined skip and display warning as this means that the form has already been submitted.
+     */
     if (progress) {
       alert('Wait until the current operation is finished');
       return;
@@ -56,6 +78,7 @@ export default function NewFileModal() {
     var sheet = workbook.Sheets[workbook.SheetNames[0]];
     var jsonsheet = utils.sheet_to_json(sheet);
     newDBData(
+      // Map excel columns to corresponding database field names.
       jsonsheet.map((component) => {
         const { Location, Unit, Shelf, Tray, Barcode, Description, Item }: any =
           component;
@@ -70,7 +93,7 @@ export default function NewFileModal() {
         };
       }),
     ).then((res) => {
-      window.location.reload();
+      window.location.reload(); // Reload the page to include new data and indicate success.
       return;
     });
   };

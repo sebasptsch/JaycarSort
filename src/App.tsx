@@ -1,11 +1,12 @@
 import React from 'preact/compat';
 import ReactIndexedDB from 'react-indexed-db';
+import Footer from './components/Footer';
 import Nav from './components/Nav';
 import { DBConfig } from './lib/DBConfig';
 import Home from './pages/Home';
 import './styles.scss';
 
-ReactIndexedDB.initDB(DBConfig);
+ReactIndexedDB.initDB(DBConfig); // Initialise the database across all the different components of the app.
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div className="container">
         <Home />
       </div>
+      <Footer />
     </>
   );
 }
