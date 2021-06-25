@@ -1,9 +1,9 @@
-import React from 'preact/compat'
+import React from 'preact/compat';
 
 export default function StockItem({ resultitem }: { resultitem: any }) {
   const { item } = resultitem;
   return (
-    <div className="notification is-primary" >
+    <div className="notification is-primary">
       <div className="columns is-multiline is-gapless">
         <div className="column is-half">
           <b>Item:</b> {item.item} <br />
@@ -29,7 +29,12 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
         </div>
         <div className="column has-text-centered">
           <h4 className="is-subtitle is-size-4">
-            {item.location === 'Capstan' ? 'Row' : 'Tray'} {item.tray}
+            {item.location === 'Capstan'
+              ? 'Row'
+              : item.location === 'Zone'
+              ? 'Position '
+              : 'Tray'}{' '}
+            {item.tray}
           </h4>
         </div>
       </div>
