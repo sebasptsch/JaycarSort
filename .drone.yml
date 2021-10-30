@@ -25,15 +25,15 @@ steps:
       - yarn build
   - name: Package Files
     pull: if-not-exists
-    image: node:lts-bullseye-slim
+    image: alpine
     when:
       event: 
         - tag
       branch:
         - master
     commands:
-      - apt install zip
-      - zip -r build/*
+      - apk add zip
+      - zip -r build
       - find ./ | grep zip
   - name: Publish Release
     image: plugins/github-release
