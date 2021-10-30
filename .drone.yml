@@ -5,6 +5,7 @@ type: docker
 steps:
   - name: Restore Cache
     image: drillster/drone-volume-cache
+    pull: if-not-exists
     volumes:
       - name: cache
         path: /cache
@@ -49,6 +50,7 @@ steps:
       auto_tag: true
   - name: Rebuild Cache
     image: drillster/drone-volume-cache
+    pull: if-not-exists
     volumes:
       - name: cache
         path: /cache
