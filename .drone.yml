@@ -32,7 +32,7 @@ steps:
       branch:
         - master
     commands:
-      - gzip -r build/*
+      - zip -r build/*
       - find ./ | grep zip
   - name: Publish Release
     image: plugins/github-release
