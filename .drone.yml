@@ -44,7 +44,7 @@ steps:
         from_secret: ghcr_username
       password:
         from_secret: ghcr_password
-      repo: ghcr.io/sebasptsch/nextblog
+      repo: ghcr.io/sebasptsch/jaycarsort
       registry: ghcr.io
       auto_tag: true
   - name: Rebuild Cache
