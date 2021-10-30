@@ -1,5 +1,5 @@
 kind: pipeline
-name: Build and Deploy
+name: Build
 type: docker
 
 steps:
@@ -23,22 +23,34 @@ steps:
     image: node:lts-bullseye-slim
     commands:
       - yarn build
-  - name: publish
-    image: plugins/github-release
-    settings:
-      api_key: 
-        from_secret: github_token
-      files: build/*
+  - name: Package Files
+    pull: if-not-exists
+    image: node:lts-bullseye-slim
     when:
       event: 
         - tag
       branch:
         - master
-  - name: Publish
+    commands:
+      - gzip -r build
+      - ls -la
+  - name: Publish Release
+    image: plugins/github-release
+    settings:
+      api_key: 
+        from_secret: github_token
+      files: build.zip
+    when:
+      event: 
+        - tag
+      branch:
+        - master
+  - name: Publish Docker
     image: plugins/docker
     pull: if-not-exists
-    
     when:
+      event: 
+        - tag
       branch:
         - master
     settings:
