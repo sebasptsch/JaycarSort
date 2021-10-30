@@ -32,8 +32,8 @@ steps:
       branch:
         - master
     commands:
-      - gzip -r build
-      - ls -la
+      - gzip -r build/*
+      - find ./ | grep zip
   - name: Publish Release
     image: plugins/github-release
     settings:
