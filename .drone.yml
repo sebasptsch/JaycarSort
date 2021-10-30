@@ -14,12 +14,12 @@ steps:
         - ./node_modules
   - name: Install Dependancies
     pull: if-not-exists
-    image: node:alpine
+    image: node:lts-bullseye-slim
     commands:
       - yarn install --frozen-lockfile
   - name: Build
     pull: if-not-exists
-    image: node:alpine
+    image: node:lts-bullseye-slim
     commands:
       - yarn build
   - name: publish
