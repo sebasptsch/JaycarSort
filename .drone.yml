@@ -33,7 +33,7 @@ steps:
         - master
     commands:
       - apk add zip
-      - zip -r build
+      - zip -r build build
       - find ./ | grep zip
   - name: Publish Release
     image: plugins/github-release
