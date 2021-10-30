@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:lts-bullseye-slim
+FROM node:alpine
 WORKDIR /app
 COPY ./build ./build
 COPY  ./node_modules ./node_modules
