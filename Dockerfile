@@ -1,14 +1,7 @@
 # Install dependencies only when needed
-FROM node:alpine
-WORKDIR /app
-COPY ./build ./build
-COPY  ./node_modules ./node_modules
-COPY  ./package.json ./package.json
+FROM nginx:alpine
 
-ENV NODE_ENV=production
+COPY ./build /usr/share/nginx/html
 
-EXPOSE 3000
-
-
-CMD ["yarn serve"]
+EXPOSE 80
  
