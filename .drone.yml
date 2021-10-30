@@ -50,8 +50,6 @@ steps:
     image: plugins/docker
     pull: if-not-exists
     when:
-      event: 
-        - tag
       branch:
         - master
     settings:
