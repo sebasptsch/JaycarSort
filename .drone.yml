@@ -1,0 +1,52 @@
+kind: pipeline
+name: Build and Deploy
+type: docker
+
+steps:
+  - name: Restore Cache
+    image: drillster/drone-volume-cache
+    volumes:
+      - name: cache
+        path: /cache
+    settings:
+      restore: true
+      mount:
+        - ./node_modules
+  - name: Install Dependancies
+    pull: if-not-exists
+    image: node:alpine
+    commands:
+      - yarn install --frozen-lockfile
+  - name: Build
+    pull: if-not-exists
+    image: node:alpine
+    commands:
+      - yarn build
+  - name: Publish
+    image: plugins/docker
+    pull: if-not-exists
+    when:
+      branch:
+        - master
+    settings:
+      username:
+        from_secret: ghcr_username
+      password:
+        from_secret: ghcr_password
+      repo: ghcr.io/sebasptsch/nextblog
+      registry: ghcr.io
+      auto_tag: true
+  - name: Rebuild Cache
+    image: drillster/drone-volume-cache
+    volumes:
+      - name: cache
+        path: /cache
+    settings:
+      rebuild: true
+      mount:
+        - ./node_modules
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
