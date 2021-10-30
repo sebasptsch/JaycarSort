@@ -63,6 +63,8 @@ steps:
       registry: ghcr.io
       cache_from: ghcr.io/sebasptsch/jaycarsort
       auto_tag: true
+      tag:
+        - latest
   - name: Rebuild Cache
     image: drillster/drone-volume-cache
     pull: if-not-exists
