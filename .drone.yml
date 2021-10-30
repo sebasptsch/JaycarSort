@@ -54,7 +54,7 @@ steps:
         - master
     settings:
       username:
-        from_secret: ghcr_username
+        from_secret: github_username
       password:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/jaycarsort
