@@ -56,7 +56,7 @@ steps:
       username:
         from_secret: ghcr_username
       password:
-        from_secret: ghcr_password
+        from_secret: github_token
       repo: ghcr.io/sebasptsch/jaycarsort
       registry: ghcr.io
       cache_from: ghcr.io/sebasptsch/jaycarsort
