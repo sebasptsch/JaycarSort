@@ -37,6 +37,7 @@ steps:
   - name: Publish
     image: plugins/docker
     pull: if-not-exists
+    
     when:
       branch:
         - master
@@ -47,6 +48,7 @@ steps:
         from_secret: ghcr_password
       repo: ghcr.io/sebasptsch/jaycarsort
       registry: ghcr.io
+      cache_from: ghcr.io/sebasptsch/jaycarsort
       auto_tag: true
   - name: Rebuild Cache
     image: drillster/drone-volume-cache
