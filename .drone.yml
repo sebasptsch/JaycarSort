@@ -22,6 +22,17 @@ steps:
     image: node:alpine
     commands:
       - yarn build
+  - name: publish
+    image: plugins/github-release
+    settings:
+      api_key: 
+        from_secret: github_token
+      files: build/*
+    when:
+      event: 
+        - tag
+      branch:
+        - master
   - name: Publish
     image: plugins/docker
     pull: if-not-exists
