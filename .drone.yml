@@ -46,7 +46,7 @@ steps:
         - tag
       branch:
         - master
-  - name: publish  
+  - name: Publish Github Pages  
     image: plugins/gh-pages
     settings:
       username:
