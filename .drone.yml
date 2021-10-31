@@ -46,6 +46,14 @@ steps:
         - tag
       branch:
         - master
+  - name: publish  
+    image: plugins/gh-pages
+    settings:
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      pages_directory: build/
   - name: Publish Docker
     image: plugins/docker
     pull: if-not-exists
