@@ -10,9 +10,7 @@ if (root == null) {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App />,
   root
 );
 
