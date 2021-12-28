@@ -2,7 +2,8 @@ import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'preact/compat';
 import NewFileModal from './NewFileModal';
-export default function Nav() {
+import ScanButton from './ScanButton';
+export default function Nav({setSearchString}) {
   /**
    * Used to change and toggle the visibility of the navigation buttons on a mobile device.
    */
@@ -47,6 +48,7 @@ export default function Nav() {
             <div className="navbar-item">
               <div className="buttons">
                 <NewFileModal />
+                <ScanButton setSearchString={setSearchString}/>
                 <button
                   className="button"
                   onClick={() => {

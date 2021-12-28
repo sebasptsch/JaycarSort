@@ -5,9 +5,8 @@ import ReactIndexedDB from 'react-indexed-db';
 import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import StockItem from '../components/StockItem';
 
-export default function Home() {
+export default function Home({setSearchString, searchString}) {
   const { getAll } = ReactIndexedDB.useIndexedDB('components');
-  const [searchString, setSearchString] = React.useState(''); // The contents of the search box stored in state.
   const [results, setResults] = React.useState<Array<any>>([]); // An array of returned search results.
   const [fuse, setFuse] = React.useState<Fuse<any>>(new Fuse([])); // The instance of search stored within state.
 
