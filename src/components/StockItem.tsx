@@ -1,4 +1,4 @@
-import React from 'preact/compat';
+import React from 'react';
 
 /**
  * A repeatable component used for displaying item details in an understandable format.

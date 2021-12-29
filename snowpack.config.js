@@ -5,9 +5,10 @@ module.exports = {
     src: { url: '/dist', static: false, resolve: true },
   },
   plugins: [
-    '@prefresh/snowpack',
+    '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
+
     [
       '@snowpack/plugin-webpack',
       {
@@ -47,8 +48,6 @@ module.exports = {
     sourcemap: true,
   },
   alias: {
-    react: 'preact/compat',
-    'react-dom': 'preact/compat',
     './dist/cpexccel.js': '',
   },
 };

@@ -1,6 +1,6 @@
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'preact/compat';
+import React, { useState } from 'react';
 import ReactIndexedDB from 'react-indexed-db';
 import { read, utils, WorkBook } from 'xlsx';
 import type { dbitem } from '../lib/interfaces';
@@ -11,10 +11,10 @@ export default function NewFileModal() {
    */
   const db = ReactIndexedDB.useIndexedDB('components');
 
-  const [modalActive, setModalActive] = React.useState(false); // Define the state of the modal so that it can be activated and dismissed by the user.
-  const [excelDoc, setExcelDoc] = React.useState<WorkBook | false>(false); // Store the loaded excel document so that's properties can be used for UI purposes.
-  const [filename, setFilename] = React.useState(''); // For the upload button to show a file name.
-  const [progress, setProgress] = React.useState<any>(0); // For the progress bar state to update the UI.
+  const [modalActive, setModalActive] = useState(false); // Define the state of the modal so that it can be activated and dismissed by the user.
+  const [excelDoc, setExcelDoc] = useState<WorkBook | false>(false); // Store the loaded excel document so that's properties can be used for UI purposes.
+  const [filename, setFilename] = useState(''); // For the upload button to show a file name.
+  const [progress, setProgress] = useState<any>(0); // For the progress bar state to update the UI.
 
   /**
    * A function that adds a list of components into the components database stored in the browser.

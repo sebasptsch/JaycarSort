@@ -1,18 +1,15 @@
-import React from 'preact/compat';
-import ReactDOM from 'preact/compat';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './App';
 
-var root = document.querySelector('#root')
+var root = document.querySelector('#root');
 
 if (root == null) {
   // Handle fatal errors in your app.
-  throw new Error("Could not find root element");
+  throw new Error('Could not find root element');
 }
 
-ReactDOM.render(
-    <App />,
-  root
-);
+ReactDOM.render(<App />, root);
 
 // Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
 // Learn more: https://snowpack.dev/concepts/hot-module-replacement
