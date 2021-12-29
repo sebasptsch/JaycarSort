@@ -2,7 +2,10 @@ export default function ScanButton({ setSearchString }) {
     if (!('BarcodeDetector' in window)) {
         return <></>
     } else {
-        return <><button className="button is-link" onChange={(e) => {
+        return <><input
+        className="button"
+        type="file"
+        onChange={(e) => {
             const image = !e?.target?.files[0]
             const barcodeDetector = new window.BarcodeDetector()
             barcodeDetector.detect(image)
@@ -13,7 +16,8 @@ export default function ScanButton({ setSearchString }) {
                 .catch(err => {
                     console.log(err);
                 })
-        }} >Scan</button></>
+        }}
+      /><button className="button is-link"  >Scan</button></>
     }
 
 }
