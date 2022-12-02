@@ -54,7 +54,7 @@ export default function Home() {
   }, 500);
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <nav
         className="navbar is-primary"
         role="navigation"
@@ -106,7 +106,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      <div className="container">
+      <div className="container" style={{ flexGrow: 1, flex: 1 }}>
         <div className="p-2">
           <input
             type="text"
@@ -142,6 +142,6 @@ export default function Home() {
           </p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
