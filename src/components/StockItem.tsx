@@ -6,7 +6,7 @@ import type { dbitem } from 'src/lib/interfaces';
  */
 export default function StockItem({ item }: { item: dbitem }) {
   return (
-    <div className="notification is-primary m-2">
+    <div className="notification is-primary mx-4 my-2">
       <div className="columns is-multiline is-gapless">
         <div className="column is-half">
           <b>Item:</b>
