@@ -14,7 +14,7 @@ export default defineConfig({
         short_name: 'JaycarSort',
         icons: [
           {
-            src: '/turbine.jpg',
+            src: '/JaycarSort/turbine.jpg',
             sizes: '200x200',
             type: 'image/jpg',
           },
