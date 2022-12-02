@@ -38,7 +38,7 @@ jobs:
       - name: Install Dependancies
         run: yarn install
       - name: Build
-        run: yarn build
+        run: yarn build:prod
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

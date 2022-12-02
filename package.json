@@ -22,6 +22,7 @@
   },
   "scripts": {
     "build": "vite build",
+    "build:prod": "vite build --base /JaycarSort/",
     "dev": "vite",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
