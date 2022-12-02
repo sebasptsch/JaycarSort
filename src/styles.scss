@@ -1,3 +1,8 @@
 @charset "utf-8";
 $primary: #0c254c; // Jaycar blue.
 @import '../node_modules/bulma/bulma.sass';
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

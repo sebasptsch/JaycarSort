@@ -15,6 +15,7 @@
     "react-hook-form": "^7.40.0",
     "react-icons": "^4.7.1",
     "react-qr-barcode-scanner": "^1.0.6",
+    "react-virtuoso": "^3.1.5",
     "sass": "1.32.0",
     "sass-loader": "^11.1.1",
     "typescript": "^4.1.2",

@@ -4,8 +4,8 @@ import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { FaExpand } from 'react-icons/fa';
+import { Virtuoso } from 'react-virtuoso';
 import type { dbitem } from 'src/lib/interfaces';
-import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import NewFileModal from '../components/NewFileModal';
 import ScanButton from '../components/ScanButton';
 import StockItem from '../components/StockItem';
@@ -54,11 +54,12 @@ export default function Home() {
   }, 500);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <>
       <nav
         className="navbar is-primary"
         role="navigation"
         aria-label="main navigation"
+        style={{ flex: 'none' }}
       >
         <div className="container">
           <div className="navbar-brand">
@@ -106,31 +107,34 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      <div className="container" style={{ flexGrow: 1, flex: 1 }}>
-        <div className="p-2">
-          <input
-            type="text"
-            className="input"
-            placeholder="Enter Barcode, Catalog Number or Description Keywords"
-            onChange={(e) => {
-              debouncedSearch(e.target.value);
-            }}
-          />
-          <div className="m-4">
-            {results?.map((item) => (
-              <StockItem item={item} key={item.item} />
-            ))}
-            {results.length === 0 && searchString.length === 0 ? (
+      <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <input
+          type="text"
+          className="input my-2"
+          style={{ flex: 'none', width: '100%' }}
+          placeholder="Enter Barcode, Catalog Number or Description Keywords"
+          onChange={(e) => {
+            debouncedSearch(e.target.value);
+          }}
+        />
+        <Virtuoso
+          style={{ flexGrow: 1 }}
+          data={results}
+          totalCount={results.length}
+          itemContent={(index, item) => (
+            <StockItem item={item} key={item.item} />
+          )}
+        />
+
+        {/* {results.length === 0 && searchString.length === 0 ? (
               <ExtendedSearchHints />
             ) : results.length === 0 ? (
               <h4 className="is-text-4 has-text-centered m-4">
                 <b>No Results</b>
               </h4>
-            ) : null}
-          </div>
-        </div>
+            ) : null} */}
       </div>
-      <footer className="footer">
+      <footer className="footer" style={{ flex: 'none' }}>
         <div className="content has-text-centered">
           <p>
             <strong>Jaycar Sort</strong> by{' '}
@@ -142,6 +146,6 @@ export default function Home() {
           </p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
