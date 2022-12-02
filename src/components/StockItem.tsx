@@ -1,16 +1,17 @@
-import React from 'react';
+import type { dbitem } from 'src/lib/interfaces';
 
 /**
  * A repeatable component used for displaying item details in an understandable format.
  * @returns JSX component filled with data from input.
  */
-export default function StockItem({ resultitem }: { resultitem: any }) {
-  const { item } = resultitem;
+export default function StockItem({ item }: { item: dbitem }) {
   return (
     <div className="notification is-primary">
       <div className="columns is-multiline is-gapless">
         <div className="column is-half">
-          <b>Item:</b> {item.item} <br />
+          <b>Item:</b>
+          {item.item}
+          <br />
         </div>
         <div className="column is-half">
           <b>Description:</b> {item.description}
@@ -37,7 +38,7 @@ export default function StockItem({ resultitem }: { resultitem: any }) {
               ? 'Row'
               : item.location === 'Zone'
               ? 'Position '
-              : 'Tray'}{' '}
+              : 'Tray'}
             {item.tray}
           </h4>
         </div>

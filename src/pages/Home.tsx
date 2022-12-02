@@ -2,7 +2,7 @@ import { useIndexedDB } from '@slnsw/react-indexed-db';
 import { useQuery } from '@tanstack/react-query';
 import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaExpand } from 'react-icons/fa';
 import type { dbitem } from 'src/lib/interfaces';
 import ExtendedSearchHints from '../components/ExtendedSearchHints';
@@ -30,35 +30,24 @@ export default function Home() {
   const [searchString, setSearchString] = useState('');
   const [results, setResults] = useState<dbitem[]>([]);
 
-  const fuseRef = useRef<Fuse<dbitem>>(null);
-
   const getAllEntries = useQuery({
     queryKey: ['components'],
     queryFn: () => getAll<dbitem>(),
   });
 
   useEffect(() => {
-    if (getAllEntries.isSuccess) {
-      fuseRef.current = new Fuse(getAllEntries.data, {
+    if (!searchString) {
+      setResults([]);
+    } else {
+      const fuse = new Fuse(getAllEntries.data, {
         keys: ['barcode', 'item', 'description'],
         includeScore: true,
         useExtendedSearch: true,
         threshold: 0.3,
       });
+      setResults(fuse.search(searchString).map((result) => result.item));
     }
-
-    return () => {
-      fuseRef.current = null;
-    };
-  }, [getAllEntries]);
-
-  useEffect(() => {
-    if (fuseRef.current) {
-      setResults(
-        fuseRef.current.search(searchString).map((result) => result.item),
-      );
-    }
-  }, [searchString, fuseRef.current]);
+  }, [searchString, getAllEntries.data]);
 
   const debouncedSearch = debounce((v: string) => {
     setSearchString(v);
@@ -129,7 +118,7 @@ export default function Home() {
           />
           <div className="m-4">
             {results?.map((item) => (
-              <StockItem resultitem={item} key={item.item} />
+              <StockItem item={item} key={item.item} />
             ))}
             {results.length === 0 && searchString.length === 0 ? (
               <ExtendedSearchHints />
