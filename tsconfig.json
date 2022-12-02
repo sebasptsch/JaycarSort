@@ -1,6 +1,5 @@
 {
-  "include": ["src", "types"],
-  "paths": {"*": [".snowpack/types/*"]},
+  "include": ["src"],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",

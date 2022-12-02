@@ -1,46 +1,51 @@
-# name: "release"
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['master']
 
-# jobs:
-#   release:
-#     name: "Release"
-#     runs-on: "ubuntu-latest"
-#     strategy:
-#       matrix:
-#         node-version: [12.x]
-#     steps:
-#       - uses: actions/checkout@v2
-#         with:
-#           ref: ${{ github.event.pull_request.head.ref }}
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#       - uses: actions/cache@v2
-#         with:
-#           path: node_modules
-#           key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/*.package.json*') }}
-#           restore-keys: |
-#             ${{ runner.os }}-nodemodules-
-#       - name: Install Packages
-#         run: yarn install
-#       - name: Build Project
-#         run: yarn build
-#       - name: Archive Release
-#         uses: thedoctor0/zip-release@master
-#         with:
-#           filename: "release.zip"
-#           directory: build
-#           type: zip
-#       - uses: "marvinpinto/action-automatic-releases@latest"
-#         with:
-#           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-#           automatic_release_tag: "latest"
-#           prerelease: false
-#           title: "Release Build"
-#           files: |
-#             build/release.zip
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install Dependancies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

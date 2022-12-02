@@ -1,44 +1,67 @@
-import { faExpand } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useIndexedDB } from '@slnsw/react-indexed-db';
+import { useQuery } from '@tanstack/react-query';
 import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import ReactIndexedDB from 'react-indexed-db';
+import { useEffect, useRef, useState } from 'react';
+import { FaExpand } from 'react-icons/fa';
+import type { dbitem } from 'src/lib/interfaces';
 import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import NewFileModal from '../components/NewFileModal';
 import ScanButton from '../components/ScanButton';
 import StockItem from '../components/StockItem';
 
+interface Component {
+  id: number;
+  location?: string;
+  unit?: string;
+  shelf?: string;
+  tray?: string;
+  barcode?: string;
+  item?: string;
+  description?: string;
+  notes?: string;
+}
+
 export default function Home() {
-  const { getAll } = ReactIndexedDB.useIndexedDB('components');
-  const [results, setResults] = useState<Array<any>>([]); // An array of returned search results.
-  const [fuse, setFuse] = useState<Fuse<any>>(new Fuse([])); // The instance of search stored within state.
+  // const { getAll } = ReactIndexedDB.useIndexedDB('components');
+  const { getAll } = useIndexedDB('components');
   const [navbarActive, setNavbarActive] = useState(false);
   const [searchString, setSearchString] = useState('');
-  const inputref = useRef<HTMLInputElement>();
+  const [results, setResults] = useState<dbitem[]>([]);
+
+  const fuseRef = useRef<Fuse<dbitem>>(null);
+
+  const getAllEntries = useQuery({
+    queryKey: ['components'],
+    queryFn: () => getAll<dbitem>(),
+  });
 
   useEffect(() => {
-    // Retreive the contents of the entire database.
-    getAll().then((res) => {
-      setFuse(
-        new Fuse(res, {
-          useExtendedSearch: true, // Allows for different annotation within the search query for more logical searches.
-          keys: ['item', 'description', 'barcode'], // Fields to compare and filter.
-          threshold: 0, // Certainty threshold.
-        }),
-      );
-    }); // eslint-disable-next-line
-  }, []);
+    if (getAllEntries.isSuccess) {
+      fuseRef.current = new Fuse(getAllEntries.data, {
+        keys: ['barcode', 'item', 'description'],
+        includeScore: true,
+        useExtendedSearch: true,
+        threshold: 0.3,
+      });
+    }
 
-  /**
-   * Whenever the search string changes recalculate the search results.
-   */
-  useMemo(() => {
-    if (fuse) {
-      setResults(fuse.search(searchString));
-      console.log(searchString);
-    } // eslint-disable-next-line
-  }, [searchString]);
+    return () => {
+      fuseRef.current = null;
+    };
+  }, [getAllEntries]);
+
+  useEffect(() => {
+    if (fuseRef.current) {
+      setResults(
+        fuseRef.current.search(searchString).map((result) => result.item),
+      );
+    }
+  }, [searchString, fuseRef.current]);
+
+  const debouncedSearch = debounce((v: string) => {
+    setSearchString(v);
+  }, 500);
 
   return (
     <>
@@ -80,7 +103,7 @@ export default function Home() {
               <div className="navbar-item">
                 <div className="buttons">
                   <NewFileModal />
-                  <ScanButton inputref={inputref} />
+                  <ScanButton onChange={debouncedSearch} />
                   <button
                     className="button"
                     onClick={() => {
@@ -90,7 +113,7 @@ export default function Home() {
                         : document.exitFullscreen();
                     }}
                   >
-                    <FontAwesomeIcon icon={faExpand} />
+                    <FaExpand />
                   </button>
                 </div>
               </div>
@@ -103,13 +126,14 @@ export default function Home() {
           <input
             type="text"
             className="input"
-            ref={inputref}
             placeholder="Enter Barcode, Catalog Number or Description Keywords"
-            onChange={debounce((e) => setSearchString(e.target.value), 500)}
+            onChange={(e) => {
+              debouncedSearch(e.target.value);
+            }}
           />
           <div className="m-4">
             {results?.map((item) => (
-              <StockItem resultitem={item} key={item.refIndex} />
+              <StockItem resultitem={item} key={item.item} />
             ))}
             {results.length === 0 && searchString.length === 0 ? (
               <ExtendedSearchHints />

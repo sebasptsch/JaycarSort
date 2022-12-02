@@ -1,15 +1,14 @@
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
-import ReactIndexedDB from 'react-indexed-db';
-import { read, utils, WorkBook } from 'xlsx';
+import { useIndexedDB } from '@slnsw/react-indexed-db';
+import { useState } from 'react';
+import { FaUpload } from 'react-icons/fa';
+import type { WorkBook } from 'xlsx';
 import type { dbitem } from '../lib/interfaces';
 
 export default function NewFileModal() {
   /**
    * Database of all the imported components stored in the clientside.
    */
-  const db = ReactIndexedDB.useIndexedDB('components');
+  const db = useIndexedDB('components');
 
   const [modalActive, setModalActive] = useState(false); // Define the state of the modal so that it can be activated and dismissed by the user.
   const [excelDoc, setExcelDoc] = useState<WorkBook | false>(false); // Store the loaded excel document so that's properties can be used for UI purposes.
@@ -41,8 +40,9 @@ export default function NewFileModal() {
    * @param e File upload button change event (for when a new file is uploaded)
    * @returns Nothing
    */
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
     if (!e?.target?.files) return;
+    const { read } = await import('xlsx');
     setFilename(e.target.files[0].name);
     var reader = new FileReader();
     reader.readAsArrayBuffer(e.target.files[0]);
@@ -76,6 +76,7 @@ export default function NewFileModal() {
 
     var workbook = excelDoc;
     var sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const { utils } = await import('xlsx');
     var jsonsheet = utils.sheet_to_json(sheet);
     newDBData(
       // Map excel columns to corresponding database field names.
@@ -130,7 +131,7 @@ export default function NewFileModal() {
                   <span className="file-cta">
                     <span className="file-icon">
                       <i className="fas fa-upload"></i>
-                      <FontAwesomeIcon icon={faUpload} />
+                      <FaUpload />
                     </span>
                     <span className="file-label">Choose a file…</span>
                   </span>

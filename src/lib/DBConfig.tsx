@@ -1,7 +1,9 @@
+import { IndexedDBProps } from '@slnsw/react-indexed-db';
+
 /**
  * DB Configuration for the browser's IndexedDB.
  */
-export const DBConfig = {
+export const DBConfig: IndexedDBProps = {
   name: 'JaycarDB',
   version: 1,
   objectStoresMeta: [

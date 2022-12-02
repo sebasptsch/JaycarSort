@@ -1,14 +1,21 @@
-import React from 'react';
-import ReactIndexedDB from 'react-indexed-db';
+import { IndexedDB } from '@slnsw/react-indexed-db';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DBConfig } from './lib/DBConfig';
 import Home from './pages/Home';
 import './styles.scss';
-
-ReactIndexedDB.initDB(DBConfig); // Initialise the database across all the different components of the app.
+// Initialise the database across all the different components of the app.
 // The contents of the search box stored in state.
 
+const queryClient = new QueryClient();
+
 function App() {
-  return <Home />;
+  return (
+    <IndexedDB {...DBConfig}>
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
+    </IndexedDB>
+  );
 }
 
 export default App;

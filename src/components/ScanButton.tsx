@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
+import { useState } from 'react';
+import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 export default function ScanButton({
-  inputref,
+  onChange,
 }: {
-  inputref: React.MutableRefObject<HTMLInputElement>;
+  onChange: (value: string) => void;
 }) {
   const [modalActive, setModalActive] = useState(false);
 
@@ -33,8 +33,7 @@ export default function ScanButton({
                 height={500}
                 onUpdate={(err, result) => {
                   if (result) {
-                    console.log(result.getText());
-                    inputref.current.value = result.getText();
+                    onChange(result.getText());
                     setModalActive(false);
                   } else return;
                 }}
