@@ -17,6 +17,7 @@ export default defineConfig({
             src: '/JaycarSort/turbine.jpg',
             sizes: '200x200 any',
             type: 'image/jpg',
+            purpose: 'any maskable',
           },
         ],
         theme_color: '#ffffff',
