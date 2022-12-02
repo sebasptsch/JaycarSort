@@ -8,6 +8,10 @@ import './styles.scss';
 
 const queryClient = new QueryClient();
 
+import { initDB } from '@slnsw/react-indexed-db';
+
+initDB(DBConfig);
+
 function App() {
   return (
     <IndexedDB {...DBConfig}>

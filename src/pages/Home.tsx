@@ -9,6 +9,7 @@ import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import NewFileModal from '../components/NewFileModal';
 import ScanButton from '../components/ScanButton';
 import StockItem from '../components/StockItem';
+import jclarge from './jclarge.png';
 
 interface Component {
   id: number;
@@ -73,12 +74,7 @@ export default function Home() {
         <div className="container">
           <div className="navbar-brand">
             <a className="navbar-item" href="/">
-              <img
-                src="./dist/jclarge.png"
-                height="28"
-                width="86"
-                alt="Jaycar Logo"
-              />
+              <img src={jclarge} height="28" width="86" alt="Jaycar Logo" />
             </a>
             <h4 className="navbar-item is-size-4">Stock Locator</h4>
 

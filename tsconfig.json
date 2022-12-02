@@ -15,6 +15,7 @@
     },
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,
+    "types": ["vite/client"],
     /* Additional Options */
     "strict": false,
     "skipLibCheck": true,
