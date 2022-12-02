@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { FaExpand } from 'react-icons/fa';
 import { Virtuoso } from 'react-virtuoso';
 import type { dbitem } from 'src/lib/interfaces';
+import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import NewFileModal from '../components/NewFileModal';
 import ScanButton from '../components/ScanButton';
 import StockItem from '../components/StockItem';
@@ -124,6 +125,9 @@ export default function Home() {
           itemContent={(index, item) => (
             <StockItem item={item} key={item.item} />
           )}
+          components={{
+            EmptyPlaceholder: () => <ExtendedSearchHints />,
+          }}
         />
 
         {/* {results.length === 0 && searchString.length === 0 ? (
