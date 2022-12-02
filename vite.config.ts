@@ -12,7 +12,13 @@ export default defineConfig({
       manifest: {
         name: 'JaycarSort',
         short_name: 'JaycarSort',
-
+        icons: [
+          {
+            src: '/turbine.jpg',
+            sizes: '200x200',
+            type: 'image/jpg',
+          },
+        ],
         theme_color: '#ffffff',
         background_color: '#0c254c',
         display: 'standalone',
