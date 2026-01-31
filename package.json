@@ -16,8 +16,7 @@
     "react-icons": "^5.5.0",
     "react-qr-barcode-scanner": "^2.1.22",
     "react-virtuoso": "^4.18.1",
-    "sass": "1.32.0",
-    "sass-loader": "^16.0.6",
+    "sass": "^1.97.3",
     "typescript": "^5.9.3",
     "vite-plugin-pwa": "^1.2.0",
     "xlsx": "^0.18.5"
