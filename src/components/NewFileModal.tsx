@@ -27,7 +27,7 @@ export default function NewFileModal() {
         async (component, index) =>
           await db
             .add(component)
-            .then((res) => {
+            .then(() => {
               setProgress(index / (data.length + 1));
             })
             .catch((err) => console.log(err, component.item)),
@@ -93,7 +93,7 @@ export default function NewFileModal() {
           item: Item,
         };
       }),
-    ).then((res) => {
+    ).then(() => {
       window.location.reload(); // Reload the page to include new data and indicate success.
       return;
     });

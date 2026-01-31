@@ -1,4 +1,4 @@
-import { IndexedDBProps } from '@slnsw/react-indexed-db';
+import type { IndexedDBProps } from '@slnsw/react-indexed-db';
 
 /**
  * DB Configuration for the browser's IndexedDB.

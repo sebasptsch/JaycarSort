@@ -1,4 +1,5 @@
-import type { dbitem } from 'src/lib/interfaces';
+import type { dbitem } from "../lib/interfaces";
+
 
 /**
  * A repeatable component used for displaying item details in an understandable format.

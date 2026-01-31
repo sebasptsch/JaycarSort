@@ -5,24 +5,24 @@ import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { FaExpand } from 'react-icons/fa';
 import { Virtuoso } from 'react-virtuoso';
-import type { dbitem } from 'src/lib/interfaces';
 import ExtendedSearchHints from '../components/ExtendedSearchHints';
 import NewFileModal from '../components/NewFileModal';
 import ScanButton from '../components/ScanButton';
 import StockItem from '../components/StockItem';
 import jclarge from './jclarge.png';
+import type { dbitem } from '../lib/interfaces';
 
-interface Component {
-  id: number;
-  location?: string;
-  unit?: string;
-  shelf?: string;
-  tray?: string;
-  barcode?: string;
-  item?: string;
-  description?: string;
-  notes?: string;
-}
+// interface Component {
+//   id: number;
+//   location?: string;
+//   unit?: string;
+//   shelf?: string;
+//   tray?: string;
+//   barcode?: string;
+//   item?: string;
+//   description?: string;
+//   notes?: string;
+// }
 
 export default function Home() {
   // const { getAll } = ReactIndexedDB.useIndexedDB('components');
@@ -40,7 +40,7 @@ export default function Home() {
     if (!searchString) {
       setResults([]);
     } else {
-      const fuse = new Fuse(getAllEntries.data, {
+      const fuse = new Fuse(getAllEntries.data ?? [], {
         keys: ['barcode', 'item', 'description'],
         includeScore: true,
         useExtendedSearch: true,
@@ -122,7 +122,7 @@ export default function Home() {
           style={{ flexGrow: 1 }}
           data={results}
           totalCount={results.length}
-          itemContent={(index, item) => (
+          itemContent={(_index, item) => (
             <StockItem item={item} key={item.item} />
           )}
           components={{

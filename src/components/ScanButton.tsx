@@ -31,7 +31,7 @@ export default function ScanButton({
               <BarcodeScannerComponent
                 width={500}
                 height={500}
-                onUpdate={(err, result) => {
+                onUpdate={(_err, result) => {
                   if (result) {
                     onChange(result.getText());
                     setModalActive(false);
