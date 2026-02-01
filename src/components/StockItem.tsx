@@ -38,7 +38,7 @@ export default function StockItem({ item }: { item: DBItem }) {
 							? "Row"
 							: item.location === "Zone"
 								? "Position "
-								: "Tray"}
+								: "Tray "}
 						{item.tray}
 					</h4>
 				</div>

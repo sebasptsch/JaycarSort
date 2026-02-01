@@ -1,5 +1,5 @@
 import { useIndexedDB } from "@slnsw/react-indexed-db";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Fuse from "fuse.js";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import ScanButton from "../components/ScanButton";
 import StockItem from "../components/StockItem";
 import type { DBItem } from "../lib/interfaces";
 import jclarge from "./jclarge.png";
-import { restoreIndex, search } from "../lib/lunr";
+import { fuseSearch, lunrSearch } from "../lib/lunr";
 
 // interface Component {
 //   id: number;
@@ -28,12 +28,12 @@ import { restoreIndex, search } from "../lib/lunr";
 export default function Home() {
 	const [navbarActive, setNavbarActive] = useState(false);
 	const [searchString, setSearchString] = useState("");
-	const [searchIndex] = useState<lunr.Index>(restoreIndex())
 
 	const results = useQuery({
-		queryKey: ["components"],
-		queryFn: () => search(searchIndex, searchString),
-		initialData: []
+		queryKey: ["components", searchString],
+		queryFn: () => lunrSearch(searchString, 10),
+		initialData: [],
+		placeholderData: keepPreviousData,
 	});
 
 	// useEffect(() => {
@@ -58,7 +58,6 @@ export default function Home() {
 		<>
 			<nav
 				className="navbar is-primary"
-				role="navigation"
 				aria-label="main navigation"
 				style={{ flex: "none" }}
 			>

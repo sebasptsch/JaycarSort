@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import type { WorkBook } from 'xlsx';
 import type { Columns, DBItem } from '../lib/interfaces';
-import { createIndex } from '../lib/lunr';
+import { clearIndex, createIndex } from '../lib/lunr';
 
 export default function NewFileModal() {
 
@@ -67,8 +67,11 @@ export default function NewFileModal() {
         };
       }).filter((c) => !!c.item && !!c.barcode)
 
-   
-  createIndex(data)
+   await clearIndex()
+   console.log("Cleared Index")
+  await createIndex(data)
+  console.log("Created new index")
+  
     }
 
 
