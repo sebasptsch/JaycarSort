@@ -1,40 +1,15 @@
-import { useIndexedDB } from '@slnsw/react-indexed-db';
 import { useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import type { WorkBook } from 'xlsx';
-import type { dbitem } from '../lib/interfaces';
+import type { Columns, DBItem } from '../lib/interfaces';
+import { createIndex } from '../lib/lunr';
 
 export default function NewFileModal() {
-  /**
-   * Database of all the imported components stored in the clientside.
-   */
-  const db = useIndexedDB('components');
 
   const [modalActive, setModalActive] = useState(false); // Define the state of the modal so that it can be activated and dismissed by the user.
   const [excelDoc, setExcelDoc] = useState<WorkBook | false>(false); // Store the loaded excel document so that's properties can be used for UI purposes.
   const [filename, setFilename] = useState(''); // For the upload button to show a file name.
   const [progress, setProgress] = useState<any>(0); // For the progress bar state to update the UI.
-
-  /**
-   * A function that adds a list of components into the components database stored in the browser.
-   * @param data an array of component items read from the excel file.
-   * @returns a promise that is resolved once all items have been added to the db.
-   */
-  const newDBData = (data: Array<dbitem>) => {
-    db.clear(); // Clear all exsisting entries in the database to avoid duplicates.
-    return Promise.all(
-      data.map(
-        async (component, index) =>
-          await db
-            .add(component)
-            .then(() => {
-              setProgress(index / (data.length + 1));
-            })
-            .catch((err) => console.log(err, component.item)),
-      ),
-    );
-  };
-
   /**
    * A function that is called whenever a new excel file is added to the form that handles reading it and storing it's contents in state.
    * @param e File upload button change event (for when a new file is uploaded)
@@ -78,26 +53,24 @@ export default function NewFileModal() {
     var sheet = workbook.Sheets[workbook.SheetNames[0]];
     const { utils } = await import('xlsx');
     var jsonsheet = utils.sheet_to_json(sheet);
-    newDBData(
-      // Map excel columns to corresponding database field names.
-      jsonsheet.map((component) => {
-        const { Location, Unit, Shelf, Tray, Barcode, Description, Item }: any =
-          component;
+
+    const data = jsonsheet.map((component): DBItem => {
+        const row = component as Columns;
         return {
-          location: Location,
-          barcode: Barcode,
-          description: Description,
-          unit: Unit,
-          shelf: Shelf,
-          tray: Tray,
-          item: Item,
+          location: row.Location,
+          barcode: row.Barcode,
+          description: row.Description ?? "",
+          unit: row.Unit,
+          shelf: row.Shelf,
+          tray: row.Tray,
+          item: row.Item,
         };
-      }),
-    ).then(() => {
-      window.location.reload(); // Reload the page to include new data and indicate success.
-      return;
-    });
-  };
+      }).filter((c) => !!c.item && !!c.barcode)
+
+   
+  createIndex(data)
+    }
+
 
   return (
     <>

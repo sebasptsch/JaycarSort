@@ -1,40 +1,45 @@
 {
-  "name": "jaycarsort",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "./",
-  "dependencies": {
-    "@slnsw/react-indexed-db": "^1.0.14",
-    "@tanstack/react-query": "^4.43.0",
-    "@vitejs/plugin-react": "^5.1.2",
-    "bulma": "^1.0.4",
-    "fuse.js": "^7.1.0",
-    "lodash": "^4.17.23",
-    "react": "^19.0.4",
-    "react-dom": "^19.0.4",
-    "react-hook-form": "^7.71.1",
-    "react-icons": "^5.5.0",
-    "react-qr-barcode-scanner": "^2.1.22",
-    "react-virtuoso": "^4.18.1",
-    "sass": "^1.97.3",
-    "typescript": "^5.9.3",
-    "vite-plugin-pwa": "^1.2.0",
-    "xlsx": "^0.18.5"
-  },
-  "scripts": {
-    "build": "vite build",
-    "build:prod": "vite build --base /JaycarSort/",
-    "dev": "vite",
-    "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.17.23",
-    "@types/node": "^25.1.0",
-    "@types/react": "^19.2.10",
-    "@types/react-dom": "^19.2.3",
-    "prettier": "^3.8.1",
-    "vite": "^7.3.1"
-  }
+	"name": "jaycarsort",
+	"version": "0.1.0",
+	"private": true,
+	"homepage": "./",
+	"dependencies": {
+		"@slnsw/react-indexed-db": "^1.0.14",
+		"@tanstack/react-query": "^5.90.20",
+		"@vitejs/plugin-react": "^5.1.2",
+		"bulma": "^1.0.4",
+		"fuse.js": "^7.1.0",
+		"idb": "^8.0.3",
+		"lodash": "^4.17.23",
+		"lunr": "^2.3.9",
+		"msgpackr": "^1.11.8",
+		"react": "^19.0.4",
+		"react-dom": "^19.0.4",
+		"react-hook-form": "^7.71.1",
+		"react-icons": "^5.5.0",
+		"react-qr-barcode-scanner": "^2.1.22",
+		"react-virtuoso": "^4.18.1",
+		"sass": "^1.97.3",
+		"typescript": "^5.9.3",
+		"vite-plugin-pwa": "^1.2.0",
+		"xlsx": "^0.18.5"
+	},
+	"scripts": {
+		"build": "vite build",
+		"build:prod": "vite build --base /JaycarSort/",
+		"dev": "vite",
+		"preview": "vite preview",
+		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+		"lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.13",
+		"@types/lodash": "^4.17.23",
+		"@types/lunr": "^2.3.7",
+		"@types/node": "^25.1.0",
+		"@types/react": "^19.2.10",
+		"@types/react-dom": "^19.2.3",
+		"prettier": "^3.8.1",
+		"vite": "^7.3.1"
+	}
 }
