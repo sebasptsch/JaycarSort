@@ -7,7 +7,6 @@ import { FaExpand } from "react-icons/fa";
 import { Virtuoso } from "react-virtuoso";
 import ExtendedSearchHints from "../components/ExtendedSearchHints";
 import NewFileModal from "../components/NewFileModal";
-import ScanButton from "../components/ScanButton";
 import StockItem from "../components/StockItem";
 import type { DBItem } from "../lib/interfaces";
 import jclarge from "./jclarge.png";
@@ -89,7 +88,6 @@ export default function Home() {
 							<div className="navbar-item">
 								<div className="buttons">
 									<NewFileModal />
-									<ScanButton onChange={debouncedSearch} />
 									<button
 										className="button"
 										onClick={() => {
