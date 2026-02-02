@@ -4,9 +4,17 @@
 	"private": true,
 	"homepage": "./",
 	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@fontsource/roboto": "^5.2.9",
 		"@hookform/resolvers": "^5.2.2",
+		"@mui/icons-material": "^7.3.7",
+		"@mui/material": "^7.3.7",
 		"@slnsw/react-indexed-db": "^1.0.14",
 		"@tanstack/react-query": "^5.90.20",
+		"@tanstack/react-query-devtools": "^5.91.3",
+		"@tanstack/react-router": "^1.157.18",
+		"@tanstack/react-router-devtools": "^1.157.18",
 		"@vitejs/plugin-react": "^5.1.2",
 		"bulma": "^1.0.4",
 		"fuse.js": "^7.1.0",
@@ -36,12 +44,16 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.13",
+		"@emotion/babel-plugin": "^11.13.5",
+		"@tailwindcss/vite": "^4.1.18",
+		"@tanstack/router-plugin": "^1.157.18",
 		"@types/lodash": "^4.17.23",
 		"@types/lunr": "^2.3.7",
 		"@types/node": "^25.1.0",
 		"@types/react": "^19.2.10",
 		"@types/react-dom": "^19.2.3",
 		"prettier": "^3.8.1",
+		"tailwindcss": "^4.1.18",
 		"vite": "^7.3.1"
 	}
 }

@@ -1,16 +1,19 @@
-import { useIndexedDB } from "@slnsw/react-indexed-db";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import Fuse from "fuse.js";
+import { createFileRoute } from "@tanstack/react-router";
 import { debounce } from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaExpand } from "react-icons/fa";
 import { Virtuoso } from "react-virtuoso";
 import ExtendedSearchHints from "../components/ExtendedSearchHints";
 import NewFileModal from "../components/NewFileModal";
 import StockItem from "../components/StockItem";
 import type { DBItem } from "../lib/interfaces";
+import { lunrSearch } from "../lib/lunr";
 import jclarge from "./jclarge.png";
-import { fuseSearch, lunrSearch } from "../lib/lunr";
+
+export const Route = createFileRoute("/")({
+	component: RouteComponent,
+});
 
 // interface Component {
 //   id: number;
@@ -24,7 +27,7 @@ import { fuseSearch, lunrSearch } from "../lib/lunr";
 //   notes?: string;
 // }
 
-export default function Home() {
+function RouteComponent() {
 	const [navbarActive, setNavbarActive] = useState(false);
 	const [searchString, setSearchString] = useState("");
 
@@ -119,9 +122,9 @@ export default function Home() {
 					style={{ flexGrow: 1 }}
 					data={results.data}
 					totalCount={results.data.length}
-					itemContent={(_index, item) => (
+					itemContent={(_index, item) =>
 						item ? <StockItem item={item as DBItem} key={item.item} /> : null
-					)}
+					}
 					components={{
 						EmptyPlaceholder: () => <ExtendedSearchHints />,
 					}}
