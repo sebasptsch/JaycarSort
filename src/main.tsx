@@ -1,6 +1,3 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./styles.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import {
@@ -10,6 +7,8 @@ import {
 } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import "@fontsource-variable/roboto/index.css";
 import "./global.css";
