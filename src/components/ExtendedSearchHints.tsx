@@ -23,7 +23,7 @@ export default function ExtendedSearchHints() {
 					</tr>
 					<tr>
 						<td>
-							<code>scheme</code>
+							<code>=scheme</code>
 						</td>
 						<td>exact-match</td>
 						<td>
