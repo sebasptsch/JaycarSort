@@ -1,155 +1,121 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { Search } from "@mui/icons-material";
+import { InputAdornment, TextField } from "@mui/material";
+import {
+	keepPreviousData,
+	queryOptions,
+	useQuery,
+} from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { debounce } from "lodash";
-import { useState } from "react";
-import { FaExpand } from "react-icons/fa";
-import { Virtuoso } from "react-virtuoso";
-import ExtendedSearchHints from "../components/ExtendedSearchHints";
-import NewFileModal from "../components/NewFileModal";
-import StockItem from "../components/StockItem";
+import { createColumnHelper } from "@tanstack/react-table";
+import { debounce } from "lodash-es";
+import { useCallback } from "react";
+import z from "zod";
+import Datatable from "../components/Datatable";
 import type { DBItem } from "../lib/interfaces";
 import { lunrSearch } from "../lib/lunr";
-import jclarge from "./jclarge.png";
 
-export const Route = createFileRoute("/")({
-	component: RouteComponent,
-});
+const columnHelper = createColumnHelper<DBItem>();
 
-// interface Component {
-//   id: number;
-//   location?: string;
-//   unit?: string;
-//   shelf?: string;
-//   tray?: string;
-//   barcode?: string;
-//   item?: string;
-//   description?: string;
-//   notes?: string;
-// }
+const columns = [
+	columnHelper.accessor("item", { header: "Cat No.", size: 100 }),
+	columnHelper.display({
+		header: "Location",
+		id: "location",
+		cell: (props) =>
+			`${props.row.original.location} ${props.row.original.unit}`,
+	}),
+	columnHelper.display({
+		header: "Shelf",
+		cell: (props) =>
+			`${props.row.original.location === "Capstan" ? "Column" : "Shelf"} ${props.row.original.shelf}`,
+	}),
+	columnHelper.display({
+		header: "Tray",
+		cell: (ce) =>
+			` ${
+				ce.row.original.location === "Capstan"
+					? "Row"
+					: ce.row.original.location === "Zone"
+						? "Position "
+						: "Tray "
+			} ${ce.row.original.tray}`,
+		id: "tray",
+	}),
+	columnHelper.accessor("description", {
+		header: "Description",
+	}),
+	columnHelper.accessor("barcode", {
+		header: "Barcode",
+	}),
+];
 
-function RouteComponent() {
-	const [navbarActive, setNavbarActive] = useState(false);
-	const [searchString, setSearchString] = useState("");
-
-	const results = useQuery({
-		queryKey: ["components", searchString],
-		queryFn: () => lunrSearch(searchString, 10),
-		initialData: [],
+const lunrQueryOptions = (q = "") =>
+	queryOptions({
+		queryKey: ["components", "lunr", q],
+		queryFn: () => lunrSearch(q),
 		placeholderData: keepPreviousData,
 	});
 
-	// useEffect(() => {
-	// 	if (!searchString) {
-	// 		setResults([]);
-	// 	} else {
-	// 		const fuse = new Fuse(getAllEntries.data ?? [], {
-	// 			keys: ["barcode", "item", "description"],
-	// 			includeScore: true,
-	// 			useExtendedSearch: true,
-	// 			threshold: 0.3,
-	// 		});
-	// 		setResults(fuse.search(searchString).map((result) => result.item));
-	// 	}
-	// }, [searchString, getAllEntries.data]);
+// const fuseQueryOptions = (q = "") =>
+// 	queryOptions({
+// 		queryKey: ["components", "fuse", q],
+// 		queryFn: () => fuseSearch(q),
+// 		placeholderData: keepPreviousData,
+// 	});
 
-	const debouncedSearch = debounce((v: string) => {
-		setSearchString(v);
-	}, 500);
+export const Route = createFileRoute("/")({
+	component: RouteComponent,
+	validateSearch: z.object({
+		q: z.string().optional(),
+	}),
+	loaderDeps: ({ search: { q } }) => ({ q }),
+	loader: ({ deps: { q }, context: { queryClient } }) => {
+		queryClient.prefetchQuery(lunrQueryOptions(q));
+	},
+});
+
+function RouteComponent() {
+	const navigate = Route.useNavigate();
+
+	const query = Route.useSearch({
+		select: (s) => s.q,
+	});
+
+	const results = useQuery(lunrQueryOptions(query));
+
+	const debouncedSearch = useCallback(
+		debounce((v: string) => {
+			navigate({
+				to: ".",
+				search: { q: v === "" ? undefined : v },
+				replace: true,
+			});
+		}, 500),
+		[],
+	);
 
 	return (
 		<>
-			<nav
-				className="navbar is-primary"
-				aria-label="main navigation"
-				style={{ flex: "none" }}
-			>
-				<div className="container">
-					<div className="navbar-brand">
-						<a className="navbar-item" href="/">
-							<img src={jclarge} height="28" width="86" alt="Jaycar Logo" />
-						</a>
-						<h4 className="navbar-item is-size-4">Stock Locator</h4>
-
-						<a
-							role="button"
-							className={`navbar-burger ${navbarActive ? "is-active" : ""}`}
-							aria-label="menu"
-							aria-expanded="false"
-							data-target="navbarBasicExample"
-							onClick={() => {
-								setNavbarActive((prev) => !prev);
-							}}
-						>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-						</a>
-					</div>
-
-					<div className={`navbar-menu ${navbarActive ? "is-active" : ""}`}>
-						<div className="navbar-end">
-							<div className="navbar-item">
-								<div className="buttons">
-									<NewFileModal />
-									<button
-										className="button"
-										onClick={() => {
-											// Check to see if the site is in full-screen mode and toggle
-											!document.fullscreenElement
-												? document.documentElement.requestFullscreen()
-												: document.exitFullscreen();
-										}}
-									>
-										<FaExpand />
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</nav>
-			<div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-				<input
-					type="text"
-					className="input my-2"
-					style={{ flex: "none", width: "100%" }}
-					placeholder="Enter Barcode, Catalog Number or Description Keywords"
-					onChange={(e) => {
-						debouncedSearch(e.target.value);
-					}}
-				/>
-				<Virtuoso
-					style={{ flexGrow: 1 }}
-					data={results.data}
-					totalCount={results.data.length}
-					itemContent={(_index, item) =>
-						item ? <StockItem item={item as DBItem} key={item.item} /> : null
-					}
-					components={{
-						EmptyPlaceholder: () => <ExtendedSearchHints />,
-					}}
-				/>
-
-				{/* {results.length === 0 && searchString.length === 0 ? (
-              <ExtendedSearchHints />
-            ) : results.length === 0 ? (
-              <h4 className="is-text-4 has-text-centered m-4">
-                <b>No Results</b>
-              </h4>
-            ) : null} */}
-			</div>
-			<footer className="footer" style={{ flex: "none" }}>
-				<div className="content has-text-centered">
-					<p>
-						<strong>Jaycar Sort</strong> by{" "}
-						<a href="https://sebasptsch.dev">Sebastian Pietschner</a>. The
-						source code is licensed under{" "}
-						<a href="https://choosealicense.com/licenses/mit/">MIT</a>.
-						Documentation and new releases can be found on{" "}
-						<a href="https://github.com/sebasptsch/jaycarsort">Github</a>.
-					</p>
-				</div>
-			</footer>
+			<TextField
+				helperText="Enter Barcode, Catalog Number or Description Keywords"
+				onChange={(e) => debouncedSearch(e.target.value)}
+				label="Search"
+				slotProps={{
+					input: {
+						startAdornment: (
+							<InputAdornment position="start">
+								<Search />
+							</InputAdornment>
+						),
+					},
+				}}
+				autoFocus
+			/>
+			<Datatable
+				columns={columns}
+				data={results.data ?? []}
+				style={{ height: 60 }}
+			/>
 		</>
 	);
 }

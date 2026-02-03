@@ -12,5 +12,6 @@
 	"search.exclude": {
 		"**/routeTree.gen.ts": true
 	},
-	"tailwindCSS.experimental.classRegex": [["className\\s*:\\s*['\"]([^'\"]*)['\"]"]]
+	"tailwindCSS.experimental.classRegex": [["className\\s*:\\s*['\"]([^'\"]*)['\"]"]],
+	"editor.formatOnSave": true
 }

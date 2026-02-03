@@ -1,3 +1,4 @@
+import { Box, Container } from "@mui/material";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -6,6 +7,7 @@ import {
 	Outlet,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import TopBar from "../components/TopBar";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -23,10 +25,13 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
 	return (
-		<>
-			<Outlet />
-			<ReactQueryDevtools buttonPosition="top-right" />
+		<Box className="grow flex flex-col">
+			<TopBar />
+			<Container className="py-2 grow flex flex-col">
+				<Outlet />
+			</Container>
+			<ReactQueryDevtools buttonPosition="bottom-left" />
 			<TanStackRouterDevtools position="bottom-right" />
-		</>
+		</Box>
 	);
 }

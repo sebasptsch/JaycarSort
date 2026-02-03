@@ -40,6 +40,12 @@ export default defineConfig({
 							},
 						},
 					],
+					[
+						"babel-plugin-direct-import",
+						{
+							modules: ["@mui/system", "@mui/material", "@mui/icons-material"],
+						},
+					],
 				],
 			},
 		}),

@@ -11,12 +11,21 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import "./global.css"
+import "@fontsource-variable/roboto/index.css";
+import "./global.css";
 
-const darkTheme = createTheme({
+const theme = createTheme({
 	colorSchemes: {
-		dark: true,
+		dark: false,
 		light: true,
+	},
+	palette: {
+		primary: {
+			main: "#0c254c",
+		},
+	},
+	typography: {
+		fontFamily: "'Roboto Variable', sans-serif",
 	},
 });
 
@@ -47,7 +56,7 @@ createRoot(document.getElementById("root")!).render(
 		<StyledEngineProvider enableCssLayer>
 			<GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
 			<QueryClientProvider client={queryClient}>
-				<ThemeProvider theme={darkTheme}>
+				<ThemeProvider theme={theme}>
 					<CssBaseline />
 					<RouterProvider router={router} />
 				</ThemeProvider>
