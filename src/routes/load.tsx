@@ -4,8 +4,9 @@ import { Button, Stack, styled } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import useClearIndex from "../hooks/useClearIndex";
+import useCreateIndex from "../hooks/useCreateIndex";
 import type { Columns, DBItem } from "../lib/interfaces";
-import { clearIndex, createIndex } from "../lib/lunr";
 
 export const Route = createFileRoute("/load")({
 	component: RouteComponent,
@@ -40,6 +41,9 @@ function RouteComponent() {
 
 	const navigate = Route.useNavigate();
 
+	const clearIndex = useClearIndex();
+	const createIndex = useCreateIndex();
+
 	/**
 	 * Handles the user submitting the form and moves data from react's state variables to the database.
 	 * @param e Submit Event (not used except to prevent page reload on submit).
@@ -73,9 +77,9 @@ function RouteComponent() {
 				})
 				.filter((c) => !!c.item && !!c.barcode);
 
-			await clearIndex();
+			await clearIndex.mutateAsync();
 			console.log("Cleared Index");
-			await createIndex(data);
+			await createIndex.mutateAsync(data);
 			console.log("Created new index");
 			navigate({
 				to: "/",

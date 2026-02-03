@@ -15,7 +15,7 @@ import "./global.css";
 
 const theme = createTheme({
 	colorSchemes: {
-		dark: false,
+		dark: true,
 		light: true,
 	},
 	palette: {

@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { LinkButton } from "./LinkButton";
+import ModeSwitchButton from "./ModeSwitchButton";
 
 export default function TopBar() {
 	return (
@@ -13,6 +14,7 @@ export default function TopBar() {
 				<LinkButton variant="text" to="/load" color="inherit">
 					Load Data
 				</LinkButton>
+				<ModeSwitchButton />
 			</Toolbar>
 		</AppBar>
 	);
