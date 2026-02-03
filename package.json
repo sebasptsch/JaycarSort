@@ -18,6 +18,7 @@
 		"@tanstack/react-table": "^8.21.3",
 		"@tanstack/react-virtual": "^3.13.18",
 		"@vitejs/plugin-react": "^5.1.2",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"fuse.js": "^7.1.0",
 		"idb": "^8.0.3",
 		"lodash-es": "^4.17.23",
