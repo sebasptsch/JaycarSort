@@ -57,22 +57,6 @@ function RouteComponent() {
 			/>
 			<ControlledTextField
 				control={control}
-				name="barcode"
-				defaultValue={0}
-				label="Barcode"
-				helperText="The barcode on the label"
-				required
-			/>
-			<ControlledTextField
-				control={control}
-				name="item"
-				defaultValue={"PA3500"}
-				label="Cat No."
-				helperText="The Catalog Number, normally two letters followed by four numbers"
-				required
-			/>
-			<ControlledTextField
-				control={control}
 				name="unit"
 				defaultValue={"A"}
 				label={"Unit"}
@@ -97,6 +81,23 @@ function RouteComponent() {
 				defaultValue={1}
 				label={"Tray"}
 				helperText={"The tray (x) axis"}
+				required
+			/>
+
+			<ControlledTextField
+				control={control}
+				name="barcode"
+				defaultValue={0}
+				label="Barcode"
+				helperText="The barcode on the label"
+				required
+			/>
+			<ControlledTextField
+				control={control}
+				name="item"
+				defaultValue={"PA3500"}
+				label="Cat No."
+				helperText="The Catalog Number, normally two letters followed by four numbers"
 				required
 			/>
 			<ControlledTextField
