@@ -107,7 +107,9 @@ function RouteComponent() {
 				label={"Description"}
 				helperText="The description, optional for the component"
 			/>
-			<Button type="submit">Save</Button>
+			<Button type="submit" variant="contained">
+				Save
+			</Button>
 		</Stack>
 	);
 }
