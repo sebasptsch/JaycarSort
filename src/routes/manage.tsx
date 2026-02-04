@@ -19,6 +19,7 @@ import {
 	useForm,
 } from "react-hook-form";
 import z from "zod";
+import { LinkButton } from "../components/LinkButton";
 import { toaster } from "../components/Toaster";
 import { type DBItem, dbItemSchema } from "../lib/interfaces";
 import { db } from "../lib/lunr";
@@ -27,13 +28,7 @@ export const Route = createFileRoute("/manage")({
 	component: RouteComponent,
 });
 
-function generateDownload<D>(json: D, filename: string) {
-	// Turn the JSON object into a string
-	const data = JSON.stringify(json);
-
-	// Pass the string to a Blob and turn it
-	// into an ObjectURL
-	const blob = new Blob([data], { type: "application/json" });
+function generateDownload(blob: Blob, filename: string) {
 	const jsonObjectUrl = URL.createObjectURL(blob);
 
 	// Create an anchor element, set it's
@@ -60,6 +55,22 @@ async function exportDB() {
 	await transaction.done;
 
 	return allData;
+}
+
+async function exportXLSX(data: DBItem[]) {
+	const { write, utils } = await import("xlsx");
+
+	const workBook = utils.book_new();
+
+	const sheet = utils.json_to_sheet(data);
+
+	utils.book_append_sheet(workBook, sheet);
+
+	const res = write(workBook, {
+		type: "array",
+	});
+
+	return res;
 }
 
 async function importDB(data: DBItem[]) {
@@ -94,11 +105,27 @@ async function parseXLSX(file: File) {
 	return lowerCaseRows;
 }
 
-function useExport() {
+function useExport(type: "json" | "xlsx" = "json") {
 	return useMutation({
 		mutationFn: exportDB,
-		onSuccess: (data) => {
-			generateDownload(data, "data.json");
+		onSuccess: async (data) => {
+			if (type === "json") {
+				console.log(data);
+				generateDownload(
+					new Blob([JSON.stringify(data)], {
+						type: "application/json",
+					}),
+					"data.json",
+				);
+			} else {
+				const xlsxString = await exportXLSX(data);
+				generateDownload(
+					new Blob([xlsxString], {
+						type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+					}),
+					"data.xlsx",
+				);
+			}
 		},
 	});
 }
@@ -126,18 +153,30 @@ function useResetDB() {
 }
 
 function RouteComponent() {
-	const exportMutation = useExport();
+	const exportJsonMutation = useExport("json");
+	const exportXLSXMutation = useExport("xlsx");
+
 	const resetMutation = useResetDB();
 
 	return (
 		<Stack className="gap-5">
 			<Stack className="flex-row gap-2 justify-center">
+				<LinkButton variant="contained" to="/add">
+					Add
+				</LinkButton>
 				<Button
 					variant="contained"
-					onClick={() => exportMutation.mutate()}
-					loading={exportMutation.isPending}
+					onClick={() => exportJsonMutation.mutate()}
+					loading={exportJsonMutation.isPending}
 				>
 					Export JSON
+				</Button>
+				<Button
+					variant="contained"
+					onClick={() => exportXLSXMutation.mutate()}
+					loading={exportXLSXMutation.isPending}
+				>
+					Export XLSX
 				</Button>
 				<Button
 					variant="contained"

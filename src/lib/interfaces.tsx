@@ -7,17 +7,7 @@ export const dbItemSchema = z.object({
 	location: z.enum(["Turbine", "Capstan", "Zone"]),
 	shelf: z.number(),
 	tray: z.number(),
-	unit: z.number(),
+	unit: z.coerce.string(),
 });
 
 export type DBItem = z.output<typeof dbItemSchema>;
-
-export interface Columns {
-	Location: string;
-	Unit: number;
-	Shelf: number;
-	Tray: number;
-	Barcode: number;
-	Description: string;
-	Item: string;
-}
