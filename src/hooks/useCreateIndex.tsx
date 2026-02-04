@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createIndex } from "../lib/lunr";
+import { regenerateIndex } from "../lib/lunr";
 
 export default function useCreateIndex() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: createIndex,
+		mutationFn: regenerateIndex,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ["components"],

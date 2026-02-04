@@ -22,7 +22,7 @@ import z from "zod";
 import { LinkButton } from "../components/LinkButton";
 import { toaster } from "../components/Toaster";
 import { type DBItem, dbItemSchema } from "../lib/interfaces";
-import { db } from "../lib/lunr";
+import { clearIndex, db, regenerateIndex } from "../lib/lunr";
 
 export const Route = createFileRoute("/manage")({
 	component: RouteComponent,
@@ -133,7 +133,8 @@ function useExport(type: "json" | "xlsx" = "json") {
 function useImportJSON() {
 	return useMutation({
 		mutationFn: importDB,
-		onSuccess: (_data, vars) => {
+		onSuccess: async (_data, vars) => {
+			await regenerateIndex();
 			toaster.success({
 				title: `Successfully imported ${vars.length} items into the database.`,
 			});
@@ -144,7 +145,8 @@ function useImportJSON() {
 function useResetDB() {
 	return useMutation({
 		mutationFn: resetDB,
-		onSuccess: () => {
+		onSuccess: async () => {
+			await clearIndex();
 			toaster.success({
 				title: "Reset DB Successfully",
 			});

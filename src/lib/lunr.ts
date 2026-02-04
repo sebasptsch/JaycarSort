@@ -31,18 +31,8 @@ export const db = openDB<MySchema>(storeName, 1, {
 	},
 });
 
-export const createIndex = async (data: DBItem[]) => {
-	const tx = (await db).transaction(storeName, "readwrite");
-
-	const res = await Promise.all(data.map((i) => trytm(tx.store.put(i))));
-
-	res.forEach(([_res, err]) => {
-		if (err) {
-			console.log(err);
-		}
-	});
-
-	await tx.done;
+export const regenerateIndex = async () => {
+	const allvals = await (await db).getAll("components");
 
 	lunrIndex = lunr(function () {
 		this.ref("item");
@@ -50,12 +40,12 @@ export const createIndex = async (data: DBItem[]) => {
 		this.field("barcode");
 		this.field("description");
 
-		data.forEach((doc) => {
+		allvals.forEach((doc) => {
 			this.add(doc);
 		});
 	});
 
-	fuseIndex = Fuse.createIndex(["item", "barcode", "description"], data);
+	fuseIndex = Fuse.createIndex(["item", "barcode", "description"], allvals);
 
 	localStorage.setItem(fuseIndexKey, JSON.stringify(fuseIndex));
 	localStorage.setItem(lunrIndexKey, JSON.stringify(lunrIndex));
@@ -63,7 +53,7 @@ export const createIndex = async (data: DBItem[]) => {
 
 export const clearIndex = async () => {
 	localStorage.removeItem(lunrIndexKey);
-	await (await db).clear(storeName);
+	localStorage.removeItem(fuseIndexKey);
 
 	lunrIndex = undefined;
 	fuseIndex = undefined;
