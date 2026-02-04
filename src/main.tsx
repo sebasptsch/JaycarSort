@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import "@fontsource-variable/roboto/index.css";
 import "./global.css";
+import { Toaster } from "./components/Toaster";
 
 const theme = createTheme({
 	colorSchemes: {
@@ -59,6 +60,7 @@ createRoot(document.getElementById("root")!).render(
 				<ThemeProvider theme={theme}>
 					<CssBaseline />
 					<RouterProvider router={router} />
+					<Toaster />
 				</ThemeProvider>
 			</QueryClientProvider>
 		</StyledEngineProvider>

@@ -18,6 +18,8 @@
 		"@tanstack/react-table": "^8.21.3",
 		"@tanstack/react-virtual": "^3.13.18",
 		"@vitejs/plugin-react": "^5.1.2",
+		"@zag-js/react": "^1.33.1",
+		"@zag-js/toast": "^1.33.1",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"fuse.js": "^7.1.0",
 		"idb": "^8.0.3",

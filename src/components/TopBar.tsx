@@ -11,8 +11,8 @@ export default function TopBar() {
 				<Typography variant="h6" component="div" className="grow">
 					Jaycar Stock Locator
 				</Typography>
-				<LinkButton variant="text" to="/load" color="inherit">
-					Load Data
+				<LinkButton variant="text" to="/manage" color="inherit">
+					Manage
 				</LinkButton>
 				<ModeSwitchButton />
 			</Toolbar>

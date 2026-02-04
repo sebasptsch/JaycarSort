@@ -1,15 +1,16 @@
-/**
- * Defines expected types for an item inside the IndexedDB.
- */
-export interface DBItem {
-	barcode: number;
-	description: string;
-	item: string;
-	location: string;
-	shelf: number;
-	tray: number;
-	unit: number;
-}
+import z from "zod";
+
+export const dbItemSchema = z.object({
+	barcode: z.number(),
+	description: z.string().default(""),
+	item: z.string(),
+	location: z.enum(["Turbine", "Capstan", "Zone"]),
+	shelf: z.number(),
+	tray: z.number(),
+	unit: z.number(),
+});
+
+export type DBItem = z.output<typeof dbItemSchema>;
 
 export interface Columns {
 	Location: string;
