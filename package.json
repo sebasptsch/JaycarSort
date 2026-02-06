@@ -2,8 +2,10 @@
 	"name": "jaycarsort",
 	"version": "0.1.0",
 	"private": true,
+	"type": "module",
 	"homepage": "./",
 	"dependencies": {
+		"@cloudflare/workers-types": "^4.20260206.0",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
 		"@fontsource-variable/roboto": "^5.2.9",
@@ -28,6 +30,7 @@
 		"react": "^19.0.4",
 		"react-dom": "^19.0.4",
 		"react-hook-form": "^7.71.1",
+		"simple-peer": "^9.11.1",
 		"typescript": "^5.9.3",
 		"vite-plugin-pwa": "^1.2.0",
 		"xlsx": "^0.18.5",
@@ -39,10 +42,12 @@
 		"dev": "vite",
 		"preview": "vite preview",
 		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-		"lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
+		"lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+		"cf-typegen": "wrangler types worker/worker-configuration.d.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.13",
+		"@cloudflare/vite-plugin": "^1.23.1",
 		"@emotion/babel-plugin": "^11.13.5",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tanstack/router-plugin": "^1.157.18",
@@ -53,6 +58,7 @@
 		"@types/react-dom": "^19.2.3",
 		"babel-plugin-direct-import": "^1.0.0",
 		"tailwindcss": "^4.1.18",
-		"vite": "^7.3.1"
+		"vite": "^7.3.1",
+		"wrangler": "^4.63.0"
 	}
 }

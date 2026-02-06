@@ -53,16 +53,14 @@ declare module "@tanstack/react-router" {
 
 // biome-ignore lint/style/noNonNullAssertion: This element does exist and is predictable
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<StyledEngineProvider enableCssLayer>
-			<GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<RouterProvider router={router} />
-					<Toaster />
-				</ThemeProvider>
-			</QueryClientProvider>
-		</StyledEngineProvider>
-	</StrictMode>,
+	<StyledEngineProvider enableCssLayer>
+		<GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<RouterProvider router={router} />
+				<Toaster />
+			</ThemeProvider>
+		</QueryClientProvider>
+	</StyledEngineProvider>,
 );
