@@ -25,7 +25,7 @@ function RouteComponent() {
 	const peer = useRef<RTCPeerConnection>(null);
 
 	useEffect(() => {
-		socket.current = new WebSocket("ws://localhost:5173/api/ws");
+		socket.current = new WebSocket("wss://jaycarsort.sebasptsch.workers.dev/api/ws");
 
 		const ws = socket.current;
 
