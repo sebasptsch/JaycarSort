@@ -91,6 +91,7 @@ function RouteComponent() {
 				label="Barcode"
 				helperText="The barcode on the label"
 				required
+				valueAsNumber
 			/>
 			<ControlledTextField
 				control={control}
