@@ -35,6 +35,9 @@ function RouteComponent() {
 			{
 				method: "post",
 				body: JSON.stringify(data),
+				headers: {
+					"Content-Type": "application/json",
+				},
 			},
 		);
 
