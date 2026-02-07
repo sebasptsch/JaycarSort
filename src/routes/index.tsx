@@ -1,8 +1,9 @@
-import { Search } from "@mui/icons-material";
-import { InputAdornment, TextField } from "@mui/material";
+import { Delete, Search } from "@mui/icons-material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import {
 	keepPreviousData,
 	queryOptions,
+	useMutation,
 	useQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -11,10 +12,34 @@ import { debounce } from "lodash-es";
 import { useCallback } from "react";
 import z from "zod";
 import Datatable from "../components/Datatable";
+import { toaster } from "../components/Toaster";
 import type { DBItem } from "../lib/interfaces";
-import { lunrSearch } from "../lib/lunr";
+import { db, lunrSearch, regenerateIndex } from "../lib/lunr";
 
 const columnHelper = createColumnHelper<DBItem>();
+
+function DeleteButton({ item }: { item: string }) {
+	const deleteMutation = useMutation({
+		mutationFn: async (itemId: string) =>
+			(await db).delete("components", itemId),
+		onSuccess: () => {
+			toaster.success({
+				title: "Deleted item successfully",
+			});
+			regenerateIndex();
+		},
+	});
+
+	const handleDelete = () => {
+		deleteMutation.mutate(item);
+	};
+
+	return (
+		<IconButton onClick={handleDelete}>
+			<Delete />
+		</IconButton>
+	);
+}
 
 const columns = [
 	columnHelper.accessor("item", { header: "Cat No.", size: 100 }),
@@ -46,6 +71,11 @@ const columns = [
 	}),
 	columnHelper.accessor("barcode", {
 		header: "Barcode",
+	}),
+	columnHelper.display({
+		id: "delete",
+		header: "Delete",
+		cell: (props) => <DeleteButton item={props.row.original.item} />,
 	}),
 ];
 
