@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const dbItemSchema = z.object({
-	barcode: z.number(),
+	barcode: z.string(),
 	description: z.string().default(""),
 	item: z.string(),
 	location: z.enum(["Turbine", "Capstan", "Zone"]),

@@ -50,7 +50,12 @@ const fetchFromApi = async (barcode: string) => {
 		},
 	)
 		.then((res) => res.json())
-		.catch((err) => console.error(err));
+		.catch((err) =>
+			toaster.error({
+				title: "an error occured",
+				description: err.toString(),
+			}),
+		);
 
 	return barcodeResponse as {
 		p_prodnumber: string;
@@ -83,6 +88,7 @@ function RouteComponent() {
 
 		const currentValues = getValues("tray");
 		setValue("tray", currentValues + 1);
+		setValue("barcode", "");
 	});
 
 	return (
@@ -137,11 +143,10 @@ function RouteComponent() {
 			<ControlledTextField
 				control={control}
 				name="barcode"
-				defaultValue={0}
+				defaultValue={""}
 				label="Barcode"
 				helperText="The barcode on the label"
 				required
-				valueAsNumber
 			/>
 			<ControlledTextField
 				control={control}
