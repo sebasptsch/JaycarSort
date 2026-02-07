@@ -31,7 +31,7 @@ function useAddComponent() {
 }
 
 const fetchFromApi = async (barcode: string) => {
-	const token = window.localStorage.get("token");
+	const token = window.localStorage.getItem("token");
 
 	if (!token) throw new Error("No login");
 
