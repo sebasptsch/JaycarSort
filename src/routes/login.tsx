@@ -30,16 +30,13 @@ function RouteComponent() {
 	});
 
 	const onSubmit = handleSubmit(async (data) => {
-		const loginResponse = await fetch(
-			`${import.meta.env.VITE_NODE_API_URL}/login`,
-			{
-				method: "post",
-				body: JSON.stringify(data),
-				headers: {
-					"Content-Type": "application/json",
-				},
+		const loginResponse = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+			method: "post",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json",
 			},
-		);
+		});
 
 		const parsedJson = await loginResponse.json();
 

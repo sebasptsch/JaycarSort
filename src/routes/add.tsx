@@ -3,6 +3,8 @@ import { Button, Stack } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import z from "zod";
+import ControlledCheckbox from "../components/ControlledCheckbox";
 import ControlledSelect from "../components/ControlledSelect";
 import ControlledTextField from "../components/ControlledTextField";
 import { toaster } from "../components/Toaster";
@@ -28,21 +30,63 @@ function useAddComponent() {
 	});
 }
 
+const fetchFromApi = async (barcode: string) => {
+	const token = window.localStorage.get("token");
+
+	if (!token) throw new Error("No login");
+
+	const barcodeResponse = await fetch(
+		`${import.meta.env.VITE_NODE_API_URL}/produces/${barcode}/product-by-scanner`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	)
+		.then((res) => res.json())
+		.catch((err) => console.error(err));
+
+	return barcodeResponse as {
+		p_prodnumber: string;
+		p_proddescsystem: string;
+	};
+};
+
 function RouteComponent() {
 	const addComponentMutation = useAddComponent();
 
 	const { control, handleSubmit, setValue, getValues } = useForm({
-		resolver: zodResolver(dbItemSchema),
+		resolver: zodResolver(
+			dbItemSchema.extend({
+				fillFromApi: z.boolean(),
+			}),
+		),
 	});
 
 	const onSubmit = handleSubmit(async (data) => {
-		await addComponentMutation.mutateAsync(data);
+		if (data.fillFromApi) {
+			const apiData = await fetchFromApi(data.barcode.toString());
+			await addComponentMutation.mutateAsync({
+				...data,
+				item: apiData.p_prodnumber,
+				description: apiData.p_proddescsystem,
+			});
+		} else {
+			await addComponentMutation.mutateAsync(data);
+		}
+
 		const currentValues = getValues("tray");
 		setValue("tray", currentValues + 1);
 	});
 
 	return (
 		<Stack component={"form"} className="gap-2" onSubmit={onSubmit}>
+			<ControlledCheckbox
+				control={control}
+				name="fillFromApi"
+				label="Fill from API"
+				defaultValue={false}
+			/>
 			<ControlledSelect
 				control={control}
 				name="location"
