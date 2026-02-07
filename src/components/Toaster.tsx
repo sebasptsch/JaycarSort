@@ -6,7 +6,7 @@ import { useId } from "react";
 // 1. Create the toast store
 export const toaster = toast.createStore({
 	overlap: true,
-	placement: "bottom-start",
+	placement: "top-end",
 });
 
 interface ToastProps {
