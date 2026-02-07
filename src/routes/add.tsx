@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -20,6 +20,7 @@ async function addSingleComponent(dbItem: DBItem) {
 }
 
 function useAddComponent() {
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: addSingleComponent,
 		onSuccess: (_data, vars) => {
@@ -27,6 +28,10 @@ function useAddComponent() {
 				title: `Added Component: ${vars.item}`,
 			});
 			regenerateIndex();
+			queryClient.invalidateQueries({
+				queryKey: ["components"],
+				exact: false,
+			});
 		},
 	});
 }

@@ -5,6 +5,7 @@ import {
 	queryOptions,
 	useMutation,
 	useQuery,
+	useQueryClient,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -19,6 +20,7 @@ import { db, lunrSearch, regenerateIndex } from "../lib/lunr";
 const columnHelper = createColumnHelper<DBItem>();
 
 function DeleteButton({ item }: { item: string }) {
+	const queryClient = useQueryClient();
 	const deleteMutation = useMutation({
 		mutationFn: async (itemId: string) =>
 			(await db).delete("components", itemId),
@@ -27,6 +29,10 @@ function DeleteButton({ item }: { item: string }) {
 				title: "Deleted item successfully",
 			});
 			regenerateIndex();
+			queryClient.invalidateQueries({
+				queryKey: ["components"],
+				exact: false,
+			});
 		},
 	});
 
