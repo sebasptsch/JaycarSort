@@ -36,7 +36,7 @@ const fetchFromApi = async (barcode: string) => {
 	if (!token) throw new Error("No login");
 
 	const barcodeResponse = await fetch(
-		`${import.meta.env.VITE_NODE_API_URL}/produces/${barcode}/product-by-scanner`,
+		`${import.meta.env.VITE_NODE_API_URL}/products/${barcode}/product-by-scanner`,
 		{
 			headers: {
 				Authorization: `Bearer ${token}`,
