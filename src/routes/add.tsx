@@ -9,7 +9,7 @@ import ControlledSelect from "../components/ControlledSelect";
 import ControlledTextField from "../components/ControlledTextField";
 import { toaster } from "../components/Toaster";
 import { type DBItem, dbItemSchema } from "../lib/interfaces";
-import { db } from "../lib/lunr";
+import { db, regenerateIndex } from "../lib/lunr";
 
 export const Route = createFileRoute("/add")({
 	component: RouteComponent,
@@ -26,6 +26,7 @@ function useAddComponent() {
 			toaster.success({
 				title: `Added Component: ${vars.item}`,
 			});
+			regenerateIndex();
 		},
 	});
 }

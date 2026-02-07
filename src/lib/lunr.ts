@@ -2,7 +2,6 @@ import Fuse from "fuse.js";
 import { type DBSchema, openDB } from "idb";
 import lunr from "lunr";
 import type { DBItem } from "./interfaces";
-import { trytm } from "./trytm";
 
 const lunrIndexKey = "search-idx" as const;
 const fuseIndexKey = "search-lunr" as const;
