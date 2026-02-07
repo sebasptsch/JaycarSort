@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import ControlledCheckbox from "../components/ControlledCheckbox";
@@ -65,6 +66,7 @@ const fetchFromApi = async (barcode: string) => {
 
 function RouteComponent() {
 	const addComponentMutation = useAddComponent();
+	const lastScan = useRef<string>(null);
 
 	const { control, handleSubmit, setValue, getValues } = useForm({
 		resolver: zodResolver(
@@ -86,8 +88,12 @@ function RouteComponent() {
 			await addComponentMutation.mutateAsync(data);
 		}
 
-		const currentValues = getValues("tray");
-		setValue("tray", currentValues + 1);
+		if (lastScan.current !== data.barcode) {
+			const currentValues = getValues("tray");
+			setValue("tray", currentValues + 1);
+			lastScan.current = data.barcode;
+		}
+
 		setValue("barcode", "");
 	});
 
