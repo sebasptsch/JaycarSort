@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShareRouteImport } from './routes/share'
 import { Route as ManageRouteImport } from './routes/manage'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AddRouteImport } from './routes/add'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const ShareRoute = ShareRouteImport.update({
 const ManageRoute = ManageRouteImport.update({
   id: '/manage',
   path: '/manage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddRoute = AddRouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/login': typeof LoginRoute
   '/manage': typeof ManageRoute
   '/share': typeof ShareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/login': typeof LoginRoute
   '/manage': typeof ManageRoute
   '/share': typeof ShareRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/add': typeof AddRoute
+  '/login': typeof LoginRoute
   '/manage': typeof ManageRoute
   '/share': typeof ShareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add' | '/manage' | '/share'
+  fullPaths: '/' | '/add' | '/login' | '/manage' | '/share'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/add' | '/manage' | '/share'
-  id: '__root__' | '/' | '/add' | '/manage' | '/share'
+  to: '/' | '/add' | '/login' | '/manage' | '/share'
+  id: '__root__' | '/' | '/add' | '/login' | '/manage' | '/share'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AddRoute: typeof AddRoute
+  LoginRoute: typeof LoginRoute
   ManageRoute: typeof ManageRoute
   ShareRoute: typeof ShareRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/manage'
       fullPath: '/manage'
       preLoaderRoute: typeof ManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/add': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddRoute: AddRoute,
+  LoginRoute: LoginRoute,
   ManageRoute: ManageRoute,
   ShareRoute: ShareRoute,
 }
