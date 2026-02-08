@@ -8,9 +8,8 @@ import {
 	styled,
 	Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
 	type FieldPath,
 	type FieldValues,
@@ -18,13 +17,13 @@ import {
 	useController,
 	useForm,
 } from "react-hook-form";
+import type { Row } from "tinybase/with-schemas";
 import z from "zod";
-import { LinkButton } from "../components/LinkButton";
-import { toaster } from "../components/Toaster";
-import { type DBItem, dbItemSchema } from "../lib/interfaces";
-import { clearIndex, db, regenerateIndex } from "../lib/lunr";
+import { LinkButton } from "../../components/LinkButton";
+import { type DBItem, dbItemSchema } from "../../lib/interfaces";
+import { type Schemas, STORE_ID, useStore } from "../../lib/tinybase-typed";
 
-export const Route = createFileRoute("/manage")({
+export const Route = createFileRoute("/$roomId/manage")({
 	component: RouteComponent,
 });
 
@@ -49,15 +48,7 @@ function generateDownload(blob: Blob, filename: string) {
 	anchorEl.remove();
 }
 
-async function exportDB() {
-	const transaction = (await db).transaction("components");
-	const allData = await transaction.store.getAll();
-	await transaction.done;
-
-	return allData;
-}
-
-async function exportXLSX(data: DBItem[]) {
+async function exportXLSX(data: Row<Schemas[0], "components">[]) {
 	const { write, utils } = await import("xlsx");
 
 	const workBook = utils.book_new();
@@ -73,14 +64,18 @@ async function exportXLSX(data: DBItem[]) {
 	return res;
 }
 
-async function importDB(data: DBItem[]) {
-	const transaction = (await db).transaction("components", "readwrite");
-	await Promise.all(data.map((item) => transaction.store.put(item)));
-	await transaction.done;
-}
+function useImportDB() {
+	const store = useStore(STORE_ID);
 
-async function resetDB() {
-	await (await db).clear("components");
+	return useCallback(
+		(data: Row<Schemas[0], "components">[]) => {
+			store?.setTable(
+				"components",
+				Object.fromEntries(data.map((row) => [row.item, row])),
+			);
+		},
+		[store],
+	);
 }
 
 async function parseXLSX(file: File) {
@@ -105,20 +100,27 @@ async function parseXLSX(file: File) {
 	return lowerCaseRows;
 }
 
-function useExport(type: "json" | "xlsx" = "json") {
-	return useMutation({
-		mutationFn: exportDB,
-		onSuccess: async (data) => {
+function useExport() {
+	const store = useStore(STORE_ID);
+
+	const storeToObject = useCallback(
+		async (type: "json" | "xlsx" = "json") => {
+			const storeContents = store
+				? Object.values(store.getTable("components"))
+				: undefined;
+
+			if (!storeContents) return undefined;
+
 			if (type === "json") {
-				console.log(data);
+				console.log(storeContents);
 				generateDownload(
-					new Blob([JSON.stringify(data)], {
+					new Blob([JSON.stringify(storeContents)], {
 						type: "application/json",
 					}),
 					"data.json",
 				);
 			} else {
-				const xlsxString = await exportXLSX(data);
+				const xlsxString = await exportXLSX(storeContents);
 				generateDownload(
 					new Blob([xlsxString], {
 						type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -127,66 +129,30 @@ function useExport(type: "json" | "xlsx" = "json") {
 				);
 			}
 		},
-	});
-}
+		[store],
+	);
 
-function useImportJSON() {
-	return useMutation({
-		mutationFn: importDB,
-		onSuccess: async (_data, vars) => {
-			await regenerateIndex();
-			toaster.success({
-				title: `Successfully imported ${vars.length} items into the database.`,
-			});
-		},
-	});
+	return storeToObject;
 }
-
-function useResetDB() {
-	return useMutation({
-		mutationFn: resetDB,
-		onSuccess: async () => {
-			await clearIndex();
-			toaster.success({
-				title: "Reset DB Successfully",
-			});
-		},
-	});
-}
-
 function RouteComponent() {
-	const exportJsonMutation = useExport("json");
-	const exportXLSXMutation = useExport("xlsx");
-
-	const resetMutation = useResetDB();
+	const exportCallback = useExport();
 
 	return (
 		<Stack className="gap-5">
 			<Stack className="flex-row gap-2 justify-center">
-				<LinkButton variant="contained" to="/add">
+				<LinkButton
+					variant="contained"
+					to="/$roomId/add"
+					from="/$roomId/manage"
+					params={(curr) => ({ roomId: curr.roomId })}
+				>
 					Add
 				</LinkButton>
-				<Button
-					variant="contained"
-					onClick={() => exportJsonMutation.mutate()}
-					loading={exportJsonMutation.isPending}
-				>
+				<Button variant="contained" onClick={() => exportCallback("json")}>
 					Export JSON
 				</Button>
-				<Button
-					variant="contained"
-					onClick={() => exportXLSXMutation.mutate()}
-					loading={exportXLSXMutation.isPending}
-				>
+				<Button variant="contained" onClick={() => exportCallback("xlsx")}>
 					Export XLSX
-				</Button>
-				<Button
-					variant="contained"
-					color="error"
-					onClick={() => resetMutation.mutate()}
-					loading={resetMutation.isPending}
-				>
-					Reset Database
 				</Button>
 			</Stack>
 			<Divider />
@@ -204,7 +170,7 @@ function ImportForm() {
 		),
 	});
 
-	const importJsonMutation = useImportJSON();
+	const importJsonMutation = useImportDB();
 
 	const onSubmit = handleSubmit(async (inputData) => {
 		const file = inputData.files.item(0) as File;
@@ -230,7 +196,7 @@ function ImportForm() {
 
 		console.log(finalData);
 
-		await importJsonMutation.mutateAsync(finalData);
+		importJsonMutation(finalData);
 		console.log("success");
 	});
 

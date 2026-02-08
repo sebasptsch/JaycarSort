@@ -8,7 +8,11 @@ import { useCallback } from "react";
 import { LinkButton } from "./LinkButton";
 import ModeSwitchButton from "./ModeSwitchButton";
 
-export default function TopBar() {
+interface TopBarProps {
+	roomId?: string;
+}
+
+export default function TopBar({ roomId }: TopBarProps) {
 	return (
 		<AppBar position="static">
 			<Toolbar>
@@ -16,9 +20,19 @@ export default function TopBar() {
 				<Typography variant="h6" component="div" className="grow">
 					Jaycar Stock Locator
 				</Typography>
-				<LinkButton variant="text" to="/manage" color="inherit">
-					Manage
-				</LinkButton>
+				{roomId ? (
+					<LinkButton
+						variant="text"
+						to="/$roomId/manage"
+						params={{
+							roomId,
+						}}
+						color="inherit"
+					>
+						Manage
+					</LinkButton>
+				) : null}
+
 				<ModeSwitchButton />
 			</Toolbar>
 		</AppBar>

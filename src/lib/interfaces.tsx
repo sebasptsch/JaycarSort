@@ -1,12 +1,12 @@
 import z from "zod";
 
 export const dbItemSchema = z.object({
-	barcode: z.string(),
+	barcode: z.coerce.string(),
 	description: z.string().default(""),
 	item: z.string(),
 	location: z.enum(["Turbine", "Capstan", "Zone"]),
-	shelf: z.number(),
-	tray: z.number(),
+	shelf: z.coerce.number(),
+	tray: z.coerce.number(),
 	unit: z.coerce.string(),
 });
 

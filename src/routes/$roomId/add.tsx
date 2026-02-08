@@ -1,41 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
-import ControlledCheckbox from "../components/ControlledCheckbox";
-import ControlledSelect from "../components/ControlledSelect";
-import ControlledTextField from "../components/ControlledTextField";
-import { toaster } from "../components/Toaster";
-import { type DBItem, dbItemSchema } from "../lib/interfaces";
-import { db, regenerateIndex } from "../lib/lunr";
+import z, { type output } from "zod";
+import ControlledCheckbox from "../../components/ControlledCheckbox";
+import ControlledSelect from "../../components/ControlledSelect";
+import ControlledTextField from "../../components/ControlledTextField";
+import { toaster } from "../../components/Toaster";
+import { dbItemSchema } from "../../lib/interfaces";
+import { STORE_ID, useSetRowCallback } from "../../lib/tinybase-typed";
 
-export const Route = createFileRoute("/add")({
+export const Route = createFileRoute("/$roomId/add")({
 	component: RouteComponent,
 });
-
-async function addSingleComponent(dbItem: DBItem) {
-	(await db).put("components", dbItem);
-}
-
-function useAddComponent() {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: addSingleComponent,
-		onSuccess: (_data, vars) => {
-			toaster.success({
-				title: `Added Component: ${vars.item}`,
-			});
-			regenerateIndex();
-			queryClient.invalidateQueries({
-				queryKey: ["components"],
-				exact: false,
-			});
-		},
-	});
-}
 
 const fetchFromApi = async (barcode: string) => {
 	const token = window.localStorage.getItem("token");
@@ -64,37 +42,48 @@ const fetchFromApi = async (barcode: string) => {
 	};
 };
 
+const formSchema = dbItemSchema.extend({
+	fillFromApi: z.boolean(),
+});
+
 function RouteComponent() {
-	const addComponentMutation = useAddComponent();
-	const lastScan = useRef<string>(null);
+	// const addComponentMutation = useAddComponent();
+	const [lastScan, setLastScan] = useState<string>();
 
 	const { control, handleSubmit, setValue, getValues } = useForm({
-		resolver: zodResolver(
-			dbItemSchema.extend({
-				fillFromApi: z.boolean(),
-			}),
-		),
+		resolver: zodResolver(formSchema),
 	});
+
+	const setRowHandler = useSetRowCallback(
+		"components",
+		({ item }: Omit<output<typeof formSchema>, "fillFromApi">) => item,
+		(params) => params,
+		[],
+		STORE_ID,
+		(_store, row) => {
+			if (row.barcode && lastScan !== row.barcode) {
+				setValue("tray", (row.tray ?? 0) + 1);
+				setLastScan(row.barcode);
+			}
+			setValue("barcode", "");
+			console.log("added", row);
+		},
+		[setValue, setLastScan, lastScan, getValues],
+	);
 
 	const onSubmit = handleSubmit(async (data) => {
 		if (data.fillFromApi) {
 			const apiData = await fetchFromApi(data.barcode.toString());
-			await addComponentMutation.mutateAsync({
+			console.log("row handler", data);
+			setRowHandler({
 				...data,
 				item: apiData.p_prodnumber,
 				description: apiData.p_proddescsystem,
 			});
 		} else {
-			await addComponentMutation.mutateAsync(data);
+			console.log("row handler", data);
+			setRowHandler(data);
 		}
-
-		if (lastScan.current !== data.barcode) {
-			const currentValues = getValues("tray");
-			setValue("tray", currentValues + 1);
-			lastScan.current = data.barcode;
-		}
-
-		setValue("barcode", "");
 	});
 
 	return (

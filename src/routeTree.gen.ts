@@ -9,30 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ShareRouteImport } from './routes/share'
-import { Route as ManageRouteImport } from './routes/manage'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as AddRouteImport } from './routes/add'
+import { Route as RoomIdRouteImport } from './routes/$roomId'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RoomIdIndexRouteImport } from './routes/$roomId/index'
+import { Route as RoomIdManageRouteImport } from './routes/$roomId/manage'
+import { Route as RoomIdAddRouteImport } from './routes/$roomId/add'
 
-const ShareRoute = ShareRouteImport.update({
-  id: '/share',
-  path: '/share',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ManageRoute = ManageRouteImport.update({
-  id: '/manage',
-  path: '/manage',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AddRoute = AddRouteImport.update({
-  id: '/add',
-  path: '/add',
+const RoomIdRoute = RoomIdRouteImport.update({
+  id: '/$roomId',
+  path: '/$roomId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,61 +31,75 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoomIdIndexRoute = RoomIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RoomIdRoute,
+} as any)
+const RoomIdManageRoute = RoomIdManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => RoomIdRoute,
+} as any)
+const RoomIdAddRoute = RoomIdAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => RoomIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/add': typeof AddRoute
+  '/$roomId': typeof RoomIdRouteWithChildren
   '/login': typeof LoginRoute
-  '/manage': typeof ManageRoute
-  '/share': typeof ShareRoute
+  '/$roomId/add': typeof RoomIdAddRoute
+  '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId/': typeof RoomIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/add': typeof AddRoute
   '/login': typeof LoginRoute
-  '/manage': typeof ManageRoute
-  '/share': typeof ShareRoute
+  '/$roomId/add': typeof RoomIdAddRoute
+  '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId': typeof RoomIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/add': typeof AddRoute
+  '/$roomId': typeof RoomIdRouteWithChildren
   '/login': typeof LoginRoute
-  '/manage': typeof ManageRoute
-  '/share': typeof ShareRoute
+  '/$roomId/add': typeof RoomIdAddRoute
+  '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId/': typeof RoomIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/add' | '/login' | '/manage' | '/share'
+  fullPaths:
+    | '/'
+    | '/$roomId'
+    | '/login'
+    | '/$roomId/add'
+    | '/$roomId/manage'
+    | '/$roomId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/add' | '/login' | '/manage' | '/share'
-  id: '__root__' | '/' | '/add' | '/login' | '/manage' | '/share'
+  to: '/' | '/login' | '/$roomId/add' | '/$roomId/manage' | '/$roomId'
+  id:
+    | '__root__'
+    | '/'
+    | '/$roomId'
+    | '/login'
+    | '/$roomId/add'
+    | '/$roomId/manage'
+    | '/$roomId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AddRoute: typeof AddRoute
+  RoomIdRoute: typeof RoomIdRouteWithChildren
   LoginRoute: typeof LoginRoute
-  ManageRoute: typeof ManageRoute
-  ShareRoute: typeof ShareRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/share': {
-      id: '/share'
-      path: '/share'
-      fullPath: '/share'
-      preLoaderRoute: typeof ShareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/manage': {
-      id: '/manage'
-      path: '/manage'
-      fullPath: '/manage'
-      preLoaderRoute: typeof ManageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -102,11 +107,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/add': {
-      id: '/add'
-      path: '/add'
-      fullPath: '/add'
-      preLoaderRoute: typeof AddRouteImport
+    '/$roomId': {
+      id: '/$roomId'
+      path: '/$roomId'
+      fullPath: '/$roomId'
+      preLoaderRoute: typeof RoomIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -116,15 +121,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$roomId/': {
+      id: '/$roomId/'
+      path: '/'
+      fullPath: '/$roomId/'
+      preLoaderRoute: typeof RoomIdIndexRouteImport
+      parentRoute: typeof RoomIdRoute
+    }
+    '/$roomId/manage': {
+      id: '/$roomId/manage'
+      path: '/manage'
+      fullPath: '/$roomId/manage'
+      preLoaderRoute: typeof RoomIdManageRouteImport
+      parentRoute: typeof RoomIdRoute
+    }
+    '/$roomId/add': {
+      id: '/$roomId/add'
+      path: '/add'
+      fullPath: '/$roomId/add'
+      preLoaderRoute: typeof RoomIdAddRouteImport
+      parentRoute: typeof RoomIdRoute
+    }
   }
 }
 
+interface RoomIdRouteChildren {
+  RoomIdAddRoute: typeof RoomIdAddRoute
+  RoomIdManageRoute: typeof RoomIdManageRoute
+  RoomIdIndexRoute: typeof RoomIdIndexRoute
+}
+
+const RoomIdRouteChildren: RoomIdRouteChildren = {
+  RoomIdAddRoute: RoomIdAddRoute,
+  RoomIdManageRoute: RoomIdManageRoute,
+  RoomIdIndexRoute: RoomIdIndexRoute,
+}
+
+const RoomIdRouteWithChildren =
+  RoomIdRoute._addFileChildren(RoomIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AddRoute: AddRoute,
+  RoomIdRoute: RoomIdRouteWithChildren,
   LoginRoute: LoginRoute,
-  ManageRoute: ManageRoute,
-  ShareRoute: ShareRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -10,15 +10,15 @@
 	"durable_objects": {
 		"bindings": [
 			{
-				"name": "WEBSOCKET_HIBERNATION_SERVER",
-				"class_name": "WebSocketHibernationServer"
+				"name": "TinyBaseDurableObjects",
+				"class_name": "TinyBaseDurableObject"
 			}
 		]
 	},
 	"migrations": [
 		{
 			"tag": "v1",
-			"new_sqlite_classes": ["WebSocketHibernationServer"]
+			"new_sqlite_classes": ["TinyBaseDurableObject"]
 		}
 	],
 	"main": "worker/index.ts"
