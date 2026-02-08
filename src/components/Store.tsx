@@ -1,7 +1,7 @@
 // code
 
 import { WebSocket as ReconnectingWebSocket } from "partysocket";
-import { createLocalPersister } from "tinybase/persisters/persister-browser/with-schemas";
+import { createIndexedDbPersister } from "tinybase/persisters/perister-indexed-db/with-schemas";
 import { createWsSynchronizer } from "tinybase/synchronizers/synchronizer-ws-client/with-schemas";
 import { createMergeableStore } from "tinybase/with-schemas";
 import {
@@ -28,7 +28,7 @@ export const ComponentStoreInitialiser = (props: InitializerProps) => {
 	// Create a local storage persister for the Store and start it
 	useCreatePersister(
 		componentsStore,
-		(store) => createLocalPersister(store, STORE_ID + roomId),
+		(store) => createIndexedDbPersister(store, STORE_ID + roomId),
 		[roomId],
 		(persister) => persister.startAutoPersisting(),
 	);
