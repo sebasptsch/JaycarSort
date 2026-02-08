@@ -1,7 +1,7 @@
 // code
 
 import { WebSocket as ReconnectingWebSocket } from "partysocket";
-import { createIndexedDbPersister } from "tinybase/persisters/perister-indexed-db/with-schemas";
+import { createIndexedDbPersister } from "tinybase/persisters/persister-indexed-db/with-schemas";
 import { createWsSynchronizer } from "tinybase/synchronizers/synchronizer-ws-client/with-schemas";
 import { createMergeableStore } from "tinybase/with-schemas";
 import {
