@@ -18,7 +18,12 @@
 	"migrations": [
 		{
 			"tag": "v1",
-			"new_sqlite_classes": ["TinyBaseDurableObject"]
+			"new_sqlite_classes": ["WebSocketHibernationServer"]
+		},
+		{
+			"tag": "v2",
+			"new_sqlite_classes": ["TinyBaseDurableObject"],
+			"deleted_classes": ["WebSocketHibernationServer"]
 		}
 	],
 	"main": "worker/index.ts"
