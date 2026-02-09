@@ -27,7 +27,7 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
 		if (PERSIST_TO_DURABLE_OBJECT) {
 			return createDurableObjectStoragePersister(
 				createMergeableStore(),
-				this.ctx.storage,
+				this.ctx.storage.sql,
 				{ mode: "fragmented" }
 			);
 		}
