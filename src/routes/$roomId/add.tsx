@@ -112,9 +112,6 @@ function RouteComponent() {
 					name="unit"
 					defaultValue={"A"}
 					label={"Unit"}
-					helperText={
-						"The number or identifier for the unit e.g. Capston 1 or Turbine C"
-					}
 					required
 					fullWidth
 				/>
@@ -124,7 +121,6 @@ function RouteComponent() {
 					valueAsNumber
 					defaultValue={1}
 					label={"Shelf"}
-					helperText={"The shelf the item is on (y) axis"}
 					required
 					fullWidth
 				/>
@@ -134,7 +130,6 @@ function RouteComponent() {
 					valueAsNumber
 					defaultValue={1}
 					label={"Tray"}
-					helperText={"The tray (x) axis"}
 					required
 					fullWidth
 				/>
