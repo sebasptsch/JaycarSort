@@ -1,5 +1,5 @@
 import { createMergeableStore, type Id, type IdAddedOrRemoved } from "tinybase";
-import { createDurableObjectStoragePersister } from "tinybase/persisters/persister-durable-object-storage";
+import { createDurableObjectSqlStoragePersister } from "tinybase/persisters/persister-durable-object-sql-storage";
 import {
 	getWsServerDurableObjectFetch,
 	WsServerDurableObject,
@@ -25,10 +25,10 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
 
 	createPersister() {
 		if (PERSIST_TO_DURABLE_OBJECT) {
-			return createDurableObjectStoragePersister(
+			return createDurableObjectSqlStoragePersister(
 				createMergeableStore(),
 				this.ctx.storage.sql,
-				{ mode: "fragmented" }
+				{ mode: "fragmented" },
 			);
 		}
 	}
