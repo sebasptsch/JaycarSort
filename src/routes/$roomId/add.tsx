@@ -106,35 +106,39 @@ function RouteComponent() {
 				helperText={"What sort of storage is the part located in"}
 				required
 			/>
-			<ControlledTextField
-				control={control}
-				name="unit"
-				defaultValue={"A"}
-				label={"Unit"}
-				helperText={
-					"The number or identifier for the unit e.g. Capston 1 or Turbine C"
-				}
-				required
-			/>
-			<ControlledTextField
-				control={control}
-				name="shelf"
-				valueAsNumber
-				defaultValue={1}
-				label={"Shelf"}
-				helperText={"The shelf the item is on (y) axis"}
-				required
-			/>
-			<ControlledTextField
-				control={control}
-				name="tray"
-				valueAsNumber
-				defaultValue={1}
-				label={"Tray"}
-				helperText={"The tray (x) axis"}
-				required
-			/>
-
+			<Stack direction={"row"} gap={1} className="w-full">
+				<ControlledTextField
+					control={control}
+					name="unit"
+					defaultValue={"A"}
+					label={"Unit"}
+					helperText={
+						"The number or identifier for the unit e.g. Capston 1 or Turbine C"
+					}
+					required
+					fullWidth
+				/>
+				<ControlledTextField
+					control={control}
+					name="shelf"
+					valueAsNumber
+					defaultValue={1}
+					label={"Shelf"}
+					helperText={"The shelf the item is on (y) axis"}
+					required
+					fullWidth
+				/>
+				<ControlledTextField
+					control={control}
+					name="tray"
+					valueAsNumber
+					defaultValue={1}
+					label={"Tray"}
+					helperText={"The tray (x) axis"}
+					required
+					fullWidth
+				/>
+			</Stack>
 			<ControlledTextField
 				control={control}
 				name="barcode"
