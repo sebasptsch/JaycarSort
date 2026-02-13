@@ -9,7 +9,7 @@ import {
 //
 // If false, the Durable Object only provides synchronization between clients
 // (which are assumed to persist their own data).
-const PERSIST_TO_DURABLE_OBJECT = true;
+const PERSIST_TO_DURABLE_OBJECT = false;
 
 export class TinyBaseDurableObject extends WsServerDurableObject {
 	onPathId(pathId: Id, addedOrRemoved: IdAddedOrRemoved) {
