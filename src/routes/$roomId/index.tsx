@@ -117,8 +117,8 @@ function RouteComponent() {
 	}, [table]);
 
 	const results = useMemo(
-		() => fuseInstance.search(query ?? "").map((res) => res.item),
-		[query, fuseInstance],
+		() => !query?.length ? Object.values(table) : fuseInstance.search(query).map((res) => res.item),
+		[table, query, fuseInstance],
 	);
 
 	return (
