@@ -31,7 +31,13 @@ function RouteComponent() {
 
 	return (
 		<Stack component={"form"} onSubmit={onSubmit}>
-			<ControlledTextField control={control} name="roomId" defaultValue="" />
+			<ControlledTextField
+				control={control}
+				name="roomId"
+				defaultValue=""
+				label="Room Identifier"
+				helperText="Unique code that allows other devices to sync with each other."
+			/>
 			<Button type="submit">Join</Button>
 		</Stack>
 	);

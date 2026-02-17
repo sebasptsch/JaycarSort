@@ -7,6 +7,7 @@ import z, { type output } from "zod";
 import ControlledCheckbox from "../../components/ControlledCheckbox";
 import ControlledSelect from "../../components/ControlledSelect";
 import ControlledTextField from "../../components/ControlledTextField";
+import { LinkButton } from "../../components/LinkButton";
 import { toaster } from "../../components/Toaster";
 import { dbItemSchema } from "../../lib/interfaces";
 import { STORE_ID, useSetRowCallback } from "../../lib/tinybase-typed";
@@ -88,6 +89,7 @@ function RouteComponent() {
 
 	return (
 		<Stack component={"form"} className="gap-2" onSubmit={onSubmit}>
+			<LinkButton to="/login">Login to JEG</LinkButton>
 			<ControlledCheckbox
 				control={control}
 				name="fillFromApi"

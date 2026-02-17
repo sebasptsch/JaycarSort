@@ -49,7 +49,7 @@ function BackButton() {
 
 	if (canGoBack) {
 		return (
-			<IconButton onClick={handler} aria-label="Back">
+			<IconButton color="inherit" onClick={handler} aria-label="Back">
 				<ArrowBack />
 			</IconButton>
 		);

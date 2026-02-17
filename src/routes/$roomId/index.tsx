@@ -1,14 +1,15 @@
-import { Delete, Search } from "@mui/icons-material";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Add, Delete, Search } from "@mui/icons-material";
+import { Fab, IconButton, InputAdornment, TextField } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
+import Fuse from "fuse.js";
 import { debounce } from "lodash-es";
-import lunr from "lunr";
 import { useCallback, useMemo } from "react";
 import type { Row } from "tinybase/with-schemas";
 import z from "zod";
 import Datatable from "../../components/Datatable";
 import { LinkButton } from "../../components/LinkButton";
+import { LinkFab } from "../../components/LinkFab";
 import { toaster } from "../../components/Toaster";
 import {
 	type Schemas,
@@ -105,28 +106,20 @@ function RouteComponent() {
 		[],
 	);
 
-	const lunrInstance = useMemo(() => {
+	const fuseInstance = useMemo(() => {
 		console.log("re-searched");
-		return lunr(function () {
-			this.ref("item");
-			this.field("item");
-			this.field("barcode");
-			this.field("description");
-
-			Object.values(table).forEach((element) => {
-				this.add(element);
-			});
+		return new Fuse(Object.values(table), {
+			keys: ["barcode", "item", "description"],
+			includeScore: true,
+			useExtendedSearch: true,
+			threshold: 0.3,
 		});
 	}, [table]);
 
-	const resultIds = useMemo(
-		() => lunrInstance.search(query ?? "").map((res) => res.ref),
-		[query, lunrInstance],
+	const results = useMemo(
+		() => fuseInstance.search(query ?? "").map((res) => res.item),
+		[query, fuseInstance],
 	);
-
-	const results = useMemo(() => {
-		return resultIds.map((id) => table[id]).filter(Boolean);
-	}, [resultIds, table]);
 
 	return (
 		<>
@@ -161,6 +154,18 @@ function RouteComponent() {
 				data={results ?? []}
 				style={{ height: 60 }}
 			/>
+			<LinkFab
+				to="/$roomId/add"
+				from="/$roomId/"
+				params={({ roomId }) => ({
+					roomId,
+				})}
+				color="primary"
+				aria-label="add"
+				className="absolute bottom-3 right-3"
+			>
+				<Add />
+			</LinkFab>
 		</>
 	);
 }
