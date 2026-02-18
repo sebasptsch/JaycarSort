@@ -1,6 +1,6 @@
 {
 	"$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-	"productName": "jaycarsort",
+	"productName": "JaycarSort",
 	"version": "0.1.0",
 	"identifier": "dev.sebasptsch.jaycarsort",
 	"build": {
@@ -13,7 +13,7 @@
 		"withGlobalTauri": true,
 		"windows": [
 			{
-				"title": "jaycarsort",
+				"title": "JaycarSort",
 				"width": 800,
 				"height": 600,
 				"resizable": true,
