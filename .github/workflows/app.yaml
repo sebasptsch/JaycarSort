@@ -68,6 +68,14 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+      - name: setup Android signing
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        run: |
+          cd src-tauri/gen/android
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
         if: ${{ matrix.platform == 'ubuntu-22.04' }}
         env:
