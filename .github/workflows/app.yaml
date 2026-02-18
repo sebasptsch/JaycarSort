@@ -32,6 +32,11 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+      - uses: actions/setup-java@v5
+        if: ${{ matrix.platform == 'ubuntu-22.04' }}
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
 
       - name: Install Dependancies
         run: bun install --frozen-lockfile
