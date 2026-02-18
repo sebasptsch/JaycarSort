@@ -4,7 +4,7 @@
 	"version": "0.1.0",
 	"identifier": "dev.sebasptsch.jaycarsort",
 	"build": {
-		"frontendDist": "../dist",
+		"frontendDist": "../dist/client",
 		"devUrl": "http://localhost:5173",
 		"beforeDevCommand": "bun dev --mode tauri",
 		"beforeBuildCommand": "bun run build --mode tauri"
