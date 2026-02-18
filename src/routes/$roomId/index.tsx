@@ -1,16 +1,21 @@
 import { Add, Delete, Search } from "@mui/icons-material";
-import { Fab, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { Format } from "@tauri-apps/plugin-barcode-scanner";
 import Fuse from "fuse.js";
-import { debounce } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import type { Row } from "tinybase/with-schemas";
+import { useDebounceValue } from "usehooks-ts";
 import z from "zod";
 import Datatable from "../../components/Datatable";
 import { LinkButton } from "../../components/LinkButton";
 import { LinkFab } from "../../components/LinkFab";
 import { toaster } from "../../components/Toaster";
+import { tauriScanMutationOptions } from "../../hooks/useTauriScan";
+import { isTauri } from "../../lib/isTauri";
 import {
 	type Schemas,
 	STORE_ID,
@@ -81,9 +86,11 @@ const columns = [
 
 export const Route = createFileRoute("/$roomId/")({
 	component: RouteComponent,
-	validateSearch: z.object({
-		q: z.string().optional(),
-	}),
+	validateSearch: zodValidator(
+		z.object({
+			q: z.string().default(""),
+		}),
+	),
 });
 
 function RouteComponent() {
@@ -93,17 +100,18 @@ function RouteComponent() {
 		select: (s) => s.q,
 	});
 
+	const [debounced] = useDebounceValue(query, 500);
+
 	const [table] = useTableState("components", STORE_ID);
 
-	const debouncedSearch = useCallback(
-		debounce((v: string) => {
+	const handleSearch = useCallback(
+		(v: string) =>
 			navigate({
 				to: ".",
 				search: { q: v === "" ? undefined : v },
 				replace: true,
-			});
-		}, 500),
-		[],
+			}),
+		[navigate],
 	);
 
 	const fuseInstance = useMemo(() => {
@@ -117,8 +125,11 @@ function RouteComponent() {
 	}, [table]);
 
 	const results = useMemo(
-		() => !query?.length ? Object.values(table) : fuseInstance.search(query).map((res) => res.item),
-		[table, query, fuseInstance],
+		() =>
+			!debounced?.length
+				? Object.values(table)
+				: fuseInstance.search(debounced).map((res) => res.item),
+		[table, debounced, fuseInstance],
 	);
 
 	return (
@@ -136,7 +147,8 @@ function RouteComponent() {
 			</LinkButton>
 			<TextField
 				helperText="Enter Barcode, Catalog Number or Description Keywords"
-				onChange={(e) => debouncedSearch(e.target.value)}
+				onChange={(e) => handleSearch(e.target.value)}
+				value={query}
 				label="Search"
 				slotProps={{
 					input: {
@@ -145,10 +157,12 @@ function RouteComponent() {
 								<Search />
 							</InputAdornment>
 						),
+						endAdornment: <ScanButton setSearch={handleSearch} />,
 					},
 				}}
 				autoFocus
 			/>
+
 			<Datatable
 				columns={columns}
 				data={results ?? []}
@@ -167,5 +181,39 @@ function RouteComponent() {
 				<Add />
 			</LinkFab>
 		</>
+	);
+}
+
+interface ScanButtonProps {
+	setSearch: (v: string) => void;
+}
+
+function ScanButton(props: ScanButtonProps) {
+	const mutation = useMutation({
+		...tauriScanMutationOptions,
+		onSuccess: (data) => {
+			setSearch(data.content);
+		},
+	});
+
+	const { setSearch } = props;
+
+	if (!isTauri) {
+		return null;
+	}
+
+	return (
+		<InputAdornment position="end">
+			<Button
+				loading={mutation.isPending}
+				onClick={() =>
+					mutation.mutate({
+						formats: [Format.EAN13],
+					})
+				}
+			>
+				Scan
+			</Button>
+		</InputAdornment>
 	);
 }

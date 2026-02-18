@@ -21,7 +21,7 @@ pub fn run() {
 
     #[cfg(desktop)]
     {
-        builder = builder.plugin(tauri_plugin_single_instance::init(|_app, argv, _cwd| {
+        builder = builder.plugin(tauri_plugin_single_instance::init(|_app, _argv, _cwd| {
             // when defining deep link schemes at runtime, you must also check `argv` here
         }));
     }

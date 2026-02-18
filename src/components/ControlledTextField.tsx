@@ -55,10 +55,13 @@ export default function ControlledTextField<
 					: field.onChange(e.target.value)
 			}
 			slotProps={{
+				...rest.slotProps,
 				input: {
+					...rest.slotProps?.input,
 					type: valueAsNumber ? "number" : undefined,
 				},
 				inputLabel: {
+					...rest.slotProps?.inputLabel,
 					shrink: true,
 				},
 			}}

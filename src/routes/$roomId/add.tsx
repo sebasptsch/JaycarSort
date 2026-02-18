@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Button, InputAdornment, Stack } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Format } from "@tauri-apps/plugin-barcode-scanner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z, { type output } from "zod";
@@ -9,7 +11,9 @@ import ControlledSelect from "../../components/ControlledSelect";
 import ControlledTextField from "../../components/ControlledTextField";
 import { LinkButton } from "../../components/LinkButton";
 import { toaster } from "../../components/Toaster";
+import { tauriScanMutationOptions } from "../../hooks/useTauriScan";
 import { dbItemSchema } from "../../lib/interfaces";
+import { isTauri } from "../../lib/isTauri";
 import { STORE_ID, useSetRowCallback } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/add")({
@@ -143,6 +147,17 @@ function RouteComponent() {
 				label="Barcode"
 				helperText="The barcode on the label"
 				required
+				slotProps={{
+					input: {
+						endAdornment: (
+							<ScanButton
+								setSearch={(v) => {
+									setValue("barcode", v);
+								}}
+							/>
+						),
+					},
+				}}
 			/>
 			<ControlledTextField
 				control={control}
@@ -163,5 +178,39 @@ function RouteComponent() {
 				Save
 			</Button>
 		</Stack>
+	);
+}
+
+interface ScanButtonProps {
+	setSearch: (v: string) => void;
+}
+
+function ScanButton(props: ScanButtonProps) {
+	const mutation = useMutation({
+		...tauriScanMutationOptions,
+		onSuccess: (data) => {
+			setSearch(data.content);
+		},
+	});
+
+	const { setSearch } = props;
+
+	if (!isTauri) {
+		return null;
+	}
+
+	return (
+		<InputAdornment position="end">
+			<Button
+				loading={mutation.isPending}
+				onClick={() =>
+					mutation.mutate({
+						formats: [Format.EAN13],
+					})
+				}
+			>
+				Scan
+			</Button>
+		</InputAdornment>
 	);
 }
