@@ -62,9 +62,6 @@ jobs:
             args: ''
           - platform: 'windows-latest'
             args: ''
-    env:
-      PACKAGE_NAME: ${{ fromJson(needs.release.outputs.publishedPackages)[0].name }}
-      PACKAGE_VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout
@@ -112,7 +109,7 @@ jobs:
       - name: Bump
         run: |
           cargo install cargo-bump
-          cargo-bump $PACKAGE_VERSION
+          cargo-bump ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
 
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
         name: Build Desktop
