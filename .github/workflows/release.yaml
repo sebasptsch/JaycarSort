@@ -29,10 +29,7 @@ jobs:
 
       - name: Install Dependancies
         run: bun install --frozen-lockfile
-
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-
+        
       - name: Typecheck
         run: bun tsc -b --noEmit
 
