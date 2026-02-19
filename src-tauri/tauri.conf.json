@@ -1,7 +1,6 @@
 {
 	"$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
 	"productName": "JaycarSort",
-	"version": "0.1.0",
 	"identifier": "dev.sebasptsch.jaycarsort",
 	"build": {
 		"frontendDist": "../dist/client",
