@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.10
+
+### Patch Changes
+
+- 588516c: signing keys
+
 ## 0.1.9
 
 ### Patch Changes
