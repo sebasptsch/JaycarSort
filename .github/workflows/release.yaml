@@ -111,7 +111,8 @@ jobs:
       
       - name: Bump
         run: |
-          cargo bump $PACKAGE_VERSION
+          cargo install cargo-bump
+          cargo-bump $PACKAGE_VERSION
 
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
         name: Build Desktop
