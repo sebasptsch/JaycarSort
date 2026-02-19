@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.15
+
+### Patch Changes
+
+- 9a53736: Update release tag and name format in workflow
+
 ## 0.1.14
 
 ### Patch Changes
