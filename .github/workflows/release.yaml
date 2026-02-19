@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Dependancies
         run: bun install --frozen-lockfile
-        
+
       - name: Typecheck
         run: bun tsc -b --noEmit
 
@@ -44,6 +44,7 @@ jobs:
 
   publish-tauri:
     if: needs.release.outputs.published == 'true'
+    name: Publish (Tauri)
     permissions:
       contents: write
     needs: release
