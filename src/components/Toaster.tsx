@@ -1,4 +1,4 @@
-import { Alert, AlertTitle } from "@mui/material";
+import { Alert, AlertTitle, Button } from "@mui/material";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import * as toast from "@zag-js/toast";
 import { useId } from "react";
@@ -28,6 +28,11 @@ function Toast(props: ToastProps) {
 			onClose={api.dismiss}
 			severity={api.type !== "loading" ? (api.type as "success") : "info"}
 			sx={{ width: "100%" }}
+			action={
+				<Button size="small" {...api.getActionTriggerProps()} color="inherit">
+					Confirm
+				</Button>
+			}
 		>
 			{api.title ? <AlertTitle>{api.title}</AlertTitle> : null}
 			{api.description}
