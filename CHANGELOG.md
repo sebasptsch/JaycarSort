@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.12
+
+### Patch Changes
+
+- 1f0d0a2: Add updater plugin to Tauri builder
+
 ## 0.1.11
 
 ### Patch Changes
