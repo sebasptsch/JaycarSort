@@ -51,7 +51,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
             args: '--target aarch64-apple-darwin'
@@ -63,7 +62,9 @@ jobs:
             args: ''
           - platform: 'windows-latest'
             args: ''
-
+    env:
+      PACKAGE_NAME: ${{ fromJson(needs.release.outputs.publishedPackages)[0].name }}
+      PACKAGE_VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout
@@ -109,11 +110,9 @@ jobs:
           workspaces: './src-tauri -> target'
       
       - name: Bump
-        env:
-          VERSION: ${{ matrix.package.version }}
         run: |
           cargo install cargo-bump
-          cargo bump $VERSION
+          cargo bump $PACKAGE_VERSION
 
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
         name: Build Desktop
