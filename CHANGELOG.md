@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.8
+
+### Patch Changes
+
+- a814bf6: cd into dir
+
 ## 0.1.7
 
 ### Patch Changes
