@@ -1,5 +1,12 @@
 # jaycarsort
 
+## 0.1.5
+
+### Patch Changes
+
+- a12ab3f: bump
+- a12ab3f: install cargo bump
+
 ## 0.1.4
 
 ### Patch Changes
