@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.9
+
+### Patch Changes
+
+- a748371: Attach to release
+
 ## 0.1.8
 
 ### Patch Changes
