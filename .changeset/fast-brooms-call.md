@@ -1,0 +1,5 @@
+---
+'jaycarsort': patch
+---
+
+signing keys
