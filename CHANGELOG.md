@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.7
+
+### Patch Changes
+
+- fdee1f3: bump again
+
 ## 0.1.6
 
 ### Patch Changes
