@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.3
+
+### Patch Changes
+
+- 637f255: fix versioning?
+
 ## 0.1.2
 
 ### Patch Changes
