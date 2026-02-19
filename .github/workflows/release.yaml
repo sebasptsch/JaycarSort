@@ -108,6 +108,7 @@ jobs:
       
       - name: Bump
         run: |
+          cd src-tauri
           cargo install cargo-bump
           cargo-bump bump ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
 
