@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.13
+
+### Patch Changes
+
+- a1365bd: Add conditional updater plugin for desktop builds
+
 ## 0.1.12
 
 ### Patch Changes
