@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.16
+
+### Patch Changes
+
+- 222f33a: Update checker works
+
 ## 0.1.15
 
 ### Patch Changes
