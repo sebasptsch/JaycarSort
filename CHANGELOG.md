@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.11
+
+### Patch Changes
+
+- 74b2f37: Remove comment in json
+
 ## 0.1.10
 
 ### Patch Changes
