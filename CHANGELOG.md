@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.4
+
+### Patch Changes
+
+- e7133c7: cargo bump?
+
 ## 0.1.3
 
 ### Patch Changes
