@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.17
+
+### Patch Changes
+
+- 4ee906e: Add app icon
+
 ## 0.1.16
 
 ### Patch Changes
