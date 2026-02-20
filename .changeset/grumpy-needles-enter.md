@@ -2,4 +2,4 @@
 'jaycarsort': patch
 ---
 
-Fix Mobile
+update icon size
