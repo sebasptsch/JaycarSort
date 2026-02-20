@@ -44,7 +44,7 @@ jobs:
 
   publish-tauri:
     if: needs.release.outputs.published == 'true'
-    name: Publish (Desktop)
+    name: Publish (Tauri)
     permissions:
       contents: write
     needs: release
@@ -58,6 +58,9 @@ jobs:
             args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
             args: ''
+          - platform: 'ubuntu-22.04'
+            args: '--apk'
+            mobile: "android"
           - platform: 'ubuntu-22.04-arm' # Only available in public repos.
             args: ''
           - platform: 'windows-latest'
@@ -72,6 +75,31 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+      - uses: actions/setup-java@v5
+        if: ${{ matrix.mobile == 'android' }}
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+          cache: "gradle"
+      - name: Setup Android Signing
+        if: ${{ matrix.mobile == 'android' }}
+        run: |
+          cd src-tauri/gen/android
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust Cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
 
       - name: Install Dependancies
         run: bun install --frozen-lockfile
@@ -82,17 +110,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      - name: Rust Cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
-      
       - name: Bump
         run: |
           cd src-tauri
@@ -100,7 +117,7 @@ jobs:
           cargo-bump bump ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
 
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
-        name: Build Desktop
+        name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -112,89 +129,4 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
-
-  publish-tauri-mobile:
-    if: needs.release.outputs.published == 'true'
-    name: Publish (Mobile)
-    permissions:
-      contents: write
-    needs: release
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # - platform: 'macos-latest' # for Arm based macs (M1 and above).
-          #   args: '--target aarch64-apple-darwin'
-          #   target: 'ios'
-          # - platform: 'macos-latest' # for Intel based macs.
-          #   args: '--target x86_64-apple-darwin'
-          #   target: 'ios'
-          - platform: 'ubuntu-22.04'
-            args: '--apk'
-            target: "android"
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - uses: actions/setup-java@v5
-        if: ${{ matrix.target == 'android' }}
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
-          cache: "gradle"
-      - name: Setup Android Signing
-        if: ${{ matrix.target == 'android' }}
-        run: |
-          cd src-tauri/gen/android
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
-          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
-          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
-          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
-
-      - name: Install Dependancies
-        run: bun install --frozen-lockfile
-
-      - name: Install System Dependencies (Ubuntu Only)
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      - name: Rust Cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
-      
-      - name: Bump
-        run: |
-          cd src-tauri
-          cargo install cargo-bump
-          cargo-bump bump ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
-
-      - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        name: "Build Mobile (Android)"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-        with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: false
-          prerelease: false
-          args: ${{ matrix.args }}
-          mobile: ${{ matrix.target }}
+          mobile: ${{ matrix.mobile }}
