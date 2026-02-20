@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.20
+
+### Patch Changes
+
+- 9571a82: Better android publish workflow
+
 ## 0.1.19
 
 ### Patch Changes
