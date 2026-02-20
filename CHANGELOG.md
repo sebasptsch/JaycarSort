@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.18
+
+### Patch Changes
+
+- 673760f: update icon size
+
 ## 0.1.17
 
 ### Patch Changes
