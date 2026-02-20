@@ -72,20 +72,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - uses: actions/setup-java@v5
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
-          cache: "gradle"
-      - name: Setup Android Signing
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        run: |
-          cd src-tauri/gen/android
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
-          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
-          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
-          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
 
       - name: Install Dependancies
         run: bun install --frozen-lockfile
@@ -126,22 +112,6 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
-      
-      - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
-        if: ${{ matrix.platform == 'ubuntu-22.04' }}
-        name: "Build Mobile (Android)"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-        with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: false
-          prerelease: false
-          args: ${{ matrix.args }} --apk
-          mobile: 'android'   
 
   publish-tauri-mobile:
     if: needs.release.outputs.published == 'true'
@@ -177,6 +147,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '21'
+          cache: "gradle"
       - name: Setup Android Signing
         if: ${{ matrix.target == 'android' }}
         run: |
