@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.22
+
+### Patch Changes
+
+- ba1d558: Add mobile to matrix
+
 ## 0.1.21
 
 ### Patch Changes
