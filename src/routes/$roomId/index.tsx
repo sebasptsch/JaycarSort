@@ -157,7 +157,7 @@ function RouteComponent() {
 								<Search />
 							</InputAdornment>
 						),
-						endAdornment: <ScanButton setSearch={handleSearch} />,
+						endAdornment: <ScanButton setSearch={(v) => handleSearch(`'${v}`)} />,
 					},
 				}}
 				autoFocus
