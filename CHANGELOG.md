@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.19
+
+### Patch Changes
+
+- 9ceecf3: Update icon again
+
 ## 0.1.18
 
 ### Patch Changes
