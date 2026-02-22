@@ -1,12 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import ControlledTextField from "../components/ControlledTextField";
+import { toaster } from "../components/Toaster";
 
 export const Route = createFileRoute("/login")({
 	component: RouteComponent,
+});
+
+const formSchema = z.object({
+	username: z.string(),
+	password: z.string(),
+	app_id: z.number(),
 });
 
 function RouteComponent() {
@@ -15,13 +23,7 @@ function RouteComponent() {
 		handleSubmit,
 		formState: { isSubmitting },
 	} = useForm({
-		resolver: zodResolver(
-			z.object({
-				username: z.string(),
-				password: z.string(),
-				app_id: z.number(),
-			}),
-		),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			username: "",
 			password: "",
@@ -29,18 +31,38 @@ function RouteComponent() {
 		},
 	});
 
+	const loginMutation = useMutation({
+		mutationFn: async (data: z.output<typeof formSchema>) => {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+				method: "post",
+				body: JSON.stringify(data),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (!response.ok)
+				throw new Error("Request not okay", {
+					cause: response,
+				});
+
+			return response.json();
+		},
+		onError: (err) => {
+			toaster.error({
+				title: "An error occured",
+				description: err.toString(),
+			});
+		},
+	});
+
 	const onSubmit = handleSubmit(async (data) => {
-		const loginResponse = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-			method: "post",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json",
-			},
+		const loginResponse = await loginMutation.mutateAsync(data);
+
+		window.localStorage.setItem("token", loginResponse.node_token);
+		toaster.success({
+			title: "Logged In",
 		});
-
-		const parsedJson = await loginResponse.json();
-
-		window.localStorage.setItem("token", parsedJson.node_token);
 
 		console.log("Logged in");
 	});
