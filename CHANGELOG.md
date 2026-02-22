@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.24
+
+### Patch Changes
+
+- 373dec7: Add error on fail to login to jeg
+
 ## 0.1.23
 
 ### Patch Changes
