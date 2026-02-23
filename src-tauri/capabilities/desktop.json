@@ -11,6 +11,7 @@
   "permissions": [
     "updater:default",
     "process:default",
-    "os:default"
+    "os:default",
+    "window-state:default"
   ]
 }
