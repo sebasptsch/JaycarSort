@@ -162,6 +162,7 @@ function RouteComponent() {
 							<ScanAdornment
 								setSearch={(v) => {
 									setValue("barcode", v);
+									onSubmit();
 								}}
 							/>
 						),
