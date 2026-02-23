@@ -94,9 +94,7 @@ jobs:
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
       - name: Get Release Notes
         run: |
-          echo 'notes<<EOF' >> $GITHUB_OUTPUT
-          echo '$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body --jq .body)' >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo "notes=$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body)" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
         id: release-notes
@@ -135,7 +133,7 @@ jobs:
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'v__VERSION__'
-          releaseBody: ${{ steps.release-notes.outputs.notes }}
+          releaseBody: ${{ fromJson(steps.release-notes.outputs.notes).body }}
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
