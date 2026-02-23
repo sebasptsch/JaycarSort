@@ -93,7 +93,10 @@ jobs:
           base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
       - name: Get Release Notes
-        run: echo "notes=$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body --jq .body)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo 'notes<<EOF' >> $GITHUB_OUTPUT
+          echo '$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body --jq .body)' >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
         id: release-notes
