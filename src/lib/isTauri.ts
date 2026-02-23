@@ -1,14 +1,23 @@
 // @ts-expect-error Tauri is defined true or undefined
-export const currentPlatform = !window.isTauri
-	? "web"
-	: await import("@tauri-apps/plugin-os").then((res) => res.type());
+export const isTauri = !!window.isTauri;
 
-export const isTauri = currentPlatform !== "web" ? currentPlatform : false;
+export const getCurrentPlatform = async () => {
+	if (!isTauri) return "web";
 
-export const isDesktop = ["linux", "macos", "windows"].includes(
-	currentPlatform,
-);
+	const { type } = await import("@tauri-apps/plugin-os");
 
-export const isMobile = ["android", "ios"].includes(currentPlatform);
+	return type();
+};
 
-export const isWeb = currentPlatform === "web";
+export const getTauriPlatform = async () => {
+	const currentPlatform = await getCurrentPlatform();
+	return currentPlatform !== "web" ? currentPlatform : false;
+};
+
+export const getIsDesktop = async () =>
+	["linux", "macos", "windows"].includes(await getCurrentPlatform());
+
+export const getIsMobile = async () =>
+	["android", "ios"].includes(await getCurrentPlatform());
+
+export const getIsWeb = async () => (await getCurrentPlatform()) === "web";

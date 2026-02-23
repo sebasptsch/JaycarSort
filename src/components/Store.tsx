@@ -11,7 +11,7 @@ import {
 	type OptionalSchemas,
 	type Store,
 } from "tinybase/with-schemas";
-import { isTauri } from "../lib/isTauri";
+import { getIsTauri } from "../lib/isTauri";
 import {
 	STORE_ID,
 	TABLES_SCHEMA,
@@ -66,7 +66,7 @@ export const ComponentStoreInitialiser = (props: InitializerProps) => {
 	useCreatePersister(
 		componentsStore,
 		(store) => {
-			if (isTauri) {
+			if (getIsTauri) {
 				return createTauriPersister(store, STORE_ID + roomId);
 			}
 

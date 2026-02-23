@@ -1,7 +1,8 @@
 import { Button, InputAdornment } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ScanOptions } from "@tauri-apps/plugin-barcode-scanner";
-import { isMobile } from "../lib/isTauri";
+import { useQueries } from "tinybase/ui-react";
+import { getIsMobile } from "../lib/isTauri";
 import { toaster } from "./Toaster";
 
 interface ScanButtonProps {
@@ -36,7 +37,13 @@ export default function ScanAdornment(props: ScanButtonProps) {
 
 	const { setSearch } = props;
 
-	if (!isMobile) {
+	const isMobileQuery = useQuery({
+		queryFn: () => getIsMobile(),
+		queryKey: ["isMobile"],
+		initialData: false,
+	});
+
+	if (!isMobileQuery.data) {
 		return null;
 	}
 
