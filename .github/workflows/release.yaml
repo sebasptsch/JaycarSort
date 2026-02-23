@@ -70,12 +70,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - uses: actions/setup-node@v6
+        name: Setup Node
         with:
           node-version: 24
       - uses: oven-sh/setup-bun@v2
+        name: Setup Bun
         with:
           bun-version: latest
       - uses: actions/setup-java@v5
+        name: Setup Java
         if: ${{ matrix.mobile == 'android' }}
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
@@ -89,7 +92,9 @@ jobs:
           echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
           base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
-
+      - name: Get Release Notes
+        run: echo "notes=$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body --jq .body)" >> "$GITHUB_OUTPUT"
+        id: release-notes
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
         with:
@@ -110,12 +115,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: Bump
+      - name: Bump Cargo package version
         run: |
           cd src-tauri
           cargo install cargo-bump
           cargo-bump bump ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
-
+      
       - uses: tauri-apps/tauri-action@063c0231f444e55760d98acb9c469b994269d4a5
         name: Build
         env:
@@ -125,7 +130,7 @@ jobs:
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: ${{ steps.release-notes.outputs.notes }}
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
