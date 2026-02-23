@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.1
+
+### Patch Changes
+
+- 9c4fb89: Better scan and haptics recognition
+
 ## 0.2.0
 
 ### Minor Changes
