@@ -43,6 +43,7 @@ jobs:
           publish: bun changeset tag
           createGithubReleases: true
       - name: Get Release Notes
+        if: steps.changesets.outputs.published == 'true'
         id: notes
         env:
           GH_TOKEN: ${{ github.token }}
