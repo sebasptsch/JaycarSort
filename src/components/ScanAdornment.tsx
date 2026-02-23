@@ -1,7 +1,6 @@
 import { Button, InputAdornment } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ScanOptions } from "@tauri-apps/plugin-barcode-scanner";
-import { useQueries } from "tinybase/ui-react";
 import { getIsMobile } from "../lib/isTauri";
 import { toaster } from "./Toaster";
 
