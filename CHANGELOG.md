@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.3
+
+### Patch Changes
+
+- cdb1a8c: trigger onsubmit after scan
+
 ## 0.2.2
 
 ### Patch Changes
