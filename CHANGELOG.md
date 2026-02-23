@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.0
+
+### Minor Changes
+
+- 69a1eef: Add haptic feedback
+
 ## 0.1.30
 
 ### Patch Changes
