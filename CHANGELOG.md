@@ -1,5 +1,12 @@
 # jaycarsort
 
+## 0.1.30
+
+### Patch Changes
+
+- 089a3fb: Fix missing creds for app build
+- 6ccad2b: cloudflare deploy
+
 ## 0.1.29
 
 ### Patch Changes
