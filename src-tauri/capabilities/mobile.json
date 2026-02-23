@@ -9,6 +9,7 @@
   ],
   "permissions": [
     "barcode-scanner:default",
-    "haptics:default"
+    "haptics:default",
+    "os:default"
   ]
 }

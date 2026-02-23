@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, InputAdornment, Stack } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { Button, Stack } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
-import { Format } from "@tauri-apps/plugin-barcode-scanner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z, { type output } from "zod";
@@ -10,10 +8,10 @@ import ControlledCheckbox from "../../components/ControlledCheckbox";
 import ControlledSelect from "../../components/ControlledSelect";
 import ControlledTextField from "../../components/ControlledTextField";
 import { LinkButton } from "../../components/LinkButton";
+import ScanAdornment from "../../components/ScanAdornment";
 import { toaster } from "../../components/Toaster";
-import { tauriScanMutationOptions } from "../../hooks/useTauriScan";
 import { dbItemSchema } from "../../lib/interfaces";
-import { isTauri } from "../../lib/isTauri";
+import { isMobile } from "../../lib/isTauri";
 import { STORE_ID, useSetRowCallback } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/add")({
@@ -32,14 +30,7 @@ const fetchFromApi = async (barcode: string) => {
 				Authorization: `Bearer ${token}`,
 			},
 		},
-	)
-		.then((res) => res.json())
-		.catch((err) =>
-			toaster.error({
-				title: "an error occured",
-				description: err.toString(),
-			}),
-		);
+	).then((res) => res.json());
 
 	return barcodeResponse as {
 		p_prodnumber: string;
@@ -71,7 +62,6 @@ function RouteComponent() {
 				setLastScan(row.barcode);
 			}
 			setValue("barcode", "");
-			console.log("added", row);
 		},
 		[setValue, setLastScan, lastScan, getValues],
 	);
@@ -80,35 +70,32 @@ function RouteComponent() {
 		try {
 			if (data.fillFromApi) {
 				const apiData = await fetchFromApi(data.barcode.toString());
-				console.log("row handler", data);
 				setRowHandler({
 					...data,
 					item: apiData.p_prodnumber,
 					description: apiData.p_proddescsystem,
 				});
 			} else {
-				console.log("row handler", data);
 				setRowHandler(data);
 			}
-			if (isTauri) {
-				try {
-					await import("@tauri-apps/plugin-haptics").then(
-						({ notificationFeedback }) => notificationFeedback("success"),
-					);
-				} catch {}
+			toaster.success({
+				title: "Successfully added item!",
+				description: `Successfully added ${data.item} to the store.`,
+			});
+			if (isMobile) {
+				await import("@tauri-apps/plugin-haptics").then(
+					({ notificationFeedback }) => notificationFeedback("success"),
+				);
 			}
 		} catch (e: unknown) {
 			toaster.error({
 				title: "An error occured",
 				description: e instanceof Error ? e.toString() : "Unknown Error",
 			});
-			console.error(e);
-			if (isTauri) {
-				try {
-					await import("@tauri-apps/plugin-haptics").then(
-						({ notificationFeedback }) => notificationFeedback("error"),
-					);
-				} catch {}
+			if (isMobile) {
+				await import("@tauri-apps/plugin-haptics").then(
+					({ notificationFeedback }) => notificationFeedback("error"),
+				);
 			}
 		}
 	});
@@ -172,7 +159,7 @@ function RouteComponent() {
 				slotProps={{
 					input: {
 						endAdornment: (
-							<ScanButton
+							<ScanAdornment
 								setSearch={(v) => {
 									setValue("barcode", v);
 								}}
@@ -200,39 +187,5 @@ function RouteComponent() {
 				Save
 			</Button>
 		</Stack>
-	);
-}
-
-interface ScanButtonProps {
-	setSearch: (v: string) => void;
-}
-
-function ScanButton(props: ScanButtonProps) {
-	const mutation = useMutation({
-		...tauriScanMutationOptions,
-		onSuccess: (data) => {
-			setSearch(data.content);
-		},
-	});
-
-	const { setSearch } = props;
-
-	if (!isTauri) {
-		return null;
-	}
-
-	return (
-		<InputAdornment position="end">
-			<Button
-				loading={mutation.isPending}
-				onClick={() =>
-					mutation.mutate({
-						formats: [Format.EAN13],
-					})
-				}
-			>
-				Scan
-			</Button>
-		</InputAdornment>
 	);
 }

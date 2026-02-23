@@ -8,6 +8,7 @@
   "permissions": [
     "core:default",
     "websocket:default",
-    "store:default"
+    "store:default",
+    "os:default"
   ]
 }

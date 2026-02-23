@@ -1,10 +1,8 @@
 import { Add, Delete, Search } from "@mui/icons-material";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { Format } from "@tauri-apps/plugin-barcode-scanner";
 import Fuse from "fuse.js";
 import { useCallback, useMemo } from "react";
 import type { Row } from "tinybase/with-schemas";
@@ -13,9 +11,8 @@ import z from "zod";
 import Datatable from "../../components/Datatable";
 import { LinkButton } from "../../components/LinkButton";
 import { LinkFab } from "../../components/LinkFab";
+import ScanAdornment from "../../components/ScanAdornment";
 import { toaster } from "../../components/Toaster";
-import { tauriScanMutationOptions } from "../../hooks/useTauriScan";
-import { isTauri } from "../../lib/isTauri";
 import {
 	type Schemas,
 	STORE_ID,
@@ -157,7 +154,9 @@ function RouteComponent() {
 								<Search />
 							</InputAdornment>
 						),
-						endAdornment: <ScanButton setSearch={(v) => handleSearch(`'${v}`)} />,
+						endAdornment: (
+							<ScanAdornment setSearch={(v) => handleSearch(`'${v}`)} />
+						),
 					},
 				}}
 				autoFocus
@@ -181,39 +180,5 @@ function RouteComponent() {
 				<Add />
 			</LinkFab>
 		</>
-	);
-}
-
-interface ScanButtonProps {
-	setSearch: (v: string) => void;
-}
-
-function ScanButton(props: ScanButtonProps) {
-	const mutation = useMutation({
-		...tauriScanMutationOptions,
-		onSuccess: (data) => {
-			setSearch(data.content);
-		},
-	});
-
-	const { setSearch } = props;
-
-	if (!isTauri) {
-		return null;
-	}
-
-	return (
-		<InputAdornment position="end">
-			<Button
-				loading={mutation.isPending}
-				onClick={() =>
-					mutation.mutate({
-						formats: [Format.EAN13],
-					})
-				}
-			>
-				Scan
-			</Button>
-		</InputAdornment>
 	);
 }
