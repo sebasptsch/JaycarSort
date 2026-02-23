@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.27
+
+### Patch Changes
+
+- 59977ae: fix multiline again
+
 ## 0.1.26
 
 ### Patch Changes
