@@ -5,7 +5,7 @@ import {
 	StyledEngineProvider,
 	ThemeProvider,
 } from "@mui/material/styles";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
 	createHashHistory,
 	createRouter,
@@ -15,6 +15,8 @@ import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import "@fontsource-variable/roboto/index.css";
 import "./global.css";
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { Toaster } from "./components/Toaster";
 import { isTauri } from "./lib/isTauri";
 
@@ -56,16 +58,58 @@ declare module "@tanstack/react-router" {
 	}
 }
 
+function createTauriAsyncQueryPersister() {
+	const storeName = "queryStore.json";
+
+	const asyncStoragePersister = createAsyncStoragePersister({
+		storage: {
+			getItem: (key) =>
+				import("@tauri-apps/plugin-store").then(({ load }) =>
+					load(storeName).then(({ get }) => get(key)),
+				),
+			setItem: (key, value) =>
+				import("@tauri-apps/plugin-store").then(({ load }) =>
+					load(storeName).then(({ set }) => set(key, value)),
+				),
+			removeItem: (key) =>
+				import("@tauri-apps/plugin-store").then(({ load }) =>
+					load(storeName).then(async ({ delete: deleteItem }) => {
+						await deleteItem(key);
+					}),
+				),
+			entries: () =>
+				import("@tauri-apps/plugin-store").then(({ load }) =>
+					load(storeName).then(({ entries }) => entries()),
+				),
+		},
+	});
+
+	return asyncStoragePersister;
+}
+
+const localStoragePersister = createAsyncStoragePersister({
+	storage: window.localStorage,
+});
+
+const persister = isTauri
+	? createTauriAsyncQueryPersister()
+	: localStoragePersister;
+
 // biome-ignore lint/style/noNonNullAssertion: This element does exist and is predictable
 createRoot(document.getElementById("root")!).render(
 	<StyledEngineProvider enableCssLayer>
 		<GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
-		<QueryClientProvider client={queryClient}>
+		<PersistQueryClientProvider
+			client={queryClient}
+			persistOptions={{
+				persister,
+			}}
+		>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<RouterProvider router={router} />
 				<Toaster />
 			</ThemeProvider>
-		</QueryClientProvider>
+		</PersistQueryClientProvider>
 	</StyledEngineProvider>,
 );
