@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.26
+
+### Patch Changes
+
+- e654a9f: Add token
+
 ## 0.1.25
 
 ### Patch Changes
