@@ -48,6 +48,37 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "notes=$(gh release view v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }} --json body)" >> $GITHUB_OUTPUT
+  publish-wrangler:
+    runs-on: ubuntu-latest
+    name: Publish (Wrangler)
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    environment: Production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        name: Setup Node
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@v2
+        name: Setup Bun
+        with:
+          bun-version: latest
+      - name: Install Dependancies
+        run: bun install --frozen-lockfile
+      - name: Build Application
+        run: bun run build
+      - name: Deploy app
+        uses: cloudflare/wrangler-action@v3
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_NODE_API_URL: ${{ secrets.VITE_NODE_API_URL }}
+          VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
 
   publish-tauri:
     if: needs.release.outputs.published == 'true'
