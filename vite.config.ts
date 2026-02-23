@@ -86,24 +86,5 @@ export default defineConfig({
 				],
 			},
 		}),
-		VitePWA({
-			registerType: "autoUpdate",
-			injectRegister: "auto",
-			manifest: {
-				name: "JaycarSort",
-				short_name: "JaycarSort",
-				icons: [
-					{
-						src: "/JaycarSort/turbine.jpg",
-						sizes: "200x200 any",
-						type: "image/jpg",
-						purpose: "any maskable",
-					},
-				],
-				theme_color: "#ffffff",
-				background_color: "#0c254c",
-				display: "standalone",
-			},
-		}),
 	],
 });
