@@ -1,5 +1,12 @@
 # jaycarsort
 
+## 0.2.4
+
+### Patch Changes
+
+- 5cb2b5f: Add Tauri storage persister
+- 59a3ca3: save window state for desktop
+
 ## 0.2.3
 
 ### Patch Changes
