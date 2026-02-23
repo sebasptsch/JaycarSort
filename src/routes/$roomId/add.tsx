@@ -3,6 +3,7 @@ import { Button, InputAdornment, Stack } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Format } from "@tauri-apps/plugin-barcode-scanner";
+import { notificationFeedback } from "@tauri-apps/plugin-haptics";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z, { type output } from "zod";
@@ -77,17 +78,39 @@ function RouteComponent() {
 	);
 
 	const onSubmit = handleSubmit(async (data) => {
-		if (data.fillFromApi) {
-			const apiData = await fetchFromApi(data.barcode.toString());
-			console.log("row handler", data);
-			setRowHandler({
-				...data,
-				item: apiData.p_prodnumber,
-				description: apiData.p_proddescsystem,
+		try {
+			if (data.fillFromApi) {
+				const apiData = await fetchFromApi(data.barcode.toString());
+				console.log("row handler", data);
+				setRowHandler({
+					...data,
+					item: apiData.p_prodnumber,
+					description: apiData.p_proddescsystem,
+				});
+			} else {
+				console.log("row handler", data);
+				setRowHandler(data);
+			}
+			if (isTauri) {
+				try {
+					await import("@tauri-apps/plugin-haptics").then(
+						({ notificationFeedback }) => notificationFeedback("success"),
+					);
+				} catch {}
+			}
+		} catch (e: unknown) {
+			toaster.error({
+				title: "An error occured",
+				description: e instanceof Error ? e.toString() : "Unknown Error",
 			});
-		} else {
-			console.log("row handler", data);
-			setRowHandler(data);
+			console.error(e);
+			if (isTauri) {
+				try {
+					await import("@tauri-apps/plugin-haptics").then(
+						({ notificationFeedback }) => notificationFeedback("error"),
+					);
+				} catch {}
+			}
 		}
 	});
 
