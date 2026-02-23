@@ -68,13 +68,13 @@ jobs:
       - name: Install Dependancies
         run: bun install --frozen-lockfile
       - name: Build Application
-        run: bun run build
-      - name: Deploy app
-        uses: cloudflare/wrangler-action@v3
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_NODE_API_URL: ${{ secrets.VITE_NODE_API_URL }}
           VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
+        run: bun run build
+      - name: Deploy app
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
