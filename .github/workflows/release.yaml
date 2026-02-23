@@ -15,6 +15,7 @@ jobs:
     outputs:
       published: ${{ steps.changesets.outputs.published }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
+      notes: ${{ steps.notes.outputs.notes }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v6
@@ -41,6 +42,12 @@ jobs:
         with:
           publish: bun changeset tag
           createGithubReleases: true
+      - name: Get Release Notes
+        id: notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "notes=$(gh release view v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }} --json body)" >> $GITHUB_OUTPUT
 
   publish-tauri:
     if: needs.release.outputs.published == 'true'
@@ -92,11 +99,6 @@ jobs:
           echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
           base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
-      - name: Get Release Notes
-        run: |
-          echo "notes=$(gh release view v${{ fromJson(needs.release.outputs.publishedPackages)[0].version }} --json body)" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ github.token }}
         id: release-notes
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
@@ -133,7 +135,7 @@ jobs:
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'v__VERSION__'
-          releaseBody: ${{ fromJson(steps.release-notes.outputs.notes).body }}
+          releaseBody: ${{ fromJson(needs.release.outputs.notes).body }}
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
