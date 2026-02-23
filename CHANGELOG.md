@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.25
+
+### Patch Changes
+
+- 35b1076: Add release notes to latest file
+
 ## 0.1.24
 
 ### Patch Changes
