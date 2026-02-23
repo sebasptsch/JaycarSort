@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.1.29
+
+### Patch Changes
+
+- 5231c0c: Compile notes in prev step so it works on windows
+
 ## 0.1.28
 
 ### Patch Changes
