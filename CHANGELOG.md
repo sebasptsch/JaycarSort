@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.5
+
+### Patch Changes
+
+- 6a2d98e: Make platform detection synchronous
+
 ## 0.2.4
 
 ### Patch Changes
