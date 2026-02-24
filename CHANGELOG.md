@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.6
+
+### Patch Changes
+
+- 123de39: fix darwin string
+
 ## 0.2.5
 
 ### Patch Changes
