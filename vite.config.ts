@@ -6,6 +6,14 @@ import { defineConfig } from "vite";
 
 const host = process.env.TAURI_DEV_HOST;
 
+console.log(
+	Object.fromEntries(
+		Object.entries(process.env).filter(([key, _value]) =>
+			key.startsWith("TAURI_ENV_"),
+		),
+	),
+);
+
 // https://vitejs.dev/config/
 export default defineConfig({
 	clearScreen: false,
@@ -30,7 +38,7 @@ export default defineConfig({
 		},
 	},
 	// Env variables starting with the item of `envPrefix` will be exposed in tauri's source code through `import.meta.env`.
-	envPrefix: ["VITE_", "TAURI_ENV_*"],
+	envPrefix: ["VITE_", "TAURI_ENV_"],
 	build: {
 		// Tauri uses Chromium on Windows and WebKit on macOS and Linux
 		target:

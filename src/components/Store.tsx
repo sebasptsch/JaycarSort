@@ -55,6 +55,8 @@ async function createTauriPersister<Schemas extends OptionalSchemas>(
 	return persister;
 }
 
+console.log(JSON.stringify(import.meta.env.TAURI_ENV_PLATFORM));
+
 export const ComponentStoreInitialiser = (props: InitializerProps) => {
 	const { roomId } = props;
 	// Create the Store and set its schema

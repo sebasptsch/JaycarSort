@@ -11,7 +11,7 @@ import { LinkButton } from "../../components/LinkButton";
 import ScanAdornment from "../../components/ScanAdornment";
 import { toaster } from "../../components/Toaster";
 import { dbItemSchema } from "../../lib/interfaces";
-import { getIsMobile } from "../../lib/isTauri";
+import { isMobile } from "../../lib/isTauri";
 import { STORE_ID, useSetRowCallback } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/add")({
@@ -82,7 +82,7 @@ function RouteComponent() {
 				title: "Successfully added item!",
 				description: `Successfully added ${data.item} to the store.`,
 			});
-			if (await getIsMobile()) {
+			if (isMobile) {
 				await import("@tauri-apps/plugin-haptics").then(
 					({ notificationFeedback }) => notificationFeedback("success"),
 				);
@@ -92,7 +92,7 @@ function RouteComponent() {
 				title: "An error occured",
 				description: e instanceof Error ? e.toString() : "Unknown Error",
 			});
-			if (await getIsMobile()) {
+			if (isMobile) {
 				await import("@tauri-apps/plugin-haptics").then(
 					({ notificationFeedback }) => notificationFeedback("error"),
 				);
