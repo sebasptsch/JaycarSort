@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.2.7
+
+### Patch Changes
+
+- 9e4d2ba: Pull barcode and display correct product code
+
 ## 0.2.6
 
 ### Patch Changes
