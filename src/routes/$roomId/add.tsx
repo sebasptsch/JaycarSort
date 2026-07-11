@@ -35,6 +35,7 @@ const fetchFromApi = async (barcode: string) => {
 	return barcodeResponse as {
 		p_prodnumber: string;
 		p_proddescsystem: string;
+		p_prodBarcodePrimary: string;
 	};
 };
 
@@ -74,14 +75,22 @@ function RouteComponent() {
 					...data,
 					item: apiData.p_prodnumber,
 					description: apiData.p_proddescsystem,
+					barcode: apiData.p_prodBarcodePrimary ?? data.barcode,
+				});
+
+				toaster.success({
+					title: "Successfully added item!",
+					description: `Successfully added ${apiData.p_prodnumber} to the store.`,
 				});
 			} else {
 				setRowHandler(data);
+
+				toaster.success({
+					title: "Successfully added item!",
+					description: `Successfully added ${data.item} to the store.`,
+				});
 			}
-			toaster.success({
-				title: "Successfully added item!",
-				description: `Successfully added ${data.item} to the store.`,
-			});
+			
 			if (isMobile) {
 				await import("@tauri-apps/plugin-haptics").then(
 					({ notificationFeedback }) => notificationFeedback("success"),
