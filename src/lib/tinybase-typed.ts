@@ -15,6 +15,11 @@ export const TABLES_SCHEMA = {
 		tray: { type: "number", default: 1 },
 		unit: { type: "string", default: "" },
 	},
+	notes: {
+		archived: { type: "boolean", default: false },
+		content: { type: "string", default: "" },
+		title: { type: "string", default: "" },
+	},
 } as const;
 
 export type Schemas = [typeof TABLES_SCHEMA, NoValuesSchema];

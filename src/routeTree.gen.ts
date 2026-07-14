@@ -13,8 +13,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RoomIdRouteImport } from './routes/$roomId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RoomIdIndexRouteImport } from './routes/$roomId/index'
+import { Route as RoomIdNotesRouteImport } from './routes/$roomId/notes'
 import { Route as RoomIdManageRouteImport } from './routes/$roomId/manage'
 import { Route as RoomIdAddRouteImport } from './routes/$roomId/add'
+import { Route as RoomIdNotesNoteIdRouteImport } from './routes/$roomId/notes.$noteId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -36,6 +38,11 @@ const RoomIdIndexRoute = RoomIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => RoomIdRoute,
 } as any)
+const RoomIdNotesRoute = RoomIdNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => RoomIdRoute,
+} as any)
 const RoomIdManageRoute = RoomIdManageRouteImport.update({
   id: '/manage',
   path: '/manage',
@@ -46,6 +53,11 @@ const RoomIdAddRoute = RoomIdAddRouteImport.update({
   path: '/add',
   getParentRoute: () => RoomIdRoute,
 } as any)
+const RoomIdNotesNoteIdRoute = RoomIdNotesNoteIdRouteImport.update({
+  id: '/$noteId',
+  path: '/$noteId',
+  getParentRoute: () => RoomIdNotesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,14 +65,18 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/$roomId/add': typeof RoomIdAddRoute
   '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId/notes': typeof RoomIdNotesRouteWithChildren
   '/$roomId/': typeof RoomIdIndexRoute
+  '/$roomId/notes/$noteId': typeof RoomIdNotesNoteIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/$roomId/add': typeof RoomIdAddRoute
   '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId/notes': typeof RoomIdNotesRouteWithChildren
   '/$roomId': typeof RoomIdIndexRoute
+  '/$roomId/notes/$noteId': typeof RoomIdNotesNoteIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/$roomId/add': typeof RoomIdAddRoute
   '/$roomId/manage': typeof RoomIdManageRoute
+  '/$roomId/notes': typeof RoomIdNotesRouteWithChildren
   '/$roomId/': typeof RoomIdIndexRoute
+  '/$roomId/notes/$noteId': typeof RoomIdNotesNoteIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,9 +97,18 @@ export interface FileRouteTypes {
     | '/login'
     | '/$roomId/add'
     | '/$roomId/manage'
+    | '/$roomId/notes'
     | '/$roomId/'
+    | '/$roomId/notes/$noteId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/$roomId/add' | '/$roomId/manage' | '/$roomId'
+  to:
+    | '/'
+    | '/login'
+    | '/$roomId/add'
+    | '/$roomId/manage'
+    | '/$roomId/notes'
+    | '/$roomId'
+    | '/$roomId/notes/$noteId'
   id:
     | '__root__'
     | '/'
@@ -89,7 +116,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/$roomId/add'
     | '/$roomId/manage'
+    | '/$roomId/notes'
     | '/$roomId/'
+    | '/$roomId/notes/$noteId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoomIdIndexRouteImport
       parentRoute: typeof RoomIdRoute
     }
+    '/$roomId/notes': {
+      id: '/$roomId/notes'
+      path: '/notes'
+      fullPath: '/$roomId/notes'
+      preLoaderRoute: typeof RoomIdNotesRouteImport
+      parentRoute: typeof RoomIdRoute
+    }
     '/$roomId/manage': {
       id: '/$roomId/manage'
       path: '/manage'
@@ -142,18 +178,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoomIdAddRouteImport
       parentRoute: typeof RoomIdRoute
     }
+    '/$roomId/notes/$noteId': {
+      id: '/$roomId/notes/$noteId'
+      path: '/$noteId'
+      fullPath: '/$roomId/notes/$noteId'
+      preLoaderRoute: typeof RoomIdNotesNoteIdRouteImport
+      parentRoute: typeof RoomIdNotesRoute
+    }
   }
 }
+
+interface RoomIdNotesRouteChildren {
+  RoomIdNotesNoteIdRoute: typeof RoomIdNotesNoteIdRoute
+}
+
+const RoomIdNotesRouteChildren: RoomIdNotesRouteChildren = {
+  RoomIdNotesNoteIdRoute: RoomIdNotesNoteIdRoute,
+}
+
+const RoomIdNotesRouteWithChildren = RoomIdNotesRoute._addFileChildren(
+  RoomIdNotesRouteChildren,
+)
 
 interface RoomIdRouteChildren {
   RoomIdAddRoute: typeof RoomIdAddRoute
   RoomIdManageRoute: typeof RoomIdManageRoute
+  RoomIdNotesRoute: typeof RoomIdNotesRouteWithChildren
   RoomIdIndexRoute: typeof RoomIdIndexRoute
 }
 
 const RoomIdRouteChildren: RoomIdRouteChildren = {
   RoomIdAddRoute: RoomIdAddRoute,
   RoomIdManageRoute: RoomIdManageRoute,
+  RoomIdNotesRoute: RoomIdNotesRouteWithChildren,
   RoomIdIndexRoute: RoomIdIndexRoute,
 }
 
