@@ -3,7 +3,9 @@ import { Button, Stack } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import ScanningControlledTextField from "../components/ControlledScanningTextField";
 import ControlledTextField from "../components/ControlledTextField";
+import ScanAdornment from "../components/ScanAdornment";
 
 export const Route = createFileRoute("/")({
 	component: RouteComponent,
@@ -31,7 +33,7 @@ function RouteComponent() {
 
 	return (
 		<Stack component={"form"} onSubmit={onSubmit}>
-			<ControlledTextField
+			<ScanningControlledTextField
 				control={control}
 				name="roomId"
 				defaultValue=""
