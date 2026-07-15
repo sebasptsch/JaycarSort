@@ -64,14 +64,15 @@ function RouteComponent() {
 
 	const onSubmit = handleSubmit((data) => {
 		console.log("form submitted", data);
-		setRow({
+		const newRowData = {
 			...data,
 			updatedAt: new Date().toISOString(),
-		});
+		};
+		setRow(newRowData);
 		toaster.success({
 			title: "Saved Note",
 		});
-		reset(row);
+		reset(newRowData);
 	});
 
 	const theme = useTheme();
