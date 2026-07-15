@@ -45,7 +45,12 @@ function RouteComponent() {
 
 	const [row, setRow] = useRowState("notes", noteId, STORE_ID);
 
-	const { control, handleSubmit, reset } = useForm({
+	const {
+		control,
+		handleSubmit,
+		reset,
+		formState: { isDirty, isSubmitting },
+	} = useForm({
 		resolver: zodResolver(noteSchema),
 		defaultValues: {
 			archived: row.archived ?? false,
@@ -127,7 +132,9 @@ function RouteComponent() {
 				<Button type="button" onClick={handleClose}>
 					Close
 				</Button>
-				<Button type="submit">Save</Button>
+				<Button type="submit" disabled={!isDirty} loading={isSubmitting}>
+					Save
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);
