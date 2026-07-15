@@ -1,0 +1,5 @@
+---
+'jaycarsort': minor
+---
+
+Add notes

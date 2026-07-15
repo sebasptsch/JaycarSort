@@ -19,6 +19,8 @@ export const TABLES_SCHEMA = {
 		archived: { type: "boolean", default: false },
 		content: { type: "string", default: "" },
 		title: { type: "string", default: "" },
+		createdAt: { type: "string", default: new Date().toISOString() },
+		updatedAt: { type: "string", default: new Date().toISOString() },
 	},
 } as const;
 
@@ -39,4 +41,6 @@ export const {
 	useCreateQueries,
 	useProvideQueries,
 	useStore,
+	useRow,
+	useRowState,
 } = UiReact as UiReact.WithSchemas<Schemas>;
