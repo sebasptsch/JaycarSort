@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.3.1
+
+### Patch Changes
+
+- 80a0c3a: new row data
+
 ## 0.3.0
 
 ### Minor Changes
