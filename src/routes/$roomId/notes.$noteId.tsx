@@ -6,7 +6,6 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Divider,
 	Stack,
 	TextField,
 	useMediaQuery,
@@ -14,12 +13,12 @@ import {
 } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
-import { useCallback, useEffect, useId } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import ControlledTextField from "../../components/ControlledTextField";
 import { toaster } from "../../components/Toaster";
-import { STORE_ID, useRow, useRowState } from "../../lib/tinybase-typed";
+import { STORE_ID, useRowState } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/notes/$noteId")({
 	component: RouteComponent,
@@ -37,8 +36,6 @@ function RouteComponent() {
 	const noteId = Route.useParams({ select: (params) => params.noteId });
 
 	const navigate = Route.useNavigate();
-
-	const componentId = useId();
 
 	const handleClose = useCallback(() => {
 		navigate({

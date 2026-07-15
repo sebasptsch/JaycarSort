@@ -1,22 +1,10 @@
 import { Add } from "@mui/icons-material";
-import {
-	Fab,
-	List,
-	ListItem,
-	ListItemButton,
-	ListItemText,
-} from "@mui/material";
+import { Fab, List, ListItemText } from "@mui/material";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useCallback, useMemo } from "react";
-import { ulid } from "ulid";
 import { LinkListItemButton } from "../../components/LinkItemButton";
 import { toaster } from "../../components/Toaster";
-import {
-	STORE_ID,
-	useStore,
-	useTable,
-	useTableState,
-} from "../../lib/tinybase-typed";
+import { STORE_ID, useStore, useTableState } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/notes")({
 	component: RouteComponent,
