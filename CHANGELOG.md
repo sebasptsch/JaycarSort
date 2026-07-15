@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.3.2
+
+### Patch Changes
+
+- a01b56a: Dirty button
+
 ## 0.3.1
 
 ### Patch Changes
