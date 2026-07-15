@@ -1,5 +1,15 @@
 # jaycarsort
 
+## 0.3.0
+
+### Minor Changes
+
+- f5d9bfe: Add notes
+
+### Patch Changes
+
+- 315a607: Make room id scannable
+
 ## 0.2.7
 
 ### Patch Changes
