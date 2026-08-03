@@ -31,6 +31,7 @@ export default function ScanningControlledTextField<
 		shouldUnregister,
 		helperText,
 		valueAsNumber = false,
+		type,
 		...rest
 	} = props;
 
@@ -55,11 +56,12 @@ export default function ScanningControlledTextField<
 					? field.onChange(parseInt(e.target.value, 10))
 					: field.onChange(e.target.value)
 			}
+			type={type}
 			slotProps={{
 				...rest.slotProps,
 				input: {
 					...rest.slotProps?.input,
-					type: valueAsNumber ? "number" : undefined,
+					type: valueAsNumber ? "number" : type,
 					endAdornment: <ScanAdornment setSearch={(v) => field.onChange(v)} />,
 				},
 				inputLabel: {

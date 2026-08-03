@@ -30,6 +30,7 @@ export default function ControlledTextField<
 		shouldUnregister,
 		helperText,
 		valueAsNumber = false,
+		type,
 		...rest
 	} = props;
 
@@ -49,6 +50,7 @@ export default function ControlledTextField<
 			error={!!fieldState.error}
 			helperText={fieldState.error ? fieldState.error.message : helperText}
 			disabled={disabled}
+			type={type}
 			onChange={(e) =>
 				valueAsNumber
 					? field.onChange(parseInt(e.target.value, 10))
@@ -58,7 +60,7 @@ export default function ControlledTextField<
 				...rest.slotProps,
 				input: {
 					...rest.slotProps?.input,
-					type: valueAsNumber ? "number" : undefined,
+					type: valueAsNumber ? "number" : type,
 				},
 				inputLabel: {
 					...rest.slotProps?.inputLabel,

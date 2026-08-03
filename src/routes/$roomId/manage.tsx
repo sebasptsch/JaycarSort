@@ -21,7 +21,11 @@ import type { Row } from "tinybase/with-schemas";
 import z from "zod";
 import { LinkButton } from "../../components/LinkButton";
 import { type DBItem, dbItemSchema } from "../../lib/interfaces";
-import { type Schemas, STORE_ID, useStore } from "../../lib/tinybase-typed";
+import {
+	SYNCED_STORE_ID,
+	type SyncedSchemas,
+	useStoreSynced,
+} from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/manage")({
 	component: RouteComponent,
@@ -48,7 +52,7 @@ function generateDownload(blob: Blob, filename: string) {
 	anchorEl.remove();
 }
 
-async function exportXLSX(data: Row<Schemas[0], "components">[]) {
+async function exportXLSX(data: Row<SyncedSchemas[0], "components">[]) {
 	const { write, utils } = await import("xlsx");
 
 	const workBook = utils.book_new();
@@ -65,10 +69,10 @@ async function exportXLSX(data: Row<Schemas[0], "components">[]) {
 }
 
 function useImportDB() {
-	const store = useStore(STORE_ID);
+	const store = useStoreSynced(SYNCED_STORE_ID);
 
 	return useCallback(
-		(data: Row<Schemas[0], "components">[]) => {
+		(data: Row<SyncedSchemas[0], "components">[]) => {
 			store?.setTable(
 				"components",
 				Object.fromEntries(data.map((row) => [row.item, row])),
@@ -101,7 +105,7 @@ async function parseXLSX(file: File) {
 }
 
 function useExport() {
-	const store = useStore(STORE_ID);
+	const store = useStoreSynced(SYNCED_STORE_ID);
 
 	const storeToObject = useCallback(
 		async (type: "json" | "xlsx" = "json") => {

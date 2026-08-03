@@ -9,6 +9,8 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { CheckOptions, Update } from "@tauri-apps/plugin-updater";
 import { useEffect } from "react";
+import { Provider } from "tinybase/ui-react";
+import { LocalStoreInitialiser } from "../components/LocalStoreInitialiser";
 import { toaster } from "../components/Toaster";
 import TopBar from "../components/TopBar";
 
@@ -28,15 +30,18 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
 	return (
-		<Box className="grow flex flex-col">
-			<TopBar />
-			<Container className="py-2 grow flex flex-col">
-				<Outlet />
-			</Container>
-			<UpdateChecker />
-			<ReactQueryDevtools buttonPosition="bottom-left" />
-			<TanStackRouterDevtools position="bottom-right" />
-		</Box>
+		<Provider>
+			<Box className="grow flex flex-col">
+				<TopBar />
+				<Container className="py-2 grow flex flex-col">
+					<Outlet />
+				</Container>
+				<UpdateChecker />
+				<ReactQueryDevtools buttonPosition="bottom-left" />
+				<TanStackRouterDevtools position="bottom-right" />
+			</Box>
+			<LocalStoreInitialiser />
+		</Provider>
 	);
 }
 

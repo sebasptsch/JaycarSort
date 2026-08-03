@@ -14,23 +14,28 @@ import { LinkFab } from "../../components/LinkFab";
 import ScanAdornment from "../../components/ScanAdornment";
 import { toaster } from "../../components/Toaster";
 import {
-	type Schemas,
-	STORE_ID,
-	useDelRowCallback,
-	useTableState,
+	SYNCED_STORE_ID,
+	type SyncedSchemas,
+	useDelRowCallbackSynced,
+	useTableStateSynced,
 } from "../../lib/tinybase-typed";
 
-const columnHelper = createColumnHelper<Row<Schemas[0], "components">>();
+const columnHelper = createColumnHelper<Row<SyncedSchemas[0], "components">>();
 
 function DeleteButton({ item }: { item: string }) {
-	const handleDelete = useDelRowCallback("components", item, STORE_ID, () => {
-		toaster.success({
-			title: "Deleted item successfully",
-		});
-	});
+	const handleDelete = useDelRowCallbackSynced(
+		"components",
+		item,
+		SYNCED_STORE_ID,
+		() => {
+			toaster.success({
+				title: "Deleted item successfully",
+			});
+		},
+	);
 
 	return (
-		<IconButton onClick={handleDelete}>
+		<IconButton onClick={handleDelete} className="self-start">
 			<Delete />
 		</IconButton>
 	);
@@ -41,26 +46,23 @@ const columns = [
 	columnHelper.display({
 		header: "Location",
 		id: "location",
-		cell: (props) =>
-			`${props.row.original.location} ${props.row.original.unit}`,
+		cell: (props) => (
+			<span className="whitespace-pre-line">
+				{[
+					`${props.row.original.location} ${props.row.original.unit}`,
+					`${props.row.original.location === "Capstan" ? "Column" : "Shelf"} ${props.row.original.shelf}`,
+					`${
+						props.row.original.location === "Capstan"
+							? "Row"
+							: props.row.original.location === "Zone"
+								? "Position "
+								: "Tray "
+					} ${props.row.original.tray}`,
+				].join("\n")}
+			</span>
+		),
 	}),
-	columnHelper.display({
-		header: "Shelf",
-		cell: (props) =>
-			`${props.row.original.location === "Capstan" ? "Column" : "Shelf"} ${props.row.original.shelf}`,
-	}),
-	columnHelper.display({
-		header: "Tray",
-		cell: (ce) =>
-			` ${
-				ce.row.original.location === "Capstan"
-					? "Row"
-					: ce.row.original.location === "Zone"
-						? "Position "
-						: "Tray "
-			} ${ce.row.original.tray}`,
-		id: "tray",
-	}),
+
 	columnHelper.accessor("description", {
 		header: "Description",
 	}),
@@ -99,7 +101,7 @@ function RouteComponent() {
 
 	const [debounced] = useDebounceValue(query, 500);
 
-	const [table] = useTableState("components", STORE_ID);
+	const [table] = useTableStateSynced("components", SYNCED_STORE_ID);
 
 	const handleSearch = useCallback(
 		(v: string) =>

@@ -4,7 +4,11 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useCallback, useMemo } from "react";
 import { LinkListItemButton } from "../../components/LinkItemButton";
 import { toaster } from "../../components/Toaster";
-import { STORE_ID, useStore, useTableState } from "../../lib/tinybase-typed";
+import {
+	SYNCED_STORE_ID,
+	useStoreSynced,
+	useTableStateSynced,
+} from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/notes")({
 	component: RouteComponent,
@@ -27,7 +31,7 @@ function RouteComponent() {
 function AddNoteFab() {
 	const navigate = Route.useNavigate();
 
-	const store = useStore(STORE_ID);
+	const store = useStoreSynced(SYNCED_STORE_ID);
 
 	const handleClick = useCallback(() => {
 		// const newUlid = ulid();
@@ -72,7 +76,7 @@ function AddNoteFab() {
 }
 
 function NotesTable() {
-	const [table] = useTableState("notes", STORE_ID);
+	const [table] = useTableStateSynced("notes", SYNCED_STORE_ID);
 
 	const rows = useMemo(
 		() =>

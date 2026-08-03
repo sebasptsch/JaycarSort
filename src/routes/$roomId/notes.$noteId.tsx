@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import ControlledTextField from "../../components/ControlledTextField";
 import { toaster } from "../../components/Toaster";
-import { STORE_ID, useRowState } from "../../lib/tinybase-typed";
+import { SYNCED_STORE_ID, useRowStateSynced } from "../../lib/tinybase-typed";
 
 export const Route = createFileRoute("/$roomId/notes/$noteId")({
 	component: RouteComponent,
@@ -43,7 +43,7 @@ function RouteComponent() {
 		});
 	}, [navigate]);
 
-	const [row, setRow] = useRowState("notes", noteId, STORE_ID);
+	const [row, setRow] = useRowStateSynced("notes", noteId, SYNCED_STORE_ID);
 
 	const {
 		control,
