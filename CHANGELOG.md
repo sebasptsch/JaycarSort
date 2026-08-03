@@ -1,5 +1,11 @@
 # jaycarsort
 
+## 0.4.0
+
+### Minor Changes
+
+- 125fdff: Add recent rooms and make add page more intuitive
+
 ## 0.3.2
 
 ### Patch Changes
