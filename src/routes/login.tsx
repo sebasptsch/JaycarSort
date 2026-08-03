@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Alert, AlertTitle, Button, Container, Stack, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -54,37 +54,45 @@ function RouteComponent() {
 				description: err.toString(),
 			});
 		},
+
+		onSuccess: (loginResponse) => {
+			window.localStorage.setItem("token", loginResponse.node_token);
+			toaster.success({
+				title: "Logged In",
+			});
+
+			console.log("Logged in");
+		}
 	});
 
-	const onSubmit = handleSubmit(async (data) => {
-		const loginResponse = await loginMutation.mutateAsync(data);
-
-		window.localStorage.setItem("token", loginResponse.node_token);
-		toaster.success({
-			title: "Logged In",
-		});
-
-		console.log("Logged in");
-	});
+	const onSubmit = handleSubmit((data) => loginMutation.mutateAsync(data))
 
 	return (
-		<Stack className="gap-2" component="form" onSubmit={onSubmit}>
-			<ControlledTextField
-				control={control}
-				name="username"
-				label="Username"
-				required
-			/>
-			<ControlledTextField
-				type="password"
-				control={control}
-				name="password"
-				label="Password"
-				required
-			/>
-			<Button type={"submit"} loading={isSubmitting}>
-				Login
-			</Button>
-		</Stack>
+		<Container maxWidth="sm">
+			<Stack className="gap-4" component="form" onSubmit={onSubmit}>
+				<Alert severity="info">
+					<AlertTitle>Info</AlertTitle>
+					Use your internal credentials to login and pull data from ICS.
+					<br /><br />
+					This is <b>only available on devices that are able to use ICS 2</b>. Namely PDTs and Chrome on POS computers (not the remote desktop).
+				</Alert>
+				<ControlledTextField
+					control={control}
+					name="username"
+					label="Username"
+					required
+				/>
+				<ControlledTextField
+					type="password"
+					control={control}
+					name="password"
+					label="Password"
+					required
+				/>
+				<Button type={"submit"} loading={isSubmitting} variant="contained">
+					Login
+				</Button>
+			</Stack>
+		</Container>
 	);
 }
