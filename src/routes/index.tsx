@@ -25,8 +25,9 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
 	return (
-		<Stack gap={2} divider={<Divider />}>
+		<Stack gap={2}>
 			<JoinRoomControls />
+			<Divider>Recent Rooms</Divider>
 			<RecentRoomsList />
 		</Stack>
 	);

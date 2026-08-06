@@ -5,6 +5,7 @@
 	"type": "module",
 	"homepage": "./",
 	"dependencies": {
+		"@base-ui/react": "^1.7.0",
 		"@cloudflare/workers-types": "^4.20260206.0",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
